@@ -301,6 +301,7 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview")
   const [isBookTestModalOpen, setIsBookTestModalOpen] = useState(false)
   const [selectedTestCenter, setSelectedTestCenter] = useState<any>(null)
+  const [selectedCareerPath, setSelectedCareerPath] = useState("")
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -318,6 +319,27 @@ export default function Dashboard() {
   const openTalentProfile = (talent: any) => {
     setSelectedTalent(talent)
     setIsProfileModalOpen(true)
+  }
+
+  const handleRoleClick = (roleName: string) => {
+    const roleMap: Record<string, string> = {
+      "Senior Software Engineer": "senior-engineer",
+      "Tech Lead": "tech-lead",
+      "Full Stack Developer": "full-stack-dev",
+      "Product Manager": "product-manager",
+    }
+
+    const pathId = roleMap[roleName]
+    if (pathId) {
+      setSelectedCareerPath(pathId)
+      setActiveTab("suggestions")
+      setTimeout(() => {
+        const careerPathSection = document.getElementById("career-path-section")
+        if (careerPathSection) {
+          careerPathSection.scrollIntoView({ behavior: "smooth", block: "start" })
+        }
+      }, 100)
+    }
   }
 
   const generateSkillCard = (talentData = mockTalentData) => {
@@ -622,8 +644,11 @@ export default function Dashboard() {
 
         <div className="container mx-auto px-4 py-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-<TabsList className="flex flex-wrap gap-2 w-full lg:grid lg:w-fit lg:grid-cols-5 bg-muted/50 z-20">
-              <TabsTrigger value="overview" className="rounded-md px-3 py-1.5 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105">
+            <TabsList className="flex flex-wrap gap-2 w-full lg:grid lg:w-fit lg:grid-cols-5 bg-muted/50 z-20">
+              <TabsTrigger
+                value="overview"
+                className="rounded-md px-3 py-1.5 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+              >
                 My Profile
               </TabsTrigger>
               <TabsTrigger
@@ -638,7 +663,10 @@ export default function Dashboard() {
               >
                 Smart Match
               </TabsTrigger>
-              <TabsTrigger value="trending" className="rounded-md px-3 py-1.5 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105">
+              <TabsTrigger
+                value="trending"
+                className="rounded-md px-3 py-1.5 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+              >
                 Trending
               </TabsTrigger>
               <TabsTrigger
@@ -729,10 +757,7 @@ export default function Dashboard() {
                         <div
                           key={index}
                           className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 hover:scale-105 transition-all duration-300 cursor-pointer"
-                          onClick={() => {
-                            const suggestionsTab = document.querySelector('[value="suggestions"]') as HTMLElement
-                            suggestionsTab?.click()
-                          }}
+                          onClick={() => handleRoleClick(role.role)}
                         >
                           <div className="flex items-center space-x-3">
                             <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
@@ -924,18 +949,22 @@ export default function Dashboard() {
                           ) : (
                             talent.rank
                           )}
-                        </div> 
+                        </div>
 
-                          <div className="flex-1 pl-4 min-w-0">
+                        <div className="flex-1 pl-4 min-w-0">
                           {talent.rank === 1 && (
                             <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30 mb-1 w-fit">
                               Top Performer
                             </Badge>
                           )}
-<div className="flex items-center gap-3">
-<h4 className="font-semibold min-w-[150px]">{talent.name}</h4>
-  <div className={`text-2xl font-bold ${talent.rank === 1 ? 'text-red-600' : talent.rank === 2 ? 'text-yellow-500' : talent.rank === 3 ? 'text-green-500' : 'text-primary'}`}>{talent.score}</div>
-</div>
+                          <div className="flex items-center gap-3">
+                            <h4 className="font-semibold min-w-[150px]">{talent.name}</h4>
+                            <div
+                              className={`text-2xl font-bold ${talent.rank === 1 ? "text-red-600" : talent.rank === 2 ? "text-yellow-500" : talent.rank === 3 ? "text-green-500" : "text-primary"}`}
+                            >
+                              {talent.score}
+                            </div>
+                          </div>
                           <p className="text-sm text-muted-foreground">{talent.college}</p>
                           <div className="flex flex-col space-y-0.5 mt-1">
                             <span className="text-xs text-muted-foreground">
@@ -949,7 +978,6 @@ export default function Dashboard() {
 
                         <div className="flex flex-col gap-1 w-full sm:flex-row sm:space-x-1 sm:w-auto mt-2">
                           <div className="flex flex-col gap-1 w-full sm:flex-row sm:space-x-1 sm:w-auto mt-2">
-
                             {talent.rank === 1 && talent.linkedin && (
                               <div className="flex flex-col gap-1 sm:flex-row sm:space-x-1">
                                 <Button
@@ -968,22 +996,22 @@ export default function Dashboard() {
                                   <Users className="w-3 h-3 mr-1" />
                                   Connect
                                 </Button>
-                                
-<Button
-  size="sm"
-  // REMOVED variant="outline" to ensure full gradient coverage
-className="justify-center bg-gradient-to-br from-purple-700 via-red-600 to-pink-500 // More Red Mythic Gradient
+
+                                <Button
+                                  size="sm"
+                                  // REMOVED variant="outline" to ensure full gradient coverage
+                                  className="justify-center bg-gradient-to-br from-purple-700 via-red-600 to-pink-500 // More Red Mythic Gradient
              text-white // White text for contrast
              hover:brightness-110 hover:scale-105 // Brighter & scale on hover
              transition-all duration-300 // Smooth transition
              shadow-md hover:shadow-lg"
-  onClick={(e) => {
-    e.stopPropagation()
-    handlePreviewLeaderboardSkillCard(talent)
-  }}
->
-  ✔ Verification 
-</Button>
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    handlePreviewLeaderboardSkillCard(talent)
+                                  }}
+                                >
+                                  ✔ Verification
+                                </Button>
                               </div>
                             )}
                             {talent.rank !== 1 && (
@@ -1098,7 +1126,7 @@ className="justify-center bg-gradient-to-br from-purple-700 via-red-600 to-pink-
                     <CardDescription>Explore different career paths based on your skills</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <CareerPathExplorer currentSkills={mockTalentData.skills} />
+                    <CareerPathExplorer currentSkills={mockTalentData.skills} initialPath={selectedCareerPath} />
                   </CardContent>
                 </Card>
               </div>
@@ -1293,24 +1321,26 @@ className="justify-center bg-gradient-to-br from-purple-700 via-red-600 to-pink-
                   className="mx-auto border rounded-lg shadow-lg max-w-full h-auto"
                 />
                 <div className="mt-4 flex gap-2 justify-center">
-                  <Button onClick={() => handleDownloadLeaderboardSkillCard(skillCardTalent)}>Download Certificate</Button>
+                  <Button onClick={() => handleDownloadLeaderboardSkillCard(skillCardTalent)}>
+                    Download Certificate
+                  </Button>
                   <Button
                     variant="outline"
                     onClick={() => {
                       // Use execCommand for broader compatibility within potential iframe environments
-                      const textToCopy = `https://TalentVisa.com/verify/${skillCardTalent.name.replace(" ", "_")}_${Date.now()}`;
-                      const textArea = document.createElement("textarea");
-                      textArea.value = textToCopy;
-                      document.body.appendChild(textArea);
-                      textArea.select();
+                      const textToCopy = `https://TalentVisa.com/verify/${skillCardTalent.name.replace(" ", "_")}_${Date.now()}`
+                      const textArea = document.createElement("textarea")
+                      textArea.value = textToCopy
+                      document.body.appendChild(textArea)
+                      textArea.select()
                       try {
-                        document.execCommand('copy');
-                        alert("Verification link copied to clipboard!");
+                        document.execCommand("copy")
+                        alert("Verification link copied to clipboard!")
                       } catch (err) {
-                        console.error('Failed to copy text: ', err);
-                        alert("Failed to copy link. Please try again or copy manually.");
+                        console.error("Failed to copy text: ", err)
+                        alert("Failed to copy link. Please try again or copy manually.")
                       }
-                      document.body.removeChild(textArea);
+                      document.body.removeChild(textArea)
                     }}
                   >
                     Copy Verification Link

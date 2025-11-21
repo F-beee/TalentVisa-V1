@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -14,6 +14,7 @@ interface CareerPathExplorerProps {
     logical: number
     personality: number
   }
+  initialPath?: string
 }
 
 const careerPaths = [
@@ -36,6 +37,24 @@ const careerPaths = [
     ],
   },
   {
+    id: "full-stack-dev",
+    title: "Full Stack Developer",
+    currentMatch: 92,
+    timeToAchieve: "3-6 months",
+    salaryRange: "$100k - $160k",
+    requiredSkills: { coding: 90, speaking: 60, logical: 80, personality: 70 },
+    improvements: [
+      { skill: "Frontend Frameworks", current: 85, target: 95, priority: "High" },
+      { skill: "Backend Integration", current: 80, target: 90, priority: "Medium" },
+    ],
+    nextSteps: [
+      "Build a full-stack project",
+      "Learn advanced React patterns",
+      "Master database optimization",
+      "Contribute to open source",
+    ],
+  },
+  {
     id: "product-manager",
     title: "Product Manager",
     currentMatch: 65,
@@ -47,12 +66,7 @@ const careerPaths = [
       { skill: "Strategic Thinking", current: 80, target: 90, priority: "High" },
       { skill: "Stakeholder Management", current: 75, target: 95, priority: "Medium" },
     ],
-    nextSteps: [
-      "Take product management certification",
-      "Lead cross-functional projects",
-      "Develop presentation skills",
-      "Study market analysis techniques",
-    ],
+    nextSteps: ["Develop business plan", "Build MVP product", "Network with investors", "Study entrepreneurship"],
   },
   {
     id: "tech-lead",
@@ -88,8 +102,14 @@ const careerPaths = [
   },
 ]
 
-export function CareerPathExplorer({ currentSkills }: CareerPathExplorerProps) {
-  const [selectedPath, setSelectedPath] = useState<string>("")
+export function CareerPathExplorer({ currentSkills, initialPath }: CareerPathExplorerProps) {
+  const [selectedPath, setSelectedPath] = useState<string>(initialPath || "")
+
+  useEffect(() => {
+    if (initialPath) {
+      setSelectedPath(initialPath)
+    }
+  }, [initialPath])
 
   const calculateMatch = (requiredSkills: any) => {
     const totalGap = Object.keys(requiredSkills).reduce((sum, skill) => {
@@ -243,7 +263,14 @@ export function CareerPathExplorer({ currentSkills }: CareerPathExplorerProps) {
                     </ul>
                   </div>
 
-                  <Button className="w-full bg-primary hover:bg-primary/90" size="sm">
+                  <Button
+                    className="w-full bg-primary hover:bg-primary/90"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      alert("A tailored plan is being prepared for you for this role, and you will be notified via email once it gets ready.")
+                    }}
+                  >
                     <Target className="w-4 h-4 mr-2" />
                     Start This Path
                   </Button>
