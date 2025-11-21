@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { Zap, Users, TrendingUp, Shield, Star, ArrowRight, Building } from "lucide-react"
+import { Zap, Users, TrendingUp, Shield, Star, ArrowRight, Building, Info } from "lucide-react"
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -287,6 +287,24 @@ export default function LoginPage() {
                     <Users className="w-4 h-4 mr-2" />
                     Continue as Guest
                   </Button>
+
+                  <div className="mt-6 p-3 rounded-lg bg-primary/5 border border-primary/10 text-sm">
+                    <h3 className="font-semibold flex items-center gap-2 mb-2 text-primary text-xs uppercase tracking-wider">
+                      <Info className="w-3 h-3" /> 
+                      MVP Tour Guide
+                    </h3>
+                    <div className="space-y-2 text-muted-foreground text-xs">
+                      <p>
+                        <span className="font-medium text-foreground">👤 Candidate Demo:</span> Click <strong>Continue as Guest</strong> above to see the Profile & Test flow.
+                      </p>
+                      <p>
+                        <span className="font-medium text-foreground">📊 Analytics:</span> Use the <strong>Admin Login</strong> button (top-right) to see the Data Dashboard.
+                      </p>
+                      <p>
+                        <span className="font-medium text-foreground">🏢 Hiring:</span> Use the <strong>Employer Login</strong> button (top-right) to browse the Talent Pool.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
