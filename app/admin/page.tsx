@@ -282,23 +282,20 @@ export default function AdminPanel() {
       </div>
 
       <div className="relative z-10">
-  <header className="glass-effect border-b border-primary/20 sticky top-0 z-50" style={{ minWidth: '100%' }}>
-    <div className="w-full px-4 py-4 flex flex-wrap gap-4 items-center justify-between" style={{ minWidth: 'max-content' }}>
-      <div className="flex items-center space-x-4">
+  <header className="glass-effect border-b border-primary/20 sticky top-0 z-50">
+    <div className="container mx-auto px-4 py-4 flex flex-wrap gap-4 items-center justify-between">
+      <div 
+        className="flex items-center space-x-4 cursor-pointer hover:opacity-80 transition-opacity"
+        onClick={() => window.location.href = "/"}
+      >
         <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
           <Shield className="w-5 h-5 text-white" />
         </div>
         <h1 className="text-xl font-bold">TalentRank Admin</h1>
         <Badge className="bg-accent/20 text-accent border-accent/30">Administrator</Badge>
       </div>
-
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm" onClick={() => (window.location.href = "/")}>
-                Back to Platform
-              </Button>
-            </div>
-          </div>
-        </header>
+    </div>
+  </header>
 
         <div className="container mx-auto px-4 py-8">
           <Tabs defaultValue="upload" className="space-y-6">

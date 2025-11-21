@@ -290,20 +290,17 @@ export default function EmployersPage() {
       </div>
 
       <div className="relative z-10">
-        <header className="glass-effect border-b border-primary/20 sticky top-0 z-50" style={{ minWidth: '100%' }}>
-  <div className="w-full px-4 py-4 flex items-center justify-between" style={{ minWidth: 'max-content' }}>
-            <div className="flex items-center space-x-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
+        <header className="glass-effect border-b border-primary/20 sticky top-0 z-50">
+          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div 
+              className="flex items-center space-x-4 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => window.location.href = "/"}
+            >
+              <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center shrink-0">
                 <Building className="w-5 h-5 text-white" />
               </div>
-              <h1 className="text-xl font-bold">TalentVisa for Employers</h1>
-              <Badge className="bg-accent/20 text-accent border-accent/30">Hire by Skills</Badge>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm" onClick={() => (window.location.href = "/")}>
-                Back to Platform
-              </Button>
+              <h1 className="text-lg md:text-xl font-bold truncate">TalentVisa for Employers</h1>
+              <Badge className="hidden md:inline-flex bg-accent/20 text-accent border-accent/30">Hire by Skills</Badge>
             </div>
           </div>
         </header>
@@ -324,10 +321,25 @@ export default function EmployersPage() {
           </div>
 
           <Tabs defaultValue="browse" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-3 lg:w-fit lg:grid-cols-3 bg-muted/50">
-              <TabsTrigger value="browse">Browse Talents</TabsTrigger>
-              <TabsTrigger value="templates">Job Templates</TabsTrigger>
-              <TabsTrigger value="spotlight">Talent Spotlight</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 gap-2 lg:w-fit bg-muted/50 p-1">
+              <TabsTrigger 
+                value="browse"
+                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+              >
+                Browse Talents
+              </TabsTrigger>
+              <TabsTrigger 
+                value="templates"
+                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+              >
+                Job Templates
+              </TabsTrigger>
+              <TabsTrigger 
+                value="spotlight"
+                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+              >
+                Talent Spotlight
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="browse" className="space-y-6">
@@ -470,124 +482,85 @@ export default function EmployersPage() {
                     )}
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {filteredTalents.map((talent, index) => (
                       <Card
                         key={index}
                         className="glass-effect border-primary/20 hover:border-primary/40 transition-colors"
                       >
                         <CardContent className="p-6">
-                          <div className="flex items-center space-x-4">
-                            {/* Selection and Rank */}
-                            <div className="flex items-center space-x-3">
-                              <Checkbox
-                                checked={selectedTalents.includes(talent.name)}
-                                onCheckedChange={() => toggleTalentSelection(talent.name)}
-                              />
-
-                              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/20 text-primary font-bold text-sm">
-                                {talent.rank <= 3 ? (
-                                  talent.rank === 1 ? (
-                                    <Crown className="w-5 h-5 text-yellow-500" />
-                                  ) : talent.rank === 2 ? (
-                                    <Medal className="w-5 h-5 text-gray-400" />
-                                  ) : (
-                                    <Medal className="w-5 h-5 text-amber-600" />
-                                  )
-                                ) : (
-                                  talent.rank
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Avatar */}
-                            <Avatar className="w-12 h-12">
-                              <AvatarImage
-                                src={`/abstract-geometric-shapes.png?key=9tgqf&key=hwbad&height=48&width=48&query=${talent.name}`}
-                              />
-                              <AvatarFallback className="text-sm font-semibold">
-                                {talent.name
-                                  .split(" ")
-                                  .map((n) => n[0])
-                                  .join("")}
-                              </AvatarFallback>
-                            </Avatar>
-
-                            {/* Main Info Section */}
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between mb-3">
+                          <div className="flex flex-col gap-4">
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-center gap-3">
+                                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 text-primary font-bold text-xs shrink-0">
+                                  {talent.rank}
+                                </div>
+                                <Avatar className="w-12 h-12">
+                                  <AvatarImage
+                                    src={`/abstract-geometric-shapes.png?key=9tgqf&key=hwbad&height=48&width=48&query=${talent.name}`}
+                                  />
+                                  <AvatarFallback className="text-sm font-semibold">
+                                    {talent.name.substring(0, 2)}
+                                  </AvatarFallback>
+                                </Avatar>
                                 <div>
-                                  <h4 className="text-lg font-bold text-foreground mb-1">{talent.name}</h4>
-                                  <div className="flex items-center space-x-2 mb-1">
-                                    <span className="text-sm text-muted-foreground font-medium">{talent.college}</span>
+                                  <h4 className="text-base font-bold text-foreground leading-tight">{talent.name}</h4>
+                                  <div className="flex items-center gap-2 mt-1">
                                     {talent.isSpotlight && (
-                                      <Badge className="bg-accent/20 text-accent border-accent/30 text-xs">
-                                        <Sparkles className="w-3 h-3 mr-1" />
+                                      <Badge className="bg-accent/20 text-accent border-accent/30 text-[10px] h-5 px-1.5">
                                         Spotlight
                                       </Badge>
                                     )}
+                                    <span className="text-xs text-muted-foreground">{talent.experience}</span>
                                   </div>
-                                  <div className="flex items-center space-x-3 text-xs text-muted-foreground">
-                                    <span className="flex items-center">
-                                      <MapPin className="w-3 h-3 mr-1" />
-                                      {talent.location}
-                                    </span>
-                                    <Badge variant="outline" className="text-xs px-2 py-0">
-                                      {talent.experience}
-                                    </Badge>
-                                  </div>
-                                </div>
-
-                                {/* Overall Score */}
-                                <div className="text-center">
-                                  <div className="text-xl font-bold text-primary">{talent.score}</div>
-                                  <div className="text-xs text-muted-foreground">Overall</div>
-                                  {selectedRole && (
-                                    <Badge className="mt-1 bg-accent/20 text-accent text-xs">
-                                      {talent.roleMatch}% match
-                                    </Badge>
-                                  )}
                                 </div>
                               </div>
-
-                              {/* Skills Grid */}
-                              <div className="flex items-center justify-between">
-                                <div className="flex space-x-6">
-                                  <div className="text-center">
-                                    <div className="text-sm font-bold text-primary">{talent.skills.coding}</div>
-                                    <div className="text-xs text-muted-foreground">Coding</div>
-                                  </div>
-                                  <div className="text-center">
-                                    <div className="text-sm font-bold text-accent">{talent.skills.speaking}</div>
-                                    <div className="text-xs text-muted-foreground">Speaking</div>
-                                  </div>
-                                  <div className="text-center">
-                                    <div className="text-sm font-bold text-primary">{talent.skills.logical}</div>
-                                    <div className="text-xs text-muted-foreground">Logical</div>
-                                  </div>
-                                  <div className="text-center">
-                                    <div className="text-sm font-bold text-accent">{talent.skills.personality}</div>
-                                    <div className="text-xs text-muted-foreground">Personality</div>
-                                  </div>
-                                </div>
-
-                                {/* Connect Button */}
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    if (talent.linkedIn) {
-                                      window.open(talent.linkedIn, "_blank")
-                                    } else {
-                                      openTalentProfile(talent)
-                                    }
-                                  }}
-                                  className="bg-transparent hover:bg-primary/10"
-                                >
-                                  {talent.linkedIn ? "Connect" : "View Profile"}
-                                  <ChevronRight className="w-3 h-3 ml-1" />
-                                </Button>
+                              
+                              <div className="text-center shrink-0">
+                                <div className="text-lg font-bold text-primary leading-none">{talent.score}</div>
+                                <div className="text-[10px] text-muted-foreground">Score</div>
                               </div>
+                            </div>
+
+                            <div className="grid grid-cols-4 gap-2 bg-muted/20 p-2 rounded-lg">
+                              <div className="text-center">
+                                <div className="text-xs font-bold text-primary">{talent.skills.coding}</div>
+                                <div className="text-[10px] text-muted-foreground">Code</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-xs font-bold text-accent">{talent.skills.speaking}</div>
+                                <div className="text-[10px] text-muted-foreground">Speak</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-xs font-bold text-primary">{talent.skills.logical}</div>
+                                <div className="text-[10px] text-muted-foreground">Logic</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-xs font-bold text-accent">{talent.skills.personality}</div>
+                                <div className="text-[10px] text-muted-foreground">Pers</div>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center justify-between gap-2 mt-1">
+                              <div className="text-xs text-muted-foreground truncate flex-1">
+                                <MapPin className="w-3 h-3 inline mr-1" />
+                                {talent.location}
+                              </div>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  if (talent.linkedIn) {
+                                    window.open(talent.linkedIn, "_blank")
+                                  } else {
+                                    openTalentProfile(talent)
+                                  }
+                                }}
+                                className="h-7 text-xs bg-transparent hover:bg-primary/10 px-2"
+                              >
+                                {talent.linkedIn ? "Connect" : "Profile"}
+                                <ChevronRight className="w-3 h-3 ml-1" />
+                              </Button>
                             </div>
                           </div>
                         </CardContent>

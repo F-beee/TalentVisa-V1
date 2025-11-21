@@ -386,8 +386,3 @@ body::after {
     intense-pulse 6s ease-in-out infinite;
   will-change: transform, filter, opacity;
 }
-header.glass-effect {
-  width: fit-content !important;
-  min-width: 100vw !important;
-  max-width: none !important;
-}

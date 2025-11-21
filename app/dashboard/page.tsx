@@ -620,12 +620,12 @@ export default function Dashboard() {
                 <Zap className="w-5 h-5 text-white" />
               </div>
               <h1
-                className="text-xl font-bold cursor-pointer hover:text-primary transition-colors"
+                className="text-lg md:text-xl font-bold cursor-pointer hover:text-primary transition-colors"
                 onClick={() => (window.location.href = "/")}
               >
                 TalentVisa
               </h1>
-              <Badge className="bg-primary/20 text-primary border-primary/30">Performance Platform</Badge>
+              <Badge className="hidden md:inline-flex bg-primary/20 text-primary border-primary/30">Performance Platform</Badge>
             </div>
 
             <div className="flex items-center space-x-4">
@@ -644,206 +644,205 @@ export default function Dashboard() {
 
         <div className="container mx-auto px-4 py-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="flex flex-wrap gap-2 w-full lg:grid lg:w-fit lg:grid-cols-5 bg-muted/50 z-20">
+            <TabsList className="grid grid-cols-2 w-full h-auto gap-2 bg-muted/50 z-20 p-1 lg:grid lg:w-fit lg:grid-cols-5">
               <TabsTrigger
                 value="overview"
-                className="rounded-md px-3 py-1.5 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
               >
                 My Profile
               </TabsTrigger>
               <TabsTrigger
                 value="leaderboard"
-                className="rounded-md px-3 py-1.5 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
               >
                 Leaderboard
               </TabsTrigger>
               <TabsTrigger
                 value="suggestions"
-                className="rounded-md px-3 py-1.5 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
               >
                 Smart Match
               </TabsTrigger>
               <TabsTrigger
                 value="trending"
-                className="rounded-md px-3 py-1.5 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
               >
                 Trending
               </TabsTrigger>
               <TabsTrigger
                 value="book-test"
-                className="bg-gradient-to-r from-accent to-primary text-white hover:shadow-lg hover:scale-110 transition-all duration-300 font-semibold"
+                className="col-span-2 lg:col-span-1 rounded-md px-3 py-2 bg-gradient-to-r from-accent to-primary text-white hover:shadow-lg hover:scale-110 transition-all duration-300 font-semibold"
               >
                 📋 Book Test
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6 pt-12">
-              <div className="grid lg:grid-cols-3 gap-6">
-                {/* Profile Overview */}
-                <div className="lg:col-span-2 space-y-6">
-                  <Card className="glass-effect border-primary/20">
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <CardTitle className="text-2xl">{mockTalentData.name}</CardTitle>
-                          <CardDescription>
-                            {mockTalentData.college} • {mockTalentData.experience}
-                          </CardDescription>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-3xl font-bold text-primary">#{mockTalentData.rank}</div>
-                          <div className="text-sm text-muted-foreground">
-                            of {mockTalentData.totalTalents.toLocaleString()}
-                          </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Profile Overview - Spans 2 cols on larger screens */}
+                <Card className="glass-effect border-primary/20 md:col-span-2">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="text-2xl">{mockTalentData.name}</CardTitle>
+                        <CardDescription>
+                          {mockTalentData.college} • {mockTalentData.experience}
+                        </CardDescription>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-3xl font-bold text-primary">#{mockTalentData.rank}</div>
+                        <div className="text-sm text-muted-foreground">
+                          of {mockTalentData.totalTalents.toLocaleString()}
                         </div>
                       </div>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="flex items-center text-sm">
-                              <Code className="w-4 h-4 mr-2 text-primary" />
-                              Coding
-                            </span>
-                            <span className="font-semibold">{mockTalentData.skills.coding}/100</span>
-                          </div>
-                          <Progress value={mockTalentData.skills.coding} className="h-2" />
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="flex items-center text-sm">
+                            <Code className="w-4 h-4 mr-2 text-primary" />
+                            Coding
+                          </span>
+                          <span className="font-semibold">{mockTalentData.skills.coding}/100</span>
                         </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="flex items-center text-sm">
-                              <MessageSquare className="w-4 h-4 mr-2 text-accent" />
-                              Speaking
-                            </span>
-                            <span className="font-semibold">{mockTalentData.skills.speaking}/100</span>
-                          </div>
-                          <Progress value={mockTalentData.skills.speaking} className="h-2" />
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="flex items-center text-sm">
-                              <Brain className="w-4 h-4 mr-2 text-primary" />
-                              Logical Reasoning
-                            </span>
-                            <span className="font-semibold">{mockTalentData.skills.logical}/100</span>
-                          </div>
-                          <Progress value={mockTalentData.skills.logical} className="h-2" />
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="flex items-center text-sm">
-                              <Users className="w-4 h-4 mr-2 text-accent" />
-                              Personality
-                            </span>
-                            <span className="font-semibold">{mockTalentData.skills.personality}/100</span>
-                          </div>
-                          <Progress value={mockTalentData.skills.personality} className="h-2" />
-                        </div>
+                        <Progress value={mockTalentData.skills.coding} className="h-2" />
                       </div>
-                    </CardContent>
-                  </Card>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="flex items-center text-sm">
+                            <MessageSquare className="w-4 h-4 mr-2 text-accent" />
+                            Speaking
+                          </span>
+                          <span className="font-semibold">{mockTalentData.skills.speaking}/100</span>
+                        </div>
+                        <Progress value={mockTalentData.skills.speaking} className="h-2" />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="flex items-center text-sm">
+                            <Brain className="w-4 h-4 mr-2 text-primary" />
+                            Logical Reasoning
+                          </span>
+                          <span className="font-semibold">{mockTalentData.skills.logical}/100</span>
+                        </div>
+                        <Progress value={mockTalentData.skills.logical} className="h-2" />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="flex items-center text-sm">
+                            <Users className="w-4 h-4 mr-2 text-accent" />
+                            Personality
+                          </span>
+                          <span className="font-semibold">{mockTalentData.skills.personality}/100</span>
+                        </div>
+                        <Progress value={mockTalentData.skills.personality} className="h-2" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
 
-                  {/* Skill Certificate */}
-                  <Card className="glass-effect border-accent/20">
-                    <CardHeader>
-                      <CardTitle className="flex items-center text-accent">
-                        <Award className="w-5 h-5 mr-2" />
-                        Skill Certificate
-                      </CardTitle>
-                      <CardDescription>Download your verified skill certificate with QR code</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="p-4 bg-gradient-to-r from-accent/10 to-primary/10 rounded-lg border border-accent/20">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="font-semibold">Certificate Status</span>
-                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                            <CheckCircle className="w-3 h-3 mr-1" />
-                            Verified
+                {/* Skill Certificate */}
+                <Card className="glass-effect border-accent/20">
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-accent">
+                      <Award className="w-5 h-5 mr-2" />
+                      Skill Certificate
+                    </CardTitle>
+                    <CardDescription>Download your verified skill certificate with QR code</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="p-4 bg-gradient-to-r from-accent/10 to-primary/10 rounded-lg border border-accent/20">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-semibold">Certificate Status</span>
+                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                          <CheckCircle className="w-3 h-3 mr-1" />
+                          Verified
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Your skills have been verified and certified. Share this certificate with employers.
+                      </p>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <Button className="flex-1 bg-accent hover:bg-accent/90 w-full" onClick={handleViewSkillCard}>
+                        <Star className="w-4 h-4 mr-2" />
+                        Preview
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="flex-1 border-muted-foreground/30 text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 bg-transparent w-full"
+                        onClick={handleDownloadSkillCard}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Download
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Suggested Roles */}
+                <Card className="glass-effect border-primary/20">
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Target className="w-5 h-5 mr-2 text-primary" />
+                      Top 3 Roles
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {mockTalentData.suggestedRoles.map((role, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 hover:scale-105 transition-all duration-300 cursor-pointer"
+                        onClick={() => handleRoleClick(role.role)}
+                      >
+                        <div className="flex items-center space-x-3 min-w-0">
+                          <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <Briefcase className="w-4 h-4 text-primary" />
+                          </div>
+                          <span className="font-medium truncate">{role.role}</span>
+                        </div>
+                        <div className="flex items-center space-x-2 flex-shrink-0">
+                          <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30">
+                            {role.match}%
                           </Badge>
+                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                          Your skills have been verified and certified. Share this certificate with employers.
-                        </p>
                       </div>
-                      <div className="flex gap-2">
-                        <Button className="flex-1 bg-accent hover:bg-accent/90" onClick={handleViewSkillCard}>
-                          <Star className="w-4 h-4 mr-2" />
-                          Preview Certificate
-                        </Button>
-                        <Button
-                          variant="outline"
-                          className="flex-1 border-muted-foreground/30 text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 bg-transparent"
-                          onClick={handleDownloadSkillCard}
-                        >
-                          <Download className="w-4 h-4 mr-2" />
-                          Download Certificate
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Suggested Roles */}
-                  <Card className="glass-effect border-primary/20">
-                    <CardHeader>
-                      <CardTitle className="flex items-center">
-                        <Target className="w-5 h-5 mr-2 text-primary" />
-                        Top 3 Roles You Fit Best
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {mockTalentData.suggestedRoles.map((role, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 hover:scale-105 transition-all duration-300 cursor-pointer"
-                          onClick={() => handleRoleClick(role.role)}
-                        >
-                          <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
-                              <Briefcase className="w-4 h-4 text-primary" />
-                            </div>
-                            <span className="font-medium">{role.role}</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30">
-                              {role.match}% match
-                            </Badge>
-                            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                          </div>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-                </div>
+                    ))}
+                  </CardContent>
+                </Card>
 
                 {/* Improvement Areas */}
-                <div className="space-y-6">
-                  <Card className="glass-effect border-accent/20">
-                    <CardHeader>
-                      <CardTitle className="flex items-center text-accent">
-                        <ArrowUp className="w-5 h-5 mr-2" />
-                        Areas to Improve
-                      </CardTitle>
-                      <CardDescription>Enhance these skills to unlock more opportunities</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {mockTalentData.improvementAreas.map((area, index) => (
-                        <div key={index} className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium">{area.skill}</span>
-                            <span className="text-sm text-muted-foreground">
-                              {area.current} → {area.target}
-                            </span>
-                          </div>
-                          <Progress value={(area.current / area.target) * 100} className="h-2" />
-                          <p className="text-xs text-muted-foreground">{area.impact}</p>
+                <Card className="glass-effect border-accent/20">
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-accent">
+                      <ArrowUp className="w-5 h-5 mr-2" />
+                      Areas to Improve
+                    </CardTitle>
+                    <CardDescription>Enhance these skills to unlock more opportunities</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {mockTalentData.improvementAreas.map((area, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium">{area.skill}</span>
+                          <span className="text-sm text-muted-foreground">
+                            {area.current} → {area.target}
+                          </span>
                         </div>
-                      ))}
-                    </CardContent>
-                  </Card>
+                        <Progress value={(area.current / area.target) * 100} className="h-2" />
+                        <p className="text-xs text-muted-foreground">{area.impact}</p>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
 
+                {/* Action Buttons */}
+                <div className="flex flex-col gap-4 justify-center">
                   <Button
-                    className="w-full justify-start bg-transparent hover:bg-primary/20 hover:scale-105 transition-all duration-300"
+                    className="w-full justify-start bg-transparent hover:bg-primary/20 hover:scale-105 transition-all duration-300 border border-primary/20"
                     variant="outline"
                     onClick={handleViewCareerPath}
                   >
@@ -851,7 +850,7 @@ export default function Dashboard() {
                     View Career Path
                   </Button>
                   <Button
-                    className="w-full justify-start bg-transparent hover:bg-primary/20 hover:scale-105 transition-all duration-300"
+                    className="w-full justify-start bg-transparent hover:bg-primary/20 hover:scale-105 transition-all duration-300 border border-primary/20"
                     variant="outline"
                     onClick={handleConnectWithEmployers}
                   >
