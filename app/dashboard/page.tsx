@@ -744,38 +744,7 @@ export default function Dashboard() {
                     </CardContent>
                   </Card>
 
-                  {/* Suggested Roles */}
-                  <Card className="glass-effect border-primary/20">
-                    <CardHeader>
-                      <CardTitle className="flex items-center">
-                        <Target className="w-5 h-5 mr-2 text-primary" />
-                        Top 3 Roles You Fit Best
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {mockTalentData.suggestedRoles.map((role, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 hover:scale-105 transition-all duration-300 cursor-pointer"
-                          onClick={() => handleRoleClick(role.role)}
-                        >
-                          <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
-                              <Briefcase className="w-4 h-4 text-primary" />
-                            </div>
-                            <span className="font-medium">{role.role}</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30">
-                              {role.match}% match
-                            </Badge>
-                            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                          </div>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-
+                  {/* Skill Certificate */}
                   <Card className="glass-effect border-accent/20">
                     <CardHeader>
                       <CardTitle className="flex items-center text-accent">
@@ -811,6 +780,38 @@ export default function Dashboard() {
                           Download Certificate
                         </Button>
                       </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Suggested Roles */}
+                  <Card className="glass-effect border-primary/20">
+                    <CardHeader>
+                      <CardTitle className="flex items-center">
+                        <Target className="w-5 h-5 mr-2 text-primary" />
+                        Top 3 Roles You Fit Best
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {mockTalentData.suggestedRoles.map((role, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 hover:scale-105 transition-all duration-300 cursor-pointer"
+                          onClick={() => handleRoleClick(role.role)}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                              <Briefcase className="w-4 h-4 text-primary" />
+                            </div>
+                            <span className="font-medium">{role.role}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30">
+                              {role.match}% match
+                            </Badge>
+                            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                          </div>
+                        </div>
+                      ))}
                     </CardContent>
                   </Card>
                 </div>
