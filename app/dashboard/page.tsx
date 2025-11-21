@@ -679,65 +679,65 @@ export default function Dashboard() {
 
             <TabsContent value="overview" className="space-y-6 pt-12">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Profile Overview - Spans 2 cols on larger screens */}
-                <Card className="glass-effect border-primary/20 md:col-span-2">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
+                {/* Profile Overview */}
+                <Card className="glass-effect border-primary/20 md:col-span-2 lg:col-span-2">
+                  <CardHeader className="pb-2">
+                    <div className="flex flex-row items-center justify-between gap-2">
                       <div>
-                        <CardTitle className="text-2xl">{mockTalentData.name}</CardTitle>
-                        <CardDescription>
+                        <CardTitle className="text-lg sm:text-xl">{mockTalentData.name}</CardTitle>
+                        <CardDescription className="text-xs sm:text-sm">
                           {mockTalentData.college} • {mockTalentData.experience}
                         </CardDescription>
                       </div>
                       <div className="text-right">
-                        <div className="text-3xl font-bold text-primary">#{mockTalentData.rank}</div>
-                        <div className="text-sm text-muted-foreground">
+                        <div className="text-xl sm:text-2xl font-bold text-primary">#{mockTalentData.rank}</div>
+                        <div className="text-[10px] sm:text-xs text-muted-foreground">
                           of {mockTalentData.totalTalents.toLocaleString()}
                         </div>
                       </div>
                     </div>
                   </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="flex items-center text-sm">
-                            <Code className="w-4 h-4 mr-2 text-primary" />
+                  <CardContent className="space-y-4 pt-0">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs sm:text-sm">
+                          <span className="flex items-center">
+                            <Code className="w-3 h-3 mr-1.5 text-primary" />
                             Coding
                           </span>
                           <span className="font-semibold">{mockTalentData.skills.coding}/100</span>
                         </div>
-                        <Progress value={mockTalentData.skills.coding} className="h-2" />
+                        <Progress value={mockTalentData.skills.coding} className="h-1.5" />
                       </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="flex items-center text-sm">
-                            <MessageSquare className="w-4 h-4 mr-2 text-accent" />
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs sm:text-sm">
+                          <span className="flex items-center">
+                            <MessageSquare className="w-3 h-3 mr-1.5 text-accent" />
                             Speaking
                           </span>
                           <span className="font-semibold">{mockTalentData.skills.speaking}/100</span>
                         </div>
-                        <Progress value={mockTalentData.skills.speaking} className="h-2" />
+                        <Progress value={mockTalentData.skills.speaking} className="h-1.5" />
                       </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="flex items-center text-sm">
-                            <Brain className="w-4 h-4 mr-2 text-primary" />
-                            Logical Reasoning
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs sm:text-sm">
+                          <span className="flex items-center">
+                            <Brain className="w-3 h-3 mr-1.5 text-primary" />
+                            Logical
                           </span>
                           <span className="font-semibold">{mockTalentData.skills.logical}/100</span>
                         </div>
-                        <Progress value={mockTalentData.skills.logical} className="h-2" />
+                        <Progress value={mockTalentData.skills.logical} className="h-1.5" />
                       </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="flex items-center text-sm">
-                            <Users className="w-4 h-4 mr-2 text-accent" />
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs sm:text-sm">
+                          <span className="flex items-center">
+                            <Users className="w-3 h-3 mr-1.5 text-accent" />
                             Personality
                           </span>
                           <span className="font-semibold">{mockTalentData.skills.personality}/100</span>
                         </div>
-                        <Progress value={mockTalentData.skills.personality} className="h-2" />
+                        <Progress value={mockTalentData.skills.personality} className="h-1.5" />
                       </div>
                     </div>
                   </CardContent>
@@ -765,18 +765,18 @@ export default function Dashboard() {
                         Your skills have been verified and certified. Share this certificate with employers.
                       </p>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <Button className="flex-1 bg-accent hover:bg-accent/90 w-full" onClick={handleViewSkillCard}>
+                    <div className="flex flex-col gap-2">
+                      <Button className="w-full bg-accent hover:bg-accent/90" onClick={handleViewSkillCard}>
                         <Star className="w-4 h-4 mr-2" />
-                        Preview
+                        Preview Certificate
                       </Button>
                       <Button
                         variant="outline"
-                        className="flex-1 border-muted-foreground/30 text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 bg-transparent w-full"
+                        className="w-full border-muted-foreground/30 text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 bg-transparent"
                         onClick={handleDownloadSkillCard}
                       >
                         <Download className="w-4 h-4 mr-2" />
-                        Download
+                        Download Certificate
                       </Button>
                     </div>
                   </CardContent>
@@ -840,22 +840,36 @@ export default function Dashboard() {
                 </Card>
 
                 {/* Action Buttons */}
-                <div className="flex flex-col gap-4 justify-center">
+                <div className="flex flex-col gap-4 justify-center md:col-span-1 lg:col-span-1">
                   <Button
-                    className="w-full justify-start bg-transparent hover:bg-primary/20 hover:scale-105 transition-all duration-300 border border-primary/20"
+                    className="w-full h-14 justify-start bg-transparent hover:bg-primary/20 hover:scale-105 transition-all duration-300 border border-primary/20"
                     variant="outline"
                     onClick={handleViewCareerPath}
                   >
-                    <TrendingUp className="w-4 h-4 mr-2" />
-                    View Career Path
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-3">
+                        <TrendingUp className="w-5 h-5 text-primary" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold">View Career Path</div>
+                        <div className="text-xs text-muted-foreground">Explore your future roadmap</div>
+                      </div>
+                    </div>
                   </Button>
                   <Button
-                    className="w-full justify-start bg-transparent hover:bg-primary/20 hover:scale-105 transition-all duration-300 border border-primary/20"
+                    className="w-full h-14 justify-start bg-transparent hover:bg-primary/20 hover:scale-105 transition-all duration-300 border border-primary/20"
                     variant="outline"
                     onClick={handleConnectWithEmployers}
                   >
-                    <Users className="w-4 h-4 mr-2" />
-                    Connect with Employers
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center mr-3">
+                        <Users className="w-5 h-5 text-accent" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold">Connect with Employers</div>
+                        <div className="text-xs text-muted-foreground">Get noticed by top companies</div>
+                      </div>
+                    </div>
                   </Button>
                 </div>
               </div>

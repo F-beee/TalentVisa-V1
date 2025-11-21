@@ -299,14 +299,29 @@ export default function AdminPanel() {
 
         <div className="container mx-auto px-4 py-8">
           <Tabs defaultValue="upload" className="space-y-6">
-            <TabsList className="flex flex-wrap gap-2 w-full lg:grid lg:w-fit lg:grid-cols-3 bg-muted/50">
-              <TabsTrigger value="upload">Data Upload & Analytics</TabsTrigger>
-              <TabsTrigger value="skillcards">Skill Cards</TabsTrigger>
-              <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 gap-2 lg:w-fit bg-muted/50 p-1 h-auto">
+              <TabsTrigger 
+                value="upload"
+                className="rounded-md px-2 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105 h-auto whitespace-normal text-center text-xs sm:text-sm"
+              >
+                Data Upload & Analytics
+              </TabsTrigger>
+              <TabsTrigger 
+                value="skillcards"
+                className="rounded-md px-2 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105 h-auto whitespace-normal text-center text-xs sm:text-sm"
+              >
+                Skill Cards
+              </TabsTrigger>
+              <TabsTrigger 
+                value="settings"
+                className="rounded-md px-2 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105 h-auto whitespace-normal text-center text-xs sm:text-sm"
+              >
+                Settings
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="upload" className="space-y-6">
-              <div className="grid lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card className="glass-effect border-primary/20">
                   <CardHeader>
                     <CardTitle className="flex items-center">
@@ -1084,7 +1099,7 @@ Runal Rao,Sanskriti University,70,72,49,73,Experienced
 
                     <div className="p-3 bg-muted/30 rounded-lg">
                       <h5 className="font-medium text-sm mb-2">Sample CSV Format:</h5>
-                      <code className="text-xs text-muted-foreground">
+                      <code className="text-xs text-muted-foreground block whitespace-pre-wrap break-all">
                         Name,College,Coding,Speaking,Logical,Personality,Experience
                         <br />
                         Akshay Kapoor,PSIT,85,78,92,88,Experienced
@@ -1354,118 +1369,115 @@ Runal Rao,Sanskriti University,70,72,49,73,Experienced
                       </Card>
                     </div>
 
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <Card className="glass-effect border-primary/20">
+                        <CardHeader>
+                          <CardTitle className="flex items-center">
+                            <CheckCircle className="w-5 h-5 mr-2 text-primary" />
+                            Most Consistent Performers
+                          </CardTitle>
+                          <CardDescription>Candidates with balanced skill profiles</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-3">
+                            {analysisResults.skillConsistency.map((performer: any, index: number) => (
+                              <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                                <div>
+                                  <div className="font-semibold">{performer.name}</div>
+                                  <div className="text-xs text-muted-foreground">Overall: {performer.overallScore}/100</div>
+                                </div>
+                                <div className="text-right">
+                                  <div className="text-lg font-bold text-primary">{performer.consistency}%</div>
+                                  <div className="text-xs text-muted-foreground">Consistency</div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="glass-effect border-accent/20">
+                        <CardHeader>
+                          <CardTitle className="flex items-center text-accent">
+                            <CheckCircle className="w-5 h-5 mr-2" />
+                            Top Performers & Role Recommendations
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-3">
+                            {analysisResults.topPerformers.map((performer: any, index: number) => (
+                              <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                                <div>
+                                  <div className="font-semibold">{performer.Name}</div>
+                                  <div className="text-sm text-muted-foreground">{performer.College}</div>
+                                </div>
+                                <div className="text-right">
+                                  <Badge className="bg-accent/20 text-accent border-accent/30 mb-1">
+                                    {performer.recommendedRole}
+                                  </Badge>
+                                  <div className="text-lg font-bold text-primary">{performer.overallScore}/100</div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+
                     <Card className="glass-effect border-primary/20">
                       <CardHeader>
                         <CardTitle className="flex items-center">
-                          <CheckCircle className="w-5 h-5 mr-2 text-primary" />
-                          Most Consistent Performers
-                        </CardTitle>
-                        <CardDescription>Candidates with balanced skill profiles</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-3">
-                          {analysisResults.skillConsistency.map((performer: any, index: number) => (
-                            <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                              <div>
-                                <div className="font-semibold">{performer.name}</div>
-                                <div className="text-xs text-muted-foreground">Overall: {performer.overallScore}/100</div>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-lg font-bold text-primary">{performer.consistency}%</div>
-                                <div className="text-xs text-muted-foreground">Consistency</div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="glass-effect border-primary/20">
-                    <CardHeader>
-                      <CardTitle className="flex items-center">
-                        <LineChartIcon className="w-5 h-5 mr-2 text-primary" />
-                        College Performance Analysis
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      {/* Increased height slightly for better label spacing */}
-                      <ResponsiveContainer width="100%" height={350}> 
-                        <BarChart 
-                          data={analysisResults.collegePerformance}
-                          margin={{ top: 5, right: 0, left: -20, bottom: 80 }} /* Adjust margins */
-                         > 
-                          {/* Fainter grid using border variable */}
-                          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.3} /> 
-                          <XAxis
-                            dataKey="name"
-                            stroke="var(--muted-foreground)" // Use theme color
-                            angle={-45}
-                            textAnchor="end"
-                            height={100} // Increased height for longer names
-                            interval={0} // Ensure all labels show
-                            tick={{ fontSize: 10 }} // Smaller font size
-                          />
-                          <YAxis 
-                            stroke="var(--muted-foreground)" // Use theme color
-                            tick={{ fontSize: 11 }}
-                            /* Added Y-Axis Label */
-                            label={{ value: 'Score / Count', angle: -90, position: 'insideLeft', fill: 'var(--muted-foreground)', fontSize: 12, dx:-5 }} 
-                          />
-                          <Tooltip
-                            contentStyle={{
-                              backgroundColor: "var(--popover)", // Use theme variable
-                              border: "1px solid var(--border)",   // Use theme variable
-                              borderRadius: "var(--radius-md)", // Use theme variable
-                              color: "var(--popover-foreground)", // Use theme variable
-                              fontSize: "12px",
-                              boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
-                            }}
-                            cursor={{ fill: "var(--primary)", fillOpacity: 0.1 }} // Use theme color for cursor
-                            itemStyle={{ color: "var(--popover-foreground)"}}
-                            labelStyle={{ color: "var(--foreground)", fontWeight: "bold"}}
-                          />
-                          {/* Styled Legend */}
-                          <Legend 
-                             wrapperStyle={{ 
-                               color: 'var(--muted-foreground)', 
-                               fontSize: '12px',
-                               paddingTop: '10px' // Add some space above legend
-                             }} 
-                             verticalAlign="top" // Move legend to top
-                             align="right"
-                           /> 
-                           {/* Bars using theme colors and radius */}
-                          <Bar dataKey="avgScore" fill="var(--accent)" name="Avg Score" radius={[4, 4, 0, 0]} /> 
-                          <Bar dataKey="count" fill="var(--chart-3)" name="Count" radius={[4, 4, 0, 0]} /> 
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </CardContent>
-                  </Card>
-
-                    <Card className="glass-effect border-accent/20">
-                      <CardHeader>
-                        <CardTitle className="flex items-center text-accent">
-                          <CheckCircle className="w-5 h-5 mr-2" />
-                          Top Performers & Role Recommendations
+                          <LineChartIcon className="w-5 h-5 mr-2 text-primary" />
+                          College Performance Analysis
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <div className="space-y-3">
-                          {analysisResults.topPerformers.map((performer: any, index: number) => (
-                            <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                              <div>
-                                <div className="font-semibold">{performer.Name}</div>
-                                <div className="text-sm text-muted-foreground">{performer.College}</div>
-                              </div>
-                              <div className="text-right">
-                                <Badge className="bg-accent/20 text-accent border-accent/30 mb-1">
-                                  {performer.recommendedRole}
-                                </Badge>
-                                <div className="text-lg font-bold text-primary">{performer.overallScore}/100</div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
+                        <ResponsiveContainer width="100%" height={350}> 
+                          <BarChart 
+                            data={analysisResults.collegePerformance}
+                            margin={{ top: 5, right: 0, left: -20, bottom: 80 }}
+                           > 
+                            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.3} /> 
+                            <XAxis
+                              dataKey="name"
+                              stroke="var(--muted-foreground)"
+                              angle={-45}
+                              textAnchor="end"
+                              height={100}
+                              interval={0}
+                              tick={{ fontSize: 10 }}
+                            />
+                            <YAxis 
+                              stroke="var(--muted-foreground)"
+                              tick={{ fontSize: 11 }}
+                              label={{ value: 'Score / Count', angle: -90, position: 'insideLeft', fill: 'var(--muted-foreground)', fontSize: 12, dx:-5 }} 
+                            />
+                            <Tooltip
+                              contentStyle={{
+                                backgroundColor: "var(--popover)",
+                                border: "1px solid var(--border)",
+                                borderRadius: "var(--radius-md)",
+                                color: "var(--popover-foreground)",
+                                fontSize: "12px",
+                                boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+                              }}
+                              cursor={{ fill: "var(--primary)", fillOpacity: 0.1 }}
+                              itemStyle={{ color: "var(--popover-foreground)"}}
+                              labelStyle={{ color: "var(--foreground)", fontWeight: "bold"}}
+                            />
+                            <Legend 
+                               wrapperStyle={{ 
+                                 color: 'var(--muted-foreground)', 
+                                 fontSize: '12px',
+                                 paddingTop: '10px'
+                               }} 
+                               verticalAlign="top"
+                               align="right"
+                             /> 
+                            <Bar dataKey="avgScore" fill="var(--accent)" name="Avg Score" radius={[4, 4, 0, 0]} /> 
+                            <Bar dataKey="count" fill="var(--chart-3)" name="Count" radius={[4, 4, 0, 0]} /> 
+                          </BarChart>
+                        </ResponsiveContainer>
                       </CardContent>
                     </Card>
                   </>
