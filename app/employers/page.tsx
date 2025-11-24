@@ -197,6 +197,7 @@ const talentPool = [
 ]
 
 export default function EmployersPage() {
+  const [activeTab, setActiveTab] = useState("browse")
   const [selectedRole, setSelectedRole] = useState<string>("")
   const [filters, setFilters] = useState({
     experience: "Both",
@@ -320,23 +321,23 @@ export default function EmployersPage() {
             </p>
           </div>
 
-          <Tabs defaultValue="browse" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-3 gap-2 lg:w-fit bg-muted/50 p-1">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <TabsList className="grid w-full grid-cols-3 gap-2 lg:w-fit bg-muted/50 p-1 h-auto">
               <TabsTrigger 
                 value="browse"
-                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+                className="rounded-md px-2 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105 h-full whitespace-normal text-center text-xs sm:text-sm"
               >
                 Browse Talents
               </TabsTrigger>
               <TabsTrigger 
                 value="templates"
-                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+                className="rounded-md px-2 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105 h-full whitespace-normal text-center text-xs sm:text-sm"
               >
                 Job Templates
               </TabsTrigger>
               <TabsTrigger 
                 value="spotlight"
-                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+                className="rounded-md px-2 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105 h-full whitespace-normal text-center text-xs sm:text-sm"
               >
                 Talent Spotlight
               </TabsTrigger>
@@ -646,14 +647,24 @@ export default function EmployersPage() {
                   <CardContent>
                     <div className="text-center py-4">
                       <Button
-                        onClick={() => {
-                          const browseTab = document.querySelector('[value="browse"]') as HTMLElement
-                          browseTab?.click()
-                        }}
+                        onClick={() => setActiveTab("browse")}
+                        className="bg-accent text-white hover:bg-accent/90"
                       >
                         View {jobRoleTemplates.find((r) => r.id === selectedRole)?.matchCount} Matching Candidates
                         <ChevronRight className="w-4 h-4 ml-2" />
                       </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+                      >
+                        View Top Matches
+                        <ChevronRight className="w-4 h-4 ml-2" />
+                      </Button>
+                      
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                        Sorted by Talent Rank
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
@@ -671,7 +682,7 @@ export default function EmployersPage() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 ml-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {spotlightTalents.map((talent, index) => (
                   <Card key={index} className="glass-effect border-accent/20 hover:border-accent/40 transition-colors">
                     <CardHeader className="text-center">
