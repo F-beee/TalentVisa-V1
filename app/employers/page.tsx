@@ -120,8 +120,58 @@ const jobRoleTemplates = [
   },
 ]
 
-import { Checkbox } from "@/components/ui/checkbox"
-
+const talentPool = [
+  { rank: 1, name: "Gurnaam Singh", college: "PSIT Kanpur", score: 99, skills: { coding: 99, speaking: 99, logical: 100, personality: 98 }, experience: "Experienced", location: "Kanpur, Uttar Pradesh", availability: "Available", roleMatch: 98, isSpotlight: true, linkedIn: "https://www.linkedin.com/in/gurnaam" },
+  { rank: 2, name: "Arjun Sharma", college: "IIT Bombay", score: 94, skills: { coding: 92, speaking: 89, logical: 96, personality: 91 }, experience: "Experienced", location: "Mumbai, Maharashtra", availability: "Available", roleMatch: 95, isSpotlight: true },
+  { rank: 3, name: "Priya Patel", college: "IIT Delhi", score: 89, skills: { coding: 88, speaking: 85, logical: 92, personality: 90 }, experience: "Experienced", location: "New Delhi, Delhi", availability: "Available", roleMatch: 92, isSpotlight: true },
+  { rank: 4, name: "Rohan Gupta", college: "IIT Madras", score: 86, skills: { coding: 84, speaking: 82, logical: 88, personality: 87 }, experience: "Fresher", location: "Chennai, Tamil Nadu", availability: "Available", roleMatch: 89, isSpotlight: false },
+  { rank: 5, name: "Ananya Singh", college: "IIT Kanpur", score: 83, skills: { coding: 81, speaking: 79, logical: 85, personality: 84 }, experience: "Experienced", location: "Kanpur, Uttar Pradesh", availability: "Available", roleMatch: 87, isSpotlight: false },
+  { rank: 6, name: "Vikram Reddy", college: "IIT Hyderabad", score: 80, skills: { coding: 78, speaking: 76, logical: 82, personality: 81 }, experience: "Fresher", location: "Hyderabad, Telangana", availability: "Available", roleMatch: 85, isSpotlight: false },
+  { rank: 7, name: "Aditi Sharma", college: "IIT Delhi", score: 95, skills: { coding: 95, speaking: 92, logical: 51, personality: 90 }, experience: "Experienced", location: "Delhi", availability: "Available", roleMatch: 84, isSpotlight: false },
+  { rank: 8, name: "Rohan Verma", college: "IIT Madras", score: 93, skills: { coding: 93, speaking: 91, logical: 49, personality: 88 }, experience: "Experienced", location: "Chennai", availability: "Available", roleMatch: 83, isSpotlight: false },
+  { rank: 9, name: "Shreya Kapoor", college: "IISc Bangalore", score: 90, skills: { coding: 90, speaking: 88, logical: 52, personality: 85 }, experience: "Experienced", location: "Bangalore", availability: "Available", roleMatch: 82, isSpotlight: false },
+  { rank: 10, name: "Aaryan Patel", college: "BITS Pilani", score: 88, skills: { coding: 88, speaking: 85, logical: 48, personality: 82 }, experience: "Experienced", location: "Pilani", availability: "Available", roleMatch: 81, isSpotlight: false },
+  { rank: 11, name: "Neha Dubey", college: "NIT Trichy", score: 85, skills: { coding: 85, speaking: 82, logical: 53, personality: 78 }, experience: "Experienced", location: "Trichy", availability: "Available", roleMatch: 80, isSpotlight: false },
+  { rank: 12, name: "Karan Mehra", college: "Jadavpur University", score: 83, skills: { coding: 83, speaking: 80, logical: 47, personality: 76 }, experience: "Experienced", location: "Kolkata", availability: "Available", roleMatch: 79, isSpotlight: false },
+  { rank: 13, name: "Pooja Singh", college: "DTU Delhi", score: 80, skills: { coding: 80, speaking: 78, logical: 50, personality: 74 }, experience: "Experienced", location: "Delhi", availability: "Available", roleMatch: 78, isSpotlight: false },
+  { rank: 14, name: "Vikas Yadav", college: "IIT Bombay", score: 78, skills: { coding: 78, speaking: 75, logical: 51, personality: 72 }, experience: "Fresher", location: "Mumbai", availability: "Available", roleMatch: 77, isSpotlight: false },
+  { rank: 15, name: "Sanya Rao", college: "VIT Vellore", score: 75, skills: { coding: 75, speaking: 72, logical: 49, personality: 70 }, experience: "Experienced", location: "Vellore", availability: "Available", roleMatch: 76, isSpotlight: false },
+  { rank: 16, name: "Arjun Gupta", college: "Amity University", score: 73, skills: { coding: 73, speaking: 70, logical: 53, personality: 68 }, experience: "Fresher", location: "Noida", availability: "Available", roleMatch: 75, isSpotlight: false },
+  { rank: 17, name: "Divya Iyer", college: "Anna University", score: 70, skills: { coding: 70, speaking: 68, logical: 48, personality: 66 }, experience: "Fresher", location: "Chennai", availability: "Available", roleMatch: 74, isSpotlight: false },
+  { rank: 18, name: "Ankit Khanna", college: "LPU Jalandhar", score: 68, skills: { coding: 68, speaking: 65, logical: 52, personality: 64 }, experience: "Fresher", location: "Jalandhar", availability: "Available", roleMatch: 73, isSpotlight: false },
+  { rank: 19, name: "Riya Chawla", college: "Symbiosis Pune", score: 65, skills: { coding: 65, speaking: 62, logical: 47, personality: 62 }, experience: "Experienced", location: "Pune", availability: "Available", roleMatch: 72, isSpotlight: false },
+  { rank: 20, name: "Manish Das", college: "Manipal Inst. of Tech.", score: 90, skills: { coding: 90, speaking: 30, logical: 51, personality: 40 }, experience: "Fresher", location: "Manipal", availability: "Available", roleMatch: 71, isSpotlight: false },
+  { rank: 21, name: "Siddharth Rai", college: "IIT Kanpur", score: 30, skills: { coding: 30, speaking: 90, logical: 49, personality: 42 }, experience: "Experienced", location: "Kanpur", availability: "Available", roleMatch: 70, isSpotlight: false },
+  { rank: 22, name: "Deepika Hegde", college: "JNTU Hyderabad", score: 85, skills: { coding: 85, speaking: 25, logical: 52, personality: 35 }, experience: "Fresher", location: "Hyderabad", availability: "Available", roleMatch: 69, isSpotlight: false },
+  { rank: 23, name: "Rajesh Shah", college: "PSIT Kanpur", score: 25, skills: { coding: 25, speaking: 85, logical: 48, personality: 38 }, experience: "Fresher", location: "Kanpur", availability: "Available", roleMatch: 68, isSpotlight: false },
+  { rank: 24, name: "Amit Dagar", college: "SRM Chennai", score: 80, skills: { coding: 80, speaking: 40, logical: 53, personality: 50 }, experience: "Fresher", location: "Chennai", availability: "Available", roleMatch: 67, isSpotlight: false },
+  { rank: 25, name: "Meenal Jain", college: "Calcutta University", score: 40, skills: { coding: 40, speaking: 80, logical: 47, personality: 52 }, experience: "Fresher", location: "Kolkata", availability: "Available", roleMatch: 66, isSpotlight: false },
+  { rank: 26, name: "Rahul Bose", college: "Mumbai University", score: 75, skills: { coding: 75, speaking: 35, logical: 51, personality: 45 }, experience: "Fresher", location: "Mumbai", availability: "Available", roleMatch: 65, isSpotlight: false },
+  { rank: 27, name: "Priya Garg", college: "Delhi University", score: 35, skills: { coding: 35, speaking: 75, logical: 49, personality: 48 }, experience: "Fresher", location: "Delhi", availability: "Available", roleMatch: 64, isSpotlight: false },
+  { rank: 28, name: "Sachin Reddy", college: "Osmania University", score: 95, skills: { coding: 95, speaking: 20, logical: 52, personality: 30 }, experience: "Fresher", location: "Hyderabad", availability: "Available", roleMatch: 63, isSpotlight: false },
+  { rank: 29, name: "Nikita D'Souza", college: "Pune University", score: 20, skills: { coding: 20, speaking: 95, logical: 48, personality: 32 }, experience: "Fresher", location: "Pune", availability: "Available", roleMatch: 62, isSpotlight: false },
+  { rank: 30, name: "Vivek Mishra", college: "Lucknow University", score: 65, skills: { coding: 65, speaking: 45, logical: 53, personality: 55 }, experience: "Fresher", location: "Lucknow", availability: "Available", roleMatch: 61, isSpotlight: false },
+  { rank: 31, name: "Sneha Nair", college: "Thapar Inst. of Engg.", score: 45, skills: { coding: 45, speaking: 65, logical: 47, personality: 58 }, experience: "Fresher", location: "Patiala", availability: "Available", roleMatch: 60, isSpotlight: false },
+  { rank: 32, name: "Harsh Singhal", college: "Christ University", score: 58, skills: { coding: 58, speaking: 55, logical: 51, personality: 60 }, experience: "Fresher", location: "Bangalore", availability: "Available", roleMatch: 59, isSpotlight: false },
+  { rank: 33, name: "Samarth Joshi", college: "Punjab University", score: 55, skills: { coding: 55, speaking: 58, logical: 49, personality: 61 }, experience: "Fresher", location: "Chandigarh", availability: "Available", roleMatch: 58, isSpotlight: false },
+  { rank: 34, name: "Tanvi Agarwal", college: "Banasthali Vidyapith", score: 62, skills: { coding: 62, speaking: 60, logical: 52, personality: 63 }, experience: "Fresher", location: "Jaipur", availability: "Available", roleMatch: 57, isSpotlight: false },
+  { rank: 35, name: "Rohan Nanda", college: "MUIT Noida", score: 60, skills: { coding: 60, speaking: 62, logical: 48, personality: 64 }, experience: "Fresher", location: "Noida", availability: "Available", roleMatch: 56, isSpotlight: false },
+  { rank: 36, name: "Muskan Sheikh", college: "IIMT Meerut", score: 50, skills: { coding: 50, speaking: 52, logical: 53, personality: 48 }, experience: "Fresher", location: "Meerut", availability: "Available", roleMatch: 55, isSpotlight: false },
+  { rank: 37, name: "Alok Pande", college: "IMS Ghaziabad", score: 52, skills: { coding: 52, speaking: 50, logical: 47, personality: 49 }, experience: "Fresher", location: "Ghaziabad", availability: "Available", roleMatch: 54, isSpotlight: false },
+  { rank: 38, name: "Zoya Khan", college: "Sharda University", score: 48, skills: { coding: 48, speaking: 45, logical: 51, personality: 52 }, experience: "Fresher", location: "Greater Noida", availability: "Available", roleMatch: 53, isSpotlight: false },
+  { rank: 39, name: "Prem Kumar", college: "Galgotias University", score: 45, skills: { coding: 45, speaking: 48, logical: 49, personality: 53 }, experience: "Fresher", location: "Greater Noida", availability: "Available", roleMatch: 52, isSpotlight: false },
+  { rank: 40, name: "Kavita Bawa", college: "IP University Delhi", score: 53, skills: { coding: 53, speaking: 51, logical: 52, personality: 50 }, experience: "Fresher", location: "Delhi", availability: "Available", roleMatch: 51, isSpotlight: false },
+  { rank: 41, name: "Deepak Das", college: "KIIT Bhubaneswar", score: 51, skills: { coding: 51, speaking: 53, logical: 48, personality: 51 }, experience: "Fresher", location: "Bhubaneswar", availability: "Available", roleMatch: 50, isSpotlight: false },
+  { rank: 42, name: "Isha Saini", college: "Bennett University", score: 49, skills: { coding: 49, speaking: 47, logical: 53, personality: 54 }, experience: "Fresher", location: "Greater Noida", availability: "Available", roleMatch: 49, isSpotlight: false },
+  { rank: 43, name: "Chetan Raj", college: "Graphic Era University", score: 47, skills: { coding: 47, speaking: 49, logical: 47, personality: 55 }, experience: "Fresher", location: "Dehradun", availability: "Available", roleMatch: 48, isSpotlight: false },
+  { rank: 44, name: "Siya Goel", college: "DIT Dehradun", score: 56, skills: { coding: 56, speaking: 54, logical: 51, personality: 50 }, experience: "Fresher", location: "Dehradun", availability: "Available", roleMatch: 47, isSpotlight: false },
+  { rank: 45, name: "Gautam Singh", college: "Sanskriti University", score: 54, skills: { coding: 54, speaking: 56, logical: 49, personality: 51 }, experience: "Fresher", location: "Mathura", availability: "Available", roleMatch: 46, isSpotlight: false },
+  { rank: 46, name: "Aarav Dubey", college: "NIT Warangal", score: 46, skills: { coding: 46, speaking: 44, logical: 52, personality: 48 }, experience: "Experienced", location: "Warangal", availability: "Available", roleMatch: 45, isSpotlight: false },
+  { rank: 47, name: "Vanya Sood", college: "Manipal Inst. of Tech.", score: 44, skills: { coding: 44, speaking: 46, logical: 48, personality: 47 }, experience: "Fresher", location: "Manipal", availability: "Available", roleMatch: 44, isSpotlight: false },
+  { rank: 48, name: "Kunal Tandon", college: "Amity University", score: 51, skills: { coding: 51, speaking: 49, logical: 53, personality: 50 }, experience: "Fresher", location: "Noida", availability: "Available", roleMatch: 43, isSpotlight: false },
+  { rank: 49, name: "Roshni Sen", college: "Jadavpur University", score: 49, skills: { coding: 49, speaking: 51, logical: 47, personality: 50 }, experience: "Fresher", location: "Kolkata", availability: "Available", roleMatch: 42, isSpotlight: false },
+  { rank: 50, name: "Mohit Bansal", college: "SRM Chennai", score: 47, skills: { coding: 47, speaking: 45, logical: 51, personality: 46 }, experience: "Experienced", location: "Chennai", availability: "Available", roleMatch: 41, isSpotlight: false }
+]
 
 export default function EmployersPage() {
   const [activeTab, setActiveTab] = useState("browse")
@@ -229,6 +279,12 @@ export default function EmployersPage() {
               </div>
               <h1 className="text-lg md:text-xl font-bold truncate">TalentVisa for Employers</h1>
               <Badge className="hidden md:inline-flex bg-accent/20 text-accent border-accent/30">Hire by Skills</Badge>
+            </div>
+
+            <div className="flex items-center space-x-4 shrink-0">
+              <Button variant="outline" size="sm" onClick={() => (window.location.href = "/")}>
+                Back to Platform
+              </Button>
             </div>
           </div>
         </header>
@@ -572,18 +628,21 @@ export default function EmployersPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-center py-4">
+                    <div className="flex flex-col items-center py-4 space-y-3">
+                      <div className="flex items-center gap-2 text-muted-foreground bg-muted px-3 py-1 rounded-full text-xs">
+                        <Users className="w-3 h-3" />
+                        <span className="font-medium">
+                          Pool: {jobRoleTemplates.find((r) => r.id === selectedRole)?.matchCount} candidates available
+                        </span>
+                      </div>
+                      
                       <Button
-                        onClick={() => setActiveTab("browse")}
-                        className="bg-accent text-white hover:bg-accent/90"
-                      >
-                        View {jobRoleTemplates.find((r) => r.id === selectedRole)?.matchCount} Matching Candidates
-                        <ChevronRight className="w-4 h-4 ml-2" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+                        size="lg"
+                        className="bg-primary hover:bg-primary/90 min-w-[200px] shadow-lg shadow-primary/20"
+                        onClick={() => {
+                          setActiveTab("browse")
+                          window.scrollTo({ top: 0, behavior: 'smooth' })
+                        }}
                       >
                         View Top Matches
                         <ChevronRight className="w-4 h-4 ml-2" />
