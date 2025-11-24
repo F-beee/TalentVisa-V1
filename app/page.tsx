@@ -316,7 +316,7 @@ export default function LoginPage() {
       <footer className="fixed bottom-6 left-0 right-0 flex justify-center z-50">
         <div className="glass-effect px-5 py-2 rounded-full border border-primary/20 shadow-lg backdrop-blur-md">
           <p className="text-xs sm:text-sm font-medium text-muted-foreground">
-            MVP by <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent font-bold animate-gradient">Gurnaam Singh (FBEE:)</span>
+            MVP by <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent font-bold animate-gradient"></span>
           </p>
         </div>
       </footer>
