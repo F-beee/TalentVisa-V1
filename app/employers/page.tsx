@@ -281,11 +281,7 @@ export default function EmployersPage() {
               <Badge className="hidden md:inline-flex bg-accent/20 text-accent border-accent/30">Hire by Skills</Badge>
             </div>
 
-            <div className="flex items-center space-x-4 shrink-0">
-              <Button variant="outline" size="sm" onClick={() => (window.location.href = "/")}>
-                Back to Platform
-              </Button>
-            </div>
+            
           </div>
         </header>
 
