@@ -1334,12 +1334,13 @@ export default function Dashboard() {
                   alt="Skill Certificate"
                   className="mx-auto border rounded-lg shadow-lg max-w-full h-auto"
                 />
-                <div className="mt-4 flex gap-2 justify-center">
-                  <Button onClick={() => handleDownloadLeaderboardSkillCard(skillCardTalent)}>
+                <div className="mt-4 flex flex-col sm:flex-row gap-2 justify-center">
+                  <Button onClick={() => handleDownloadLeaderboardSkillCard(skillCardTalent)} className="w-full sm:w-auto">
                     Download Certificate
                   </Button>
                   <Button
                     variant="outline"
+                    className="w-full sm:w-auto"
                     onClick={() => {
                       // Use execCommand for broader compatibility within potential iframe environments
                       const textToCopy = `https://TalentVisa.com/verify/${skillCardTalent.name.replace(" ", "_")}_${Date.now()}`
