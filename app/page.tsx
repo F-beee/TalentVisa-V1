@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -14,6 +14,24 @@ import { Zap, Users, TrendingUp, Shield, Star, ArrowRight, Building, Info } from
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
+  const [autoLoginCountdown, setAutoLoginCountdown] = useState(4)
+  const [showAutoLoginTimer, setShowAutoLoginTimer] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowAutoLoginTimer(true), 5000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    if (showAutoLoginTimer) {
+      if (autoLoginCountdown > 0) {
+        const timer = setInterval(() => setAutoLoginCountdown((c) => c - 1), 1000)
+        return () => clearInterval(timer)
+      } else {
+        handleGuestLogin()
+      }
+    }
+  }, [showAutoLoginTimer, autoLoginCountdown])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -278,6 +296,14 @@ export default function LoginPage() {
                   </div>
 
                   <Separator className="my-4" />
+
+                  {showAutoLoginTimer && (
+                    <div className="text-center mb-2">
+                      <Badge variant="outline" className="bg-primary/5 text-primary text-xs animate-pulse">
+                        Auto-login in {autoLoginCountdown}s
+                      </Badge>
+                    </div>
+                  )}
 
                   <Button
                     variant="outline"
