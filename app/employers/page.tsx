@@ -323,9 +323,9 @@ export default function EmployersPage() {
             </TabsList>
 
             <TabsContent value="browse" className="space-y-6">
-              <div className="grid lg:grid-cols-4 gap-6">
+              <div className="grid lg:grid-cols-4 gap-6 items-start">
                 {/* Filters Sidebar */}
-                <Card className="glass-effect border-primary/20 lg:col-span-1">
+                <Card className="glass-effect border-primary/20 lg:col-span-1 lg:sticky lg:top-24">
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Filter className="w-5 h-5 mr-2 text-primary" />

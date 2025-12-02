@@ -37,6 +37,7 @@ import {
   Clock,
   Calendar,
   Info,
+  Building,
 } from "lucide-react"
 
 // Mock data for demonstration
@@ -617,7 +618,7 @@ export default function Dashboard() {
                 className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
                 onClick={() => (window.location.href = "/")}
               >
-                <Zap className="w-5 h-5 text-white" />
+                <Award className="w-5 h-5 text-white" />
               </div>
               <h1
                 className="text-lg md:text-xl font-bold cursor-pointer hover:text-primary transition-colors"
@@ -629,13 +630,15 @@ export default function Dashboard() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <div
-                className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center cursor-pointer hover:scale-110 transition-transform duration-300"
-                onClick={handleOpenProfile}
+              <Button 
+                variant="outline" 
+                className="hidden sm:flex border-accent/50 text-accent hover:bg-accent hover:text-white transition-all mr-2"
+                onClick={() => window.location.href = "/employers"}
               >
-                <User className="w-4 h-4 text-white" />
-              </div>
-              <Button variant="outline" size="sm" onClick={handleGoHome}>
+                <Building className="w-4 h-4 mr-2" />
+                For Employers
+              </Button>
+              <Button variant="ghost" onClick={() => (window.location.href = "/")}>
                 Logout
               </Button>
             </div>
@@ -1207,9 +1210,9 @@ export default function Dashboard() {
 
             <TabsContent value="book-test" className="space-y-6 pt-12">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold mb-2 flex items-center justify-center">
-                  <Award className="w-8 h-8 mr-3 text-accent" />
-                  Book Assessment Test
+                <h2 className="text-3xl font-bold mb-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <Award className="w-8 h-8 text-accent" />
+                  <span>Book Assessment Test</span>
                 </h2>
                 <p className="text-muted-foreground text-lg">Get your skills verified at our authorized test centers</p>
               </div>

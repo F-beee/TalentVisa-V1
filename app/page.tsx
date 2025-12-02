@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { Zap, Users, TrendingUp, Shield, Star, ArrowRight, Building, Info } from "lucide-react"
+import { Zap, Users, TrendingUp, Shield, Star, ArrowRight, Building, Info, Award, Building } from "lucide-react"
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -111,8 +111,8 @@ export default function LoginPage() {
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-8">
             <div className="space-y-4">
-<Badge className="bg-primary/20 text-primary border-primary/30 animate-pulse-glow text-xl text-base py-6 px-9 -mt-12" >
-                <Zap className="w-4 h-4 mr-2" />
+              <Badge className="bg-primary/20 text-primary border-primary/30 animate-pulse-glow text-xl text-base py-6 px-9 -mt-12">
+                <Award className="w-4 h-4 mr-2" />
                 Next-Gen Talent Platform
               </Badge>
               <h1 className="text-5xl lg:text-7xl font-bold text-balance leading-tight">
