@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { Zap, Users, TrendingUp, Shield, Star, ArrowRight, Building, Info, Award, Building } from "lucide-react"
+import { Zap, Users, TrendingUp, Shield, Star, ArrowRight, Building, Info, Award,} from "lucide-react"
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
