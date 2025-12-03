@@ -1180,11 +1180,11 @@ export default function EmployersPage() {
                                 <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 text-primary font-bold text-xs shrink-0">
                                   {talent.rank}
                                 </div>
-                                <Avatar className="w-12 h-12">
+                               <Avatar className="w-12 h-12">
                                   <AvatarImage
                                     src={
                                       talent.name === "Gurnaam Singh"
-                                        ? "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&top=turban&accessories=glasses&facialHair=beardMajestic"
+                                        ? "https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=Chase"
                                         : "/placeholder-user.jpg"
                                     }
                                   />
@@ -1387,7 +1387,7 @@ export default function EmployersPage() {
                         <AvatarImage
                           src={
                             talent.name === "Gurnaam Singh"
-                              ? "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&top=turban&accessories=glasses&facialHair=beardMajestic"
+                              ? "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&top=winterHat02&facialHair=beardLight&clothe=hoodie"
                               : "/placeholder-user.jpg"
                           }
                         />
