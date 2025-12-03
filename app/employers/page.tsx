@@ -565,19 +565,19 @@ export default function EmployersPage() {
                           // TARGETED GENERATION: Forces scores to hit specific role thresholds
                           if (roll < roleWeights.backend) {
                             // Backend: Needs Coding > 85, Logical > 80
-                            coding = gaussian(90, 5); logical = gaussian(88, 5); speaking = gaussian(50, 15); personality = gaussian(60, 10);
+                            coding = gaussian(90, 15); logical = gaussian(88, 15); speaking = gaussian(50, 20); personality = gaussian(60, 20);
                           } else if (roll < roleWeights.backend + roleWeights.pm) {
                             // PM: Needs Speaking > 85, Personality > 85
-                            coding = gaussian(50, 15); logical = gaussian(70, 10); speaking = gaussian(92, 4); personality = gaussian(90, 5);
+                            coding = gaussian(50, 20); logical = gaussian(70, 15); speaking = gaussian(92, 10); personality = gaussian(90, 10);
                           } else if (roll < roleWeights.backend + roleWeights.pm + roleWeights.lead) {
                             // Tech Lead: Coding > 75, Speaking > 80
-                            coding = gaussian(82, 5); logical = gaussian(80, 5); speaking = gaussian(85, 5); personality = gaussian(75, 10);
+                            coding = gaussian(82, 15); logical = gaussian(80, 15); speaking = gaussian(85, 10); personality = gaussian(75, 15);
                           } else if (roll < roleWeights.backend + roleWeights.pm + roleWeights.lead + roleWeights.low) {
                             // Low Tier (Fills the 0-40 bucket for Bell Curve)
-                            coding = gaussian(30, 10); logical = gaussian(30, 10); speaking = gaussian(30, 10); personality = gaussian(30, 10);
+                            coding = gaussian(30, 15); logical = gaussian(30, 15); speaking = gaussian(30, 15); personality = gaussian(30, 15);
                           } else {
                             // Generalist (Mid Tier 40-80)
-                            coding = gaussian(65, 12); logical = gaussian(65, 12); speaking = gaussian(65, 12); personality = gaussian(65, 12);
+                            coding = gaussian(65, 20); logical = gaussian(65, 20); speaking = gaussian(65, 20); personality = gaussian(65, 20);
                           }
 
                           const avgScore = (coding + speaking + logical + personality) / 4;
@@ -589,9 +589,16 @@ export default function EmployersPage() {
                         const file = new File([csvContent], "generated-data.csv", { type: "text/csv" });
                         analyzeUploadedData(file);
 
-                        // SCROLL DOWN ANIMATION
+                        // SCROLL DOWN ANIMATION (Updated to target the new ID)
                         setTimeout(() => {
-                          window.scrollBy({ top: 600, behavior: "smooth" });
+                          const element = document.getElementById("role-distribution-chart");
+                          if (element) {
+                            const y = element.getBoundingClientRect().top + window.scrollY - 100; // Offset for fixed header
+                            window.scrollTo({ top: y, behavior: "smooth" });
+                          } else {
+                            // Fallback if ID is missing (e.g., initial render delay)
+                            window.scrollBy({ top: 600, behavior: "smooth" });
+                          }
                         }, 200);
                       }}
                       variant="outline"
@@ -599,7 +606,7 @@ export default function EmployersPage() {
                       disabled={isUploading}
                     >
                       <Sparkles className="w-4 h-4 mr-2 text-yellow-500 animate-pulse" />
-                      ⚡ Ignite Talent Engine
+                      Generate Dynamic Talent Report
                     </Button>
 
                     {isAnalyzing && (
@@ -692,7 +699,7 @@ export default function EmployersPage() {
                         </CardContent>
                       </Card>
 
-                      <Card className="glass-effect border-accent/20">
+                      <Card id="role-distribution-chart" className="glass-effect border-accent/20">
                         <CardHeader>
                           <CardTitle className="flex items-center">
                             <PieChart className="w-5 h-5 mr-2 text-accent" />
@@ -802,7 +809,7 @@ export default function EmployersPage() {
                       </CardContent>
                     </Card>
 
-                    <Card className="glass-effect border-accent/20 md:col-span-2">
+                    <Card id="overall-score-distribution" className="glass-effect border-accent/20 md:col-span-2">
                       <CardHeader>
                         <CardTitle className="flex items-center">
                           <BarChart3 className="w-5 h-5 mr-2 text-accent" />
@@ -1175,7 +1182,7 @@ export default function EmployersPage() {
                                 </div>
                                 <Avatar className="w-12 h-12">
                                   <AvatarImage
-                                    src={`/abstract-geometric-shapes.png?key=9tgqf&key=hwbad&height=48&width=48&query=${talent.name}`}
+                                    src="/placeholder-user.jpg"
                                   />
                                   <AvatarFallback className="text-sm font-semibold">
                                     {talent.name.substring(0, 2)}
@@ -1374,7 +1381,7 @@ export default function EmployersPage() {
                     <CardHeader className="text-center">
                       <Avatar className="w-20 h-20 mx-auto mb-4">
                         <AvatarImage
-                          src={`/abstract-geometric-shapes.png?key=9tgqf&key=hwbad&height=80&width=80&query=${talent.name}`}
+                          src="/placeholder-user.jpg"
                         />
                         <AvatarFallback className="text-lg">
                           {talent.name
