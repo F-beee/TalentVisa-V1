@@ -1387,7 +1387,7 @@ export default function EmployersPage() {
                         <AvatarImage
                           src={
                             talent.name === "Gurnaam Singh"
-                              ? "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&top=winterHat02&facialHair=beardLight&clothe=hoodie"
+                              ? "https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=Chase"
                               : "/placeholder-user.jpg"
                           }
                         />
