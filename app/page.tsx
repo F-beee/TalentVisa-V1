@@ -47,10 +47,6 @@ export default function LoginPage() {
     window.location.href = "/dashboard?guest=true"
   }
 
-  const handleAdminLogin = () => {
-    window.location.href = "/admin"
-  }
-
   const handleEmployerLogin = () => {
     window.location.href = "/employers"
   }
@@ -84,8 +80,8 @@ export default function LoginPage() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
       </div>
 
-<div className="absolute top-6 right-6 z-50 flex items-center gap-1.5">
-    <Button
+      <div className="absolute top-6 right-6 z-50 flex items-center gap-1.5">
+        <Button
           variant="outline"
           size="sm"
           onClick={handleEmployerLogin}
@@ -93,21 +89,11 @@ export default function LoginPage() {
           className="glass-effect hover:bg-accent/20 hover:scale-105 transition-all duration-300 bg-transparent cursor-pointer pointer-events-auto"
         >
           <Building className="w-4 h-2 mr-2" />
-          {isLoading ? "Loading..." : "Employer Login"}
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleAdminLogin}
-          disabled={isLoading}
-          className="glass-effect hover:bg-primary/20 hover:scale-105 transition-all duration-300 bg-transparent cursor-pointer pointer-events-auto"
-        >
-          <Shield className="w-4 h-4 mr-2" />
-          {isLoading ? "Loading..." : "Admin Login"}
+          {isLoading ? "Loading..." : "For Employers"}
         </Button>
       </div>
 
-<div className="relative z-10 flex items-center justify-center min-h-screen p-4 pt-32 sm:pt-4">
+      <div className="relative z-10 flex items-center justify-center min-h-screen p-4 pt-32 sm:pt-4">
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-8">
             <div className="space-y-4">
@@ -306,13 +292,10 @@ export default function LoginPage() {
                     </h3>
                     <div className="space-y-2 text-muted-foreground text-xs">
                       <p>
-                        <span className="font-medium text-foreground">👤 Candidate Demo:</span> Click <strong>Continue as Guest</strong> above to see the Profile & Test flow.
+                        This is an MVP website. You don't need to login. Just chill, you will be auto-logged in as a guest in 10 seconds.
                       </p>
                       <p>
-                        <span className="font-medium text-foreground">📊 Analytics:</span> Use the <strong>Admin Login</strong> button (top-right) to see the Data Dashboard.
-                      </p>
-                      <p>
-                        <span className="font-medium text-foreground">🏢 Hiring:</span> Use the <strong>Employer Login</strong> button (top-right) to browse the Talent Pool.
+                        <span className="font-medium text-foreground">🏢 For Employers:</span> Click the button (top-right) to browse verified candidates, analytics, and hiring tools.
                       </p>
                     </div>
                   </div>
