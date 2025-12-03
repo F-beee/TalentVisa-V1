@@ -599,7 +599,7 @@ export default function EmployersPage() {
                       disabled={isUploading}
                     >
                       <Sparkles className="w-4 h-4 mr-2 text-yellow-500 animate-pulse" />
-                      ⚡ Simulate Live Talent Ecosystem
+                      ⚡ Ignite Talent Engine
                     </Button>
 
                     {isAnalyzing && (
