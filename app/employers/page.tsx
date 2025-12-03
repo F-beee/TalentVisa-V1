@@ -1182,7 +1182,11 @@ export default function EmployersPage() {
                                 </div>
                                 <Avatar className="w-12 h-12">
                                   <AvatarImage
-                                    src="/placeholder-user.jpg"
+                                    src={
+                                      talent.name === "Gurnaam Singh"
+                                        ? "https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=Chase"
+                                        : `https://api.dicebear.com/9.x/pixel-art-neutral/svg?seed=${talent.name}`
+                                    }
                                   />
                                   <AvatarFallback className="text-sm font-semibold">
                                     {talent.name.substring(0, 2)}
@@ -1381,7 +1385,11 @@ export default function EmployersPage() {
                     <CardHeader className="text-center">
                       <Avatar className="w-20 h-20 mx-auto mb-4">
                         <AvatarImage
-                          src="/placeholder-user.jpg"
+                          src={
+                            talent.name === "Gurnaam Singh"
+                              ? "https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=Chase"
+                              : `https://api.dicebear.com/9.x/pixel-art-neutral/svg?seed=${talent.name}`
+                          }
                         />
                         <AvatarFallback className="text-lg">
                           {talent.name
