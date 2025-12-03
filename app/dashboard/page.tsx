@@ -632,15 +632,13 @@ export default function Dashboard() {
             <div className="flex items-center space-x-4">
               <Button 
                 variant="outline" 
-                className="hidden sm:flex border-accent/50 text-accent hover:bg-accent hover:text-white transition-all mr-2"
+                className="flex border-accent/50 text-accent hover:bg-accent hover:text-white transition-all mr-2"
                 onClick={() => window.location.href = "/employers"}
               >
                 <Building className="w-4 h-4 mr-2" />
                 For Employers
               </Button>
-              <Button variant="ghost" onClick={() => (window.location.href = "/")}>
-                Logout
-              </Button>
+              
             </div>
           </div>
         </header>
