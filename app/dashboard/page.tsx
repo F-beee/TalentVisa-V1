@@ -304,6 +304,7 @@ export default function Dashboard() {
   const [isBookTestModalOpen, setIsBookTestModalOpen] = useState(false)
   const [selectedTestCenter, setSelectedTestCenter] = useState<any>(null)
   const [selectedCareerPath, setSelectedCareerPath] = useState("")
+  const [bookingStep, setBookingStep] = useState<"confirm" | "success">("confirm")
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -587,6 +588,7 @@ export default function Dashboard() {
 
   const handleBookTest = (center: any) => {
     setSelectedTestCenter(center)
+    setBookingStep("confirm")
     setIsBookTestModalOpen(true)
   }
 
@@ -1005,15 +1007,10 @@ export default function Dashboard() {
                         <div className="flex flex-col gap-1 w-full sm:flex-row sm:space-x-1 sm:w-auto mt-2">
                           <div className="flex flex-col gap-1 w-full sm:flex-row sm:space-x-1 sm:w-auto mt-2">
                             {talent.rank === 1 && talent.linkedin && (
-                              <div className="flex flex-col gap-1 sm:flex-row sm:space-x-1">
+                              <div className="flex flex-col gap-2 sm:flex-row sm:space-x-2">
                                 <Button
                                   size="sm"
-                                  variant="outline"
-                                  className="justify-center bg-gradient-to-br from-purple-700 via-red-600 to-pink-500 // More Red Mythic Gradient
-             text-white // White text for contrast
-             hover:brightness-110 hover:scale-105 // Brighter & scale on hover
-             transition-all duration-300 // Smooth transition
-             shadow-md hover:shadow-lg"
+                                  className="bg-primary hover:bg-primary/90 text-white shadow-sm transition-all"
                                   onClick={(e) => {
                                     e.stopPropagation()
                                     window.open(talent.linkedin, "_blank")
@@ -1025,18 +1022,15 @@ export default function Dashboard() {
 
                                 <Button
                                   size="sm"
-                                  // REMOVED variant="outline" to ensure full gradient coverage
-                                  className="justify-center bg-gradient-to-br from-purple-700 via-red-600 to-pink-500 // More Red Mythic Gradient
-             text-white // White text for contrast
-             hover:brightness-110 hover:scale-105 // Brighter & scale on hover
-             transition-all duration-300 // Smooth transition
-             shadow-md hover:shadow-lg"
+                                  variant="outline"
+                                  className="border-primary/50 text-primary hover:bg-primary/10 hover:border-primary transition-all bg-transparent"
                                   onClick={(e) => {
                                     e.stopPropagation()
                                     handlePreviewLeaderboardSkillCard(talent)
                                   }}
                                 >
-                                  ✔ Verification
+                                  <CheckCircle className="w-3 h-3 mr-1" />
+                                  Verification
                                 </Button>
                               </div>
                             )}
@@ -1382,72 +1376,136 @@ export default function Dashboard() {
       {isBookTestModalOpen && selectedTestCenter && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <Card className="w-full max-w-md glass-effect border-accent/20">
-            <CardHeader>
-              <CardTitle className="flex items-center text-accent">
-                <CheckCircle className="w-6 h-6 mr-2" />
-                Test Slot Booked!
-              </CardTitle>
-              <CardDescription>Your assessment test has been scheduled</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-4 p-4 bg-accent/10 rounded-lg border border-accent/20">
-                <div>
-                  <p className="text-sm text-muted-foreground">Test Center</p>
-                  <p className="font-semibold text-lg">{selectedTestCenter.name}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Address</p>
-                  <p className="font-medium">{selectedTestCenter.address}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Scheduled Date</p>
-                  <p className="font-semibold">
-                    {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString("en-IN", {
-                      weekday: "long",
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Time Slot</p>
-                  <p className="font-semibold">10:00 AM - 1:00 PM</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Confirmation Email</p>
-                  <p className="font-medium text-sm">confirmation@TalentVisa.com</p>
-                </div>
-              </div>
+            {bookingStep === "confirm" ? (
+              <>
+                <CardHeader>
+                  <CardTitle className="flex items-center text-primary">
+                    <Calendar className="w-6 h-6 mr-2" />
+                    Confirm Booking
+                  </CardTitle>
+                  <CardDescription>Please review your test slot details</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Test Center</p>
+                      <p className="font-semibold text-lg">{selectedTestCenter.name}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Address</p>
+                      <p className="font-medium">{selectedTestCenter.address}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Date</p>
+                      <p className="font-semibold">
+                        {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString("en-IN", {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Time Slot</p>
+                      <p className="font-semibold">10:00 AM - 1:00 PM</p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <Button
+                      className="w-full bg-primary hover:bg-primary/90 text-white font-semibold"
+                      onClick={() => setBookingStep("success")}
+                    >
+                      Confirm Booking
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full border-primary/20 text-primary hover:bg-primary/10"
+                      onClick={() => handleOpenMaps(selectedTestCenter.name)}
+                    >
+                      <MapPin className="w-4 h-4 mr-2" />
+                      View on Map
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full bg-transparent hover:bg-muted/20"
+                      onClick={() => setIsBookTestModalOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </CardContent>
+              </>
+            ) : (
+              <>
+                <CardHeader>
+                  <CardTitle className="flex items-center text-accent">
+                    <CheckCircle className="w-6 h-6 mr-2" />
+                    Test Slot Booked!
+                  </CardTitle>
+                  <CardDescription>Your assessment test has been scheduled</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4 p-4 bg-accent/10 rounded-lg border border-accent/20">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Test Center</p>
+                      <p className="font-semibold text-lg">{selectedTestCenter.name}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Address</p>
+                      <p className="font-medium">{selectedTestCenter.address}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Scheduled Date</p>
+                      <p className="font-semibold">
+                        {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString("en-IN", {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Time Slot</p>
+                      <p className="font-semibold">10:00 AM - 1:00 PM</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Confirmation Email</p>
+                      <p className="font-medium text-sm">confirmation@TalentVisa.com</p>
+                    </div>
+                  </div>
 
-              <div className="space-y-3">
-                <Button
-                  className="w-full bg-gradient-to-r from-accent to-primary hover:shadow-lg text-white font-semibold"
-                  onClick={() => {
-                    handleOpenMaps(selectedTestCenter.name)
-                  }}
-                >
-                  <MapPin className="w-4 h-4 mr-2" />
-                  Open in Google Maps
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full bg-transparent hover:bg-accent/20"
-                  onClick={() => {
-                    setIsBookTestModalOpen(false)
-                    alert("✅ Confirmation email sent to your registered email address. See you at the test center!")
-                  }}
-                >
-                  Close
-                </Button>
-              </div>
+                  <div className="space-y-3">
+                    <Button
+                      className="w-full bg-gradient-to-r from-accent to-primary hover:shadow-lg text-white font-semibold"
+                      onClick={() => {
+                        handleOpenMaps(selectedTestCenter.name)
+                      }}
+                    >
+                      <MapPin className="w-4 h-4 mr-2" />
+                      Open in Google Maps
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full bg-transparent hover:bg-accent/20"
+                      onClick={() => {
+                        setIsBookTestModalOpen(false)
+                        alert("✅ Confirmation email sent to your registered email address. See you at the test center!")
+                      }}
+                    >
+                      Close
+                    </Button>
+                  </div>
 
-              <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
-                <p className="text-xs text-muted-foreground">
-                  <strong>Note:</strong> Please arrive 15 minutes early. Bring a valid ID and your confirmation email.
-                </p>
-              </div>
-            </CardContent>
+                  <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
+                    <p className="text-xs text-muted-foreground">
+                      <strong>Note:</strong> Please arrive 15 minutes early. Bring a valid ID and your confirmation email.
+                    </p>
+                  </div>
+                </CardContent>
+              </>
+            )}
           </Card>
         </div>
       )}

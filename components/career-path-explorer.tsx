@@ -139,7 +139,7 @@ export function CareerPathExplorer({ currentSkills, initialPath }: CareerPathExp
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-4 items-start">
         {sortedPaths.map((path) => (
           <Card
             key={path.id}
