@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { TalentProfileModal } from "@/components/talent-profile-modal"
 import { CareerPathExplorer } from "@/components/career-path-explorer"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Trophy,
   TrendingUp,
@@ -631,14 +632,12 @@ export default function Dashboard() {
 
             <div className="flex items-center space-x-4">
               <Button 
-                variant="outline" 
-                className="flex border-accent/50 text-accent hover:bg-accent hover:text-white transition-all mr-2"
+                className="bg-gradient-to-r from-primary via-purple-500 to-accent text-white border-0 shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:shadow-[0_0_25px_rgba(168,85,247,0.8)] hover:scale-105 transition-all duration-300 animate-pulse-glow mr-2 font-bold tracking-wide"
                 onClick={() => window.location.href = "/employers"}
               >
-                <Building className="w-4 h-4 mr-2" />
+                <Building className="w-4 h-4 mr-2 fill-white/20" />
                 For Employers
               </Button>
-              
             </div>
           </div>
         </header>
@@ -973,6 +972,18 @@ export default function Dashboard() {
                             </Badge>
                           )}
                           <div className="flex items-center gap-3">
+                            <Avatar className="w-8 h-8">
+                              <AvatarImage
+                                src={
+                                  talent.name === "Gurnaam Singh"
+                                    ? "https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=Chase"
+                                    : `https://api.dicebear.com/9.x/pixel-art-neutral/svg?seed=${talent.name}`
+                                }
+                              />
+                              <AvatarFallback className="text-xs">
+                                {talent.name.substring(0, 2)}
+                              </AvatarFallback>
+                            </Avatar>
                             <h4 className="font-semibold min-w-[150px]">{talent.name}</h4>
                             <div
                               className={`text-2xl font-bold ${talent.rank === 1 ? "text-red-600" : talent.rank === 2 ? "text-yellow-500" : talent.rank === 3 ? "text-green-500" : "text-primary"}`}
