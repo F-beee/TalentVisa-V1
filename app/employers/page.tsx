@@ -565,19 +565,19 @@ export default function EmployersPage() {
                           // TARGETED GENERATION: Forces scores to hit specific role thresholds
                           if (roll < roleWeights.backend) {
                             // Backend: Needs Coding > 85, Logical > 80
-                            coding = gaussian(90, 5); logical = gaussian(88, 5); speaking = gaussian(50, 15); personality = gaussian(60, 10);
+                            coding = gaussian(90, 15); logical = gaussian(88, 15); speaking = gaussian(50, 20); personality = gaussian(60, 20);
                           } else if (roll < roleWeights.backend + roleWeights.pm) {
                             // PM: Needs Speaking > 85, Personality > 85
-                            coding = gaussian(50, 15); logical = gaussian(70, 10); speaking = gaussian(92, 4); personality = gaussian(90, 5);
+                            coding = gaussian(50, 20); logical = gaussian(70, 15); speaking = gaussian(92, 10); personality = gaussian(90, 10);
                           } else if (roll < roleWeights.backend + roleWeights.pm + roleWeights.lead) {
                             // Tech Lead: Coding > 75, Speaking > 80
-                            coding = gaussian(82, 5); logical = gaussian(80, 5); speaking = gaussian(85, 5); personality = gaussian(75, 10);
+                            coding = gaussian(82, 15); logical = gaussian(80, 15); speaking = gaussian(85, 10); personality = gaussian(75, 15);
                           } else if (roll < roleWeights.backend + roleWeights.pm + roleWeights.lead + roleWeights.low) {
                             // Low Tier (Fills the 0-40 bucket for Bell Curve)
-                            coding = gaussian(30, 10); logical = gaussian(30, 10); speaking = gaussian(30, 10); personality = gaussian(30, 10);
+                            coding = gaussian(30, 15); logical = gaussian(30, 15); speaking = gaussian(30, 15); personality = gaussian(30, 15);
                           } else {
                             // Generalist (Mid Tier 40-80)
-                            coding = gaussian(65, 12); logical = gaussian(65, 12); speaking = gaussian(65, 12); personality = gaussian(65, 12);
+                            coding = gaussian(65, 20); logical = gaussian(65, 20); speaking = gaussian(65, 20); personality = gaussian(65, 20);
                           }
 
                           const avgScore = (coding + speaking + logical + personality) / 4;
@@ -591,7 +591,7 @@ export default function EmployersPage() {
 
                         // SCROLL DOWN ANIMATION (Updated to target the new ID)
                         setTimeout(() => {
-                          const element = document.getElementById("overall-score-distribution");
+                          const element = document.getElementById("role-distribution-chart");
                           if (element) {
                             const y = element.getBoundingClientRect().top + window.scrollY - 100; // Offset for fixed header
                             window.scrollTo({ top: y, behavior: "smooth" });
@@ -1180,13 +1180,9 @@ export default function EmployersPage() {
                                 <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 text-primary font-bold text-xs shrink-0">
                                   {talent.rank}
                                 </div>
-                               <Avatar className="w-12 h-12">
+                                <Avatar className="w-12 h-12">
                                   <AvatarImage
-                                    src={
-                                      talent.name === "Gurnaam Singh"
-                                        ? "https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=Chase"
-                                        : "/placeholder-user.jpg"
-                                    }
+                                    src="/placeholder-user.jpg"
                                   />
                                   <AvatarFallback className="text-sm font-semibold">
                                     {talent.name.substring(0, 2)}
@@ -1385,11 +1381,7 @@ export default function EmployersPage() {
                     <CardHeader className="text-center">
                       <Avatar className="w-20 h-20 mx-auto mb-4">
                         <AvatarImage
-                          src={
-                            talent.name === "Gurnaam Singh"
-                              ? "https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=Chase"
-                              : "/placeholder-user.jpg"
-                          }
+                          src="/placeholder-user.jpg"
                         />
                         <AvatarFallback className="text-lg">
                           {talent.name
