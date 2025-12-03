@@ -184,7 +184,13 @@ export function TalentProfileModal({ talent, isOpen, onClose }: TalentProfileMod
           {/* Profile Header */}
           <div className="flex items-center space-x-4 mb-6">
             <Avatar className={isMobile ? 'w-12 h-12' : 'w-16 h-16'}>
-              <AvatarImage src={`/abstract-geometric-shapes.png?height=64&width=64&query=${talent.name}`} />
+              <AvatarImage
+                src={
+                  talent.name === "Gurnaam Singh"
+                    ? "https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=Chase"
+                    : `https://api.dicebear.com/9.x/pixel-art-neutral/svg?seed=${talent.name}`
+                }
+              />
               <AvatarFallback className={isMobile ? 'text-base' : 'text-lg'}>
                 {talent.name
                   .split(" ")
