@@ -1,4 +1,4 @@
-"use client" 
+"use client"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -9,9 +9,9 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Slider } from "@/components/ui/slider"
 import { TalentProfileModal } from "@/components/talent-profile-modal"
+import { Progress } from "@/components/ui/progress"
 import {
   Search,
   Filter,
@@ -26,15 +26,14 @@ import {
   MapPin,
   Sparkles,
   Crown,
-  Medal,
-  LineChart as LineChartIcon,
+  BarChart3,
+  PieChart,
   CheckCircle,
   FileText,
   Upload,
-  BarChart3,
-  PieChart
+  LineChart as LineChartIcon
 } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 
 const calculateStdDev = (values: number[]) => {
   const avg = values.reduce((a, b) => a + b, 0) / values.length
@@ -187,6 +186,22 @@ const talentPool = [
 ]
 
 export default function EmployersPage() {
+  const [activeTab, setActiveTab] = useState("browse")
+  const [selectedRole, setSelectedRole] = useState<string>("")
+  const [filters, setFilters] = useState({
+    experience: "Both",
+    college: "",
+    minCoding: [0],
+    minSpeaking: [0],
+    minLogical: [0],
+    minPersonality: [0],
+    availability: "All",
+  })
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedTalents, setSelectedTalents] = useState<string[]>([])
+  const [selectedTalent, setSelectedTalent] = useState<any>(null)
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+
   // --- START ANALYTICS LOGIC ---
   const [uploadProgress, setUploadProgress] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
@@ -316,22 +331,6 @@ export default function EmployersPage() {
     finally { setIsAnalyzing(false) }
   }
   // --- END ANALYTICS LOGIC ---
-
-  const [activeTab, setActiveTab] = useState("browse")
-  const [selectedRole, setSelectedRole] = useState<string>("")
-  const [filters, setFilters] = useState({
-    experience: "Both",
-    college: "",
-    minCoding: [0],
-    minSpeaking: [0],
-    minLogical: [0],
-    minPersonality: [0],
-    availability: "All",
-  })
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedTalents, setSelectedTalents] = useState<string[]>([])
-  const [selectedTalent, setSelectedTalent] = useState<any>(null)
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
 
   const filteredTalents = talentPool.filter((talent) => {
     const matchesSearch =
@@ -472,42 +471,52 @@ export default function EmployersPage() {
             </TabsList>
 
             <TabsContent value="analytics" className="space-y-6">
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-    {/* Upload Card */}
-    <Card className="glass-effect border-primary/20">
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <Upload className="w-5 h-5 mr-2 text-primary" />
-          Upload Talent Data
-        </CardTitle>
-        <CardDescription>Upload CSV or JSON files with talent information</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <form onSubmit={handleFileUpload} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="dataFile">Select File</Label>
-            <Input id="dataFile" name="dataFile" type="file" accept=".csv,.json" className="bg-background/50 border-primary/30 focus:border-primary" required />
-          </div>
-          {isUploading && (
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm"><span>Processing...</span><span>{uploadProgress}%</span></div>
-              <Progress value={uploadProgress} className="h-2" />
-            </div>
-          )}
-          <Button type="submit" className="w-full bg-primary hover:bg-primary/90" disabled={isUploading}>
-            {isUploading ? "Processing..." : "Upload & Analyze"}
-          </Button>
-        </form>
-        
-        <div className="flex items-center gap-4 my-4">
-          <div className="flex-1 border-t border-border"></div>
-          <span className="text-sm text-muted-foreground">OR</span>
-          <div className="flex-1 border-t border-border"></div>
-        </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="glass-effect border-primary/20">
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Upload className="w-5 h-5 mr-2 text-primary" />
+                      Upload Talent Data
+                    </CardTitle>
+                    <CardDescription>Upload CSV or JSON files with talent information</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <form onSubmit={handleFileUpload} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="dataFile">Select File</Label>
+                        <Input
+                          id="dataFile"
+                          name="dataFile"
+                          type="file"
+                          accept=".csv,.json"
+                          className="bg-background/50 border-primary/30 focus:border-primary"
+                          required
+                        />
+                      </div>
 
-        <Button
-  onClick={() => {
-    const DEFAULT_CSV_DATA = `Name,College,Coding,Speaking,Logical,Personality,Experience
+                      {isUploading && (
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span>Processing...</span>
+                            <span>{uploadProgress}%</span>
+                          </div>
+                          <Progress value={uploadProgress} className="h-2" />
+                        </div>
+                      )}
+
+                      <Button type="submit" className="w-full bg-primary hover:bg-primary/90" disabled={isUploading}>
+                        {isUploading ? "Processing..." : "Upload & Analyze"}
+                      </Button>
+                    </form>
+                    <div className="flex items-center gap-4 my-4">
+                      <div className="flex-1 border-t border-border"></div>
+                      <span className="text-sm text-muted-foreground">OR</span>
+                      <div className="flex-1 border-t border-border"></div>
+                    </div>
+
+                    <Button
+                      onClick={() => {
+                        const DEFAULT_CSV_DATA = `Name,College,Coding,Speaking,Logical,Personality,Experience
 Gurnaam Singh,PSIT Kanpur,99,99,100,95,Experienced
 Aditi Sharma,IIT Delhi,95,92,51,90,Experienced
 Rohan Verma,IIT Madras,93,91,49,88,Experienced
@@ -1196,557 +1205,433 @@ Ronit Varma,Bennett University,42,40,49,41,Fresher
 Rudra Sharma,Graphic Era University,40,42,50,43,Fresher
 Ruhi Reddy,DIT Dehradun,72,70,51,71,Experienced
 Runal Rao,Sanskriti University,70,72,49,73,Experienced
-`;
-    
-    const file = new File([DEFAULT_CSV_DATA], "default-data.csv", { type: "text/csv" });
-    analyzeUploadedData(file);
-  }}
-  variant="outline"
-  className="w-full"
-  disabled={isUploading}
->
-  Load Default Data (500 Entries)
-</Button>
-
-        {isAnalyzing && (
-          <div className="flex items-center justify-center py-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-            <span className="ml-2">Analyzing data...</span>
-          </div>
-        )}
-      </CardContent>
-    </Card>
-
-    {/* Instructions Card */}
-    <Card className="glass-effect border-accent/20">
-      <CardHeader>
-        <CardTitle className="flex items-center text-accent">
-          <FileText className="w-5 h-5 mr-2" />
-          Data Format Requirements
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <h4 className="font-semibold">Required Fields:</h4>
-          <ul className="text-sm space-y-1 text-muted-foreground">
-            <li>• Name, College (string)</li>
-            <li>• Coding, Speaking, Logical, Personality (0-100)</li>
-            <li>• Experience (Fresher/Experienced)</li>
-          </ul>
-        </div>
-      </CardContent>
-    </Card>
-
-    {/* Analysis Results */}
-    {!analysisResults ? (
-      <Card className="glass-effect border-primary/20 md:col-span-2">
-        <CardContent className="py-12 text-center space-y-4">
-          <BarChart3 className="w-12 h-12 mx-auto text-muted-foreground" />
-          <h3 className="text-lg font-semibold">No Data Uploaded Yet</h3>
-          <p className="text-muted-foreground">Upload a CSV or use default data to see analytics</p>
-        </CardContent>
-      </Card>
-    ) : (
-      <>
-        {/* Charts Grid */}
-        <div className="grid md:grid-cols-2 gap-6 md:col-span-2">
-          <Card className="glass-effect border-primary/20">
-            <CardHeader><CardTitle className="flex items-center"><BarChart3 className="w-5 h-5 mr-2 text-primary" />Skill Distribution</CardTitle></CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={analysisResults.skillChartData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis dataKey="name" stroke="rgba(255,255,255,0.5)" fontSize={12} />
-                  <YAxis stroke="rgba(255,255,255,0.5)" />
-                  <Tooltip contentStyle={{ backgroundColor: "#1f2937", border: "1px solid #4b5563", color: "#fff" }} />
-                  <Bar dataKey="value" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-effect border-accent/20">
-            <CardHeader><CardTitle className="flex items-center"><PieChart className="w-5 h-5 mr-2 text-accent" />Role Distribution</CardTitle></CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={analysisResults.roleDistribution}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis dataKey="name" stroke="rgba(255,255,255,0.5)" fontSize={12} angle={-45} textAnchor="end" height={80} />
-                  <YAxis stroke="rgba(255,255,255,0.5)" />
-                  <Tooltip contentStyle={{ backgroundColor: "#1f2937", border: "1px solid #4b5563", color: "#fff" }} />
-                  <Bar dataKey="value" fill="#ec4899" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid md:grid-cols-2 gap-6 md:col-span-2">
-          <Card className="glass-effect border-primary/20">
-            <CardHeader><CardTitle className="flex items-center"><CheckCircle className="w-5 h-5 mr-2 text-primary" />Performance Quartiles</CardTitle></CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex justify-between p-3 bg-muted/30 rounded"><span>Median</span><span className="font-bold text-accent">{analysisResults.performanceQuartiles.median}</span></div>
-                <div className="flex justify-between p-3 bg-muted/30 rounded"><span>Top 25% (Q3)</span><span className="font-bold text-primary">{analysisResults.performanceQuartiles.q3}</span></div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-effect border-accent/20">
-            <CardHeader><CardTitle className="flex items-center"><PieChart className="w-5 h-5 mr-2 text-accent" />Skill Balance</CardTitle></CardHeader>
-            <CardContent>
-              <div className="text-center py-4">
-                <div className="text-5xl font-bold text-accent mb-2">{analysisResults.skillBalance.balancedPercent}%</div>
-                <div className="text-sm text-muted-foreground">of candidates have balanced skills</div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* College Analysis */}
-        <Card className="glass-effect border-primary/20 md:col-span-2">
-          <CardHeader><CardTitle className="flex items-center"><LineChartIcon className="w-5 h-5 mr-2 text-primary" />College Performance</CardTitle></CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={350}>
-              <BarChart data={analysisResults.collegePerformance} margin={{ bottom: 80 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                <XAxis dataKey="name" stroke="rgba(255,255,255,0.5)" angle={-45} textAnchor="end" height={100} fontSize={12} />
-                <YAxis stroke="rgba(255,255,255,0.5)" />
-                <Tooltip contentStyle={{ backgroundColor: "#1f2937", border: "1px solid #4b5563", color: "#fff" }} />
-                <Bar dataKey="avgScore" fill="#8b5cf6" name="Avg Score" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </>
-    )}
-  </div>
-</TabsContent>
-
-            <TabsContent value="browse" className="space-y-6">
-              <div className="grid lg:grid-cols-4 gap-6 items-start">
-                {/* Filters Sidebar */}
-                <Card className="glass-effect border-primary/20 lg:col-span-1 lg:sticky lg:top-24">
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <Filter className="w-5 h-5 mr-2 text-primary" />
-                      Filters
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="space-y-2">
-                      <Label>Search</Label>
-                      <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                        <Input
-                          placeholder="Name or college..."
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          className="pl-10 bg-background/50 border-primary/30"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>Experience Level</Label>
-                      <Select
-                        value={filters.experience}
-                        onValueChange={(value) => setFilters({ ...filters, experience: value })}
-                      >
-                        <SelectTrigger className="bg-background/50 border-primary/30">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Both">Both</SelectItem>
-                          <SelectItem value="Fresher">Fresher</SelectItem>
-                          <SelectItem value="Experienced">Experienced</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>College</Label>
-                      <Input
-                        placeholder="Filter by college..."
-                        value={filters.college}
-                        onChange={(e) => setFilters({ ...filters, college: e.target.value })}
-                        className="bg-background/50 border-primary/30"
-                      />
-                    </div>
-
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label>Min Coding Score: {filters.minCoding[0]}</Label>
-                        <Slider
-                          value={filters.minCoding}
-                          onValueChange={(value) => setFilters({ ...filters, minCoding: value })}
-                          max={100}
-                          step={5}
-                          className="w-full"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label>Min Speaking Score: {filters.minSpeaking[0]}</Label>
-                        <Slider
-                          value={filters.minSpeaking}
-                          onValueChange={(value) => setFilters({ ...filters, minSpeaking: value })}
-                          max={100}
-                          step={5}
-                          className="w-full"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label>Min Logical Score: {filters.minLogical[0]}</Label>
-                        <Slider
-                          value={filters.minLogical}
-                          onValueChange={(value) => setFilters({ ...filters, minLogical: value })}
-                          max={100}
-                          step={5}
-                          className="w-full"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label>Min Personality Score: {filters.minPersonality[0]}</Label>
-                        <Slider
-                          value={filters.minPersonality}
-                          onValueChange={(value) => setFilters({ ...filters, minPersonality: value })}
-                          max={100}
-                          step={5}
-                          className="w-full"
-                        />
-                      </div>
-                    </div>
-
-                    <Button
+`; 
+                        const file = new File([DEFAULT_CSV_DATA], "default-data.csv", { type: "text/csv" });
+                        analyzeUploadedData(file);
+                      }}
                       variant="outline"
-                      className="w-full bg-transparent"
-                      onClick={() =>
-                        setFilters({
-                          experience: "Both",
-                          college: "",
-                          minCoding: [0],
-                          minSpeaking: [0],
-                          minLogical: [0],
-                          minPersonality: [0],
-                          availability: "All",
-                        })
-                      }
+                      className="w-full"
+                      disabled={isUploading}
                     >
-                      Clear Filters
+                      Load Default Data (500 Entries)
                     </Button>
+
+                    {isAnalyzing && (
+                      <div className="flex items-center justify-center py-4">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                        <span className="ml-2">Analyzing data...</span>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
 
-                {/* Talent Results */}
-                <div className="lg:col-span-3 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-xl font-semibold">
-                        {filteredTalents.length} Talents Found
-                        {selectedRole && (
-                          <Badge className="ml-2 bg-primary/20 text-primary">
-                            {jobRoleTemplates.find((r) => r.id === selectedRole)?.title}
-                          </Badge>
-                        )}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{selectedTalents.length} selected for shortlist</p>
+                <Card className="glass-effect border-accent/20">
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-accent">
+                      <FileText className="w-5 h-5 mr-2" />
+                      Data Format Requirements
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <h4 className="font-semibold">Required Fields:</h4>
+                      <ul className="text-sm space-y-1 text-muted-foreground">
+                        <li>• Name (string)</li>
+                        <li>• College (string)</li>
+                        <li>• Coding (0-100)</li>
+                        <li>• Speaking (0-100)</li>
+                        <li>• Logical (0-100)</li>
+                        <li>• Personality (0-100)</li>
+                        <li>• Experience (Fresher/Experienced)</li>
+                      </ul>
                     </div>
 
-                    {selectedTalents.length > 0 && (
-                      <Button onClick={exportShortlist} className="bg-primary hover:bg-primary/90">
-                        <Download className="w-4 h-4 mr-2" />
-                        Export Shortlist ({selectedTalents.length})
-                      </Button>
-                    )}
-                  </div>
+                    <div className="p-3 bg-muted/30 rounded-lg">
+                      <h5 className="font-medium text-sm mb-2">Sample CSV Format:</h5>
+                      <code className="text-xs text-muted-foreground block whitespace-pre-wrap break-all">
+                        Name,College,Coding,Speaking,Logical,Personality,Experience
+                        <br />
+                        Akshay Kapoor,PSIT,85,78,92,88,Experienced
+                      </code>
+                    </div>
+                  </CardContent>
+                </Card>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {filteredTalents.map((talent, index) => (
-                      <Card
-                        key={index}
-                        className="glass-effect border-primary/20 hover:border-primary/40 transition-colors"
-                      >
-                        <CardContent className="p-6">
-                          <div className="flex flex-col gap-4">
-                            <div className="flex items-start justify-between">
-                              <div className="flex items-center gap-3">
-                                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 text-primary font-bold text-xs shrink-0">
-                                  {talent.rank}
-                                </div>
-                                <Avatar className="w-12 h-12">
-                                  <AvatarImage
-                                    src={`/abstract-geometric-shapes.png?key=9tgqf&key=hwbad&height=48&width=48&query=${talent.name}`}
-                                  />
-                                  <AvatarFallback className="text-sm font-semibold">
-                                    {talent.name.substring(0, 2)}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <div>
-                                  <h4 className="text-base font-bold text-foreground leading-tight">{talent.name}</h4>
-                                  <div className="flex items-center gap-2 mt-1">
-                                    {talent.isSpotlight && (
-                                      <Badge className="bg-accent/20 text-accent border-accent/30 text-[10px] h-5 px-1.5">
-                                        Spotlight
-                                      </Badge>
-                                    )}
-                                    <span className="text-xs text-muted-foreground">{talent.experience}</span>
-                                  </div>
-                                </div>
-                              </div>
-                              
-                              <div className="text-center shrink-0">
-                                <div className="text-lg font-bold text-primary leading-none">{talent.score}</div>
-                                <div className="text-[10px] text-muted-foreground">Score</div>
-                              </div>
-                            </div>
-
-                            <div className="grid grid-cols-4 gap-2 bg-muted/20 p-2 rounded-lg">
-                              <div className="text-center">
-                                <div className="text-xs font-bold text-primary">{talent.skills.coding}</div>
-                                <div className="text-[10px] text-muted-foreground">Code</div>
-                              </div>
-                              <div className="text-center">
-                                <div className="text-xs font-bold text-accent">{talent.skills.speaking}</div>
-                                <div className="text-[10px] text-muted-foreground">Speak</div>
-                              </div>
-                              <div className="text-center">
-                                <div className="text-xs font-bold text-primary">{talent.skills.logical}</div>
-                                <div className="text-[10px] text-muted-foreground">Logic</div>
-                              </div>
-                              <div className="text-center">
-                                <div className="text-xs font-bold text-accent">{talent.skills.personality}</div>
-                                <div className="text-[10px] text-muted-foreground">Pers</div>
-                              </div>
-                            </div>
-
-                            <div className="flex items-center justify-between gap-2 mt-1">
-                              <div className="text-xs text-muted-foreground truncate flex-1">
-                                <MapPin className="w-3 h-3 inline mr-1" />
-                                {talent.location}
-                              </div>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                  if (talent.linkedIn) {
-                                    window.open(talent.linkedIn, "_blank")
-                                  } else {
-                                    openTalentProfile(talent)
-                                  }
+                {!analysisResults ? (
+                  <Card className="glass-effect border-primary/20">
+                    <CardContent className="py-12">
+                      <div className="text-center space-y-4">
+                        <BarChart3 className="w-12 h-12 mx-auto text-muted-foreground" />
+                        <h3 className="text-lg font-semibold">No Data Uploaded Yet</h3>
+                        <p className="text-muted-foreground">Upload a CSV or JSON file to see analytics and insights</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <Card className="glass-effect border-primary/20">
+                        <CardHeader>
+                          <CardTitle className="flex items-center">
+                            <BarChart3 className="w-5 h-5 mr-2 text-primary" />
+                            Skill Distribution
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <ResponsiveContainer width="100%" height={350}>
+                            <BarChart data={analysisResults.skillChartData} margin={{ bottom: 50 }}>
+                              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                              <XAxis 
+                                dataKey="name" 
+                                stroke="rgba(255,255,255,0.5)"
+                                fontSize={11}
+                                interval={0}
+                                angle={-45}
+                                textAnchor="end"
+                                height={80}
+                              />
+                              <YAxis stroke="rgba(255,255,255,0.5)" />
+                              <Tooltip
+                                contentStyle={{
+                                  backgroundColor: "rgba(30, 30, 40, 0.95)",
+                                  border: "1px solid rgba(139, 92, 246, 0.5)",
+                                  borderRadius: "8px",
+                                  color: "#fff",
                                 }}
-                                className="h-7 text-xs bg-transparent hover:bg-primary/10 px-2"
-                              >
-                                {talent.linkedIn ? "Connect" : "Profile"}
-                                <ChevronRight className="w-3 h-3 ml-1" />
-                              </Button>
+                                cursor={{ fill: "rgba(139, 92, 246, 0.1)" }}
+                              />
+                              <Bar dataKey="value" fill="#8b5cf6" radius={[8, 8, 0, 0]} />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="glass-effect border-accent/20">
+                        <CardHeader>
+                          <CardTitle className="flex items-center">
+                            <PieChart className="w-5 h-5 mr-2 text-accent" />
+                            Role Distribution (Bar Chart)
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <ResponsiveContainer width="100%" height={350}>
+                            <BarChart data={analysisResults.roleDistribution} margin={{ bottom: 50 }}>
+                              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                              <XAxis
+                                dataKey="name"
+                                stroke="rgba(255,255,255,0.5)"
+                                angle={-45}
+                                textAnchor="end"
+                                height={100}
+                                fontSize={11}
+                                interval={0}
+                              />
+                              <YAxis stroke="rgba(255,255,255,0.5)" />
+                              <Tooltip
+                                contentStyle={{
+                                  backgroundColor: "rgba(30, 30, 40, 0.95)",
+                                  border: "1px solid rgba(236, 72, 153, 0.5)",
+                                  borderRadius: "8px",
+                                  color: "#fff",
+                                }}
+                                cursor={{ fill: "rgba(236, 72, 153, 0.1)" }}
+                              />
+                              <Bar dataKey="value" fill="#ec4899" radius={[8, 8, 0, 0]} />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <Card className="glass-effect border-primary/20">
+                        <CardHeader>
+                          <CardTitle className="flex items-center">
+                            <BarChart3 className="w-5 h-5 mr-2 text-primary" />
+                            Experience Distribution
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-4">
+                            {Object.entries(analysisResults.experienceDistribution).map(([exp, count]: any) => (
+                              <div key={exp} className="space-y-2">
+                                <div className="flex justify-between text-sm">
+                                  <span className="font-medium">{exp}</span>
+                                  <span className="text-primary font-bold">{count}</span>
+                                </div>
+                                <Progress value={(count / analysisResults.totalRecords) * 100} className="h-2" />
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="glass-effect border-accent/20">
+                        <CardHeader>
+                          <CardTitle className="flex items-center">
+                            <TrendingUp className="w-5 h-5 mr-2 text-accent" />
+                            Skill Gap Analysis
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-4">
+                            {analysisResults.skillChartData.map((skill: any) => {
+                              const gap = 100 - skill.value
+                              return (
+                                <div key={skill.name} className="space-y-2">
+                                  <div className="flex justify-between text-sm">
+                                    <span className="font-medium">{skill.name}</span>
+                                    <span className="text-accent">{skill.value}/100</span>
+                                  </div>
+                                  <Progress value={skill.value} className="h-2" />
+                                  <div className="text-xs text-muted-foreground">Gap: {gap} points</div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    <Card className="glass-effect border-primary/20">
+                      <CardHeader>
+                        <CardTitle className="flex items-center">
+                          <TrendingUp className="w-5 h-5 mr-2 text-primary" />
+                          Standard Deviation Analysis
+                        </CardTitle>
+                        <CardDescription>Measure of score variability (lower = more consistent)</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                          {Object.entries(analysisResults.standardDeviation).map(([skill, stdDev]: any) => (
+                            <div key={skill} className="p-4 bg-muted/30 rounded-lg text-center">
+                              <div className="text-sm text-muted-foreground capitalize mb-1">{skill}</div>
+                              <div className="text-2xl font-bold text-primary">σ = {stdDev}</div>
+                              <div className="text-xs text-muted-foreground mt-1">
+                                {stdDev < 10 ? "Very Consistent" : stdDev < 15 ? "Consistent" : stdDev < 20 ? "Moderate" : "High Variance"}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="glass-effect border-accent/20">
+                      <CardHeader>
+                        <CardTitle className="flex items-center">
+                          <BarChart3 className="w-5 h-5 mr-2 text-accent" />
+                          Overall Score Distribution
+                        </CardTitle>
+                        <CardDescription>Frequency distribution of candidate scores</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={300}>
+                          <BarChart data={analysisResults.scoreDistribution}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                            <XAxis 
+                              dataKey="range" 
+                              stroke="rgba(255,255,255,0.5)"
+                              fontSize={12}
+                            />
+                            <YAxis stroke="rgba(255,255,255,0.5)" />
+                            <Tooltip
+                              contentStyle={{
+                                backgroundColor: "rgba(30, 30, 40, 0.95)",
+                                border: "1px solid rgba(236, 72, 153, 0.5)",
+                                borderRadius: "8px",
+                                color: "#fff",
+                              }}
+                              cursor={{ fill: "rgba(236, 72, 153, 0.1)" }}
+                            />
+                            <Bar dataKey="count" fill="#ec4899" radius={[8, 8, 0, 0]} />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <Card className="glass-effect border-primary/20">
+                        <CardHeader>
+                          <CardTitle className="flex items-center">
+                            <CheckCircle className="w-5 h-5 mr-2 text-primary" />
+                            Performance Quartiles
+                          </CardTitle>
+                          <CardDescription>Statistical distribution of scores</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-4">
+                            <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                              <span className="text-sm font-medium">Q1 (25th percentile)</span>
+                              <span className="text-xl font-bold text-primary">{analysisResults.performanceQuartiles.q1}</span>
+                            </div>
+                            <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                              <span className="text-sm font-medium">Median (50th percentile)</span>
+                              <span className="text-xl font-bold text-accent">{analysisResults.performanceQuartiles.median}</span>
+                            </div>
+                            <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                              <span className="text-sm font-medium">Q3 (75th percentile)</span>
+                              <span className="text-xl font-bold text-primary">{analysisResults.performanceQuartiles.q3}</span>
+                            </div>
+                            <div className="flex justify-between items-center p-3 bg-accent/20 rounded-lg border border-accent/30">
+                              <span className="text-sm font-medium">IQR (Interquartile Range)</span>
+                              <span className="text-xl font-bold text-accent">{analysisResults.performanceQuartiles.iqr}</span>
                             </div>
                           </div>
                         </CardContent>
                       </Card>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
 
-            <TabsContent value="templates" className="space-y-6">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-2">Job Role Templates</h3>
-                <p className="text-muted-foreground">
-                  Select a role template to automatically filter candidates with the right skill mix
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {jobRoleTemplates.map((role) => (
-                  <Card
-                    key={role.id}
-                    className={`glass-effect cursor-pointer transition-all hover:border-primary/40 ${
-                      selectedRole === role.id ? "border-primary/60 bg-primary/5" : "border-primary/20"
-                    }`}
-                    onClick={() => handleRoleSelect(role.id)}
-                  >
-                    <CardHeader>
-                      <CardTitle className="flex items-center justify-between">
-                        <span>{role.title}</span>
-                        <Badge variant="outline">{role.matchCount} matches</Badge>
-                      </CardTitle>
-                      <CardDescription>{role.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <h5 className="font-medium text-sm">Required Skills:</h5>
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                          <div className="flex justify-between">
-                            <span>Coding:</span>
-                            <span className="font-semibold">{role.requiredSkills.coding}+</span>
+                      <Card className="glass-effect border-accent/20">
+                        <CardHeader>
+                          <CardTitle className="flex items-center">
+                            <PieChart className="w-5 h-5 mr-2 text-accent" />
+                            Skill Balance Index
+                          </CardTitle>
+                          <CardDescription>Balanced vs specialized talent distribution</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-4">
+                            <div className="text-center py-4">
+                              <div className="text-5xl font-bold text-accent mb-2">
+                                {analysisResults.skillBalance.balancedPercent}%
+                              </div>
+                              <div className="text-sm text-muted-foreground">of candidates are balanced</div>
+                            </div>
+                            <div className="space-y-2">
+                              <div className="flex justify-between text-sm">
+                                <span className="font-medium">Balanced Skills</span>
+                                <span className="text-accent font-bold">{analysisResults.skillBalance.balanced}</span>
+                              </div>
+                              <Progress value={(analysisResults.skillBalance.balanced / analysisResults.totalRecords) * 100} className="h-2" />
+                            </div>
+                            <div className="space-y-2">
+                              <div className="flex justify-between text-sm">
+                                <span className="font-medium">Specialized Skills</span>
+                                <span className="text-primary font-bold">{analysisResults.skillBalance.specialized}</span>
+                              </div>
+                              <Progress value={(analysisResults.skillBalance.specialized / analysisResults.totalRecords) * 100} className="h-2" />
+                            </div>
+                            <div className="text-xs text-muted-foreground mt-2">
+                              * Balanced: Skills differ by less than 20 points
+                            </div>
                           </div>
-                          <div className="flex justify-between">
-                            <span>Speaking:</span>
-                            <span className="font-semibold">{role.requiredSkills.speaking}+</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Logical:</span>
-                            <span className="font-semibold">{role.requiredSkills.logical}+</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Personality:</span>
-                            <span className="font-semibold">{role.requiredSkills.personality}+</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <Badge variant="outline" className="text-xs">
-                          {role.experience}
-                        </Badge>
-                        <Button
-                          size="sm"
-                          className={selectedRole === role.id ? "bg-primary" : "bg-transparent"}
-                          variant={selectedRole === role.id ? "default" : "outline"}
-                        >
-                          {selectedRole === role.id ? "Selected" : "Select Role"}
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              {selectedRole && (
-                <Card className="glass-effect border-accent/20">
-                  <CardHeader>
-                    <CardTitle className="flex items-center text-accent">
-                      <Target className="w-5 h-5 mr-2" />
-                      Best-Fit Candidates for {jobRoleTemplates.find((r) => r.id === selectedRole)?.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-col items-center py-4 space-y-3">
-                      <div className="flex items-center gap-2 text-muted-foreground bg-muted px-3 py-1 rounded-full text-xs">
-                        <Users className="w-3 h-3" />
-                        <span className="font-medium">
-                          Pool: {jobRoleTemplates.find((r) => r.id === selectedRole)?.matchCount} candidates available
-                        </span>
-                      </div>
-                      
-                      <Button
-                        size="lg"
-                        className="bg-primary hover:bg-primary/90 min-w-[200px] shadow-lg shadow-primary/20"
-                        onClick={() => {
-                          setActiveTab("browse")
-                          window.scrollTo({ top: 0, behavior: 'smooth' })
-                        }}
-                      >
-                        View Top Matches
-                        <ChevronRight className="w-4 h-4 ml-2" />
-                      </Button>
-                      
-                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
-                        Sorted by Talent Rank
-                      </p>
+                        </CardContent>
+                      </Card>
                     </div>
-                  </CardContent>
-                </Card>
-              )}
-            </TabsContent>
 
-            <TabsContent value="spotlight" className="space-y-6">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-2 flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 mr-2 text-accent" />
-                  Talent Spotlight
-                </h3>
-                <p className="text-muted-foreground">
-                  Featured top performers and fresh talents making waves in the platform
-                </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <Card className="glass-effect border-primary/20">
+                        <CardHeader>
+                          <CardTitle className="flex items-center">
+                            <CheckCircle className="w-5 h-5 mr-2 text-primary" />
+                            Most Consistent Performers
+                          </CardTitle>
+                          <CardDescription>Candidates with balanced skill profiles</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-3">
+                            {analysisResults.skillConsistency.map((performer: any, index: number) => (
+                              <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                                <div>
+                                  <div className="font-semibold">{performer.name}</div>
+                                  <div className="text-xs text-muted-foreground">Overall: {performer.overallScore}/100</div>
+                                </div>
+                                <div className="text-right">
+                                  <div className="text-lg font-bold text-primary">{performer.consistency}%</div>
+                                  <div className="text-xs text-muted-foreground">Consistency</div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="glass-effect border-accent/20">
+                        <CardHeader>
+                          <CardTitle className="flex items-center text-accent">
+                            <CheckCircle className="w-5 h-5 mr-2" />
+                            Top Performers & Role Recommendations
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-3">
+                            {analysisResults.topPerformers.map((performer: any, index: number) => (
+                              <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                                <div>
+                                  <div className="font-semibold">{performer.Name}</div>
+                                  <div className="text-sm text-muted-foreground">{performer.College}</div>
+                                </div>
+                                <div className="text-right">
+                                  <Badge className="bg-accent/20 text-accent border-accent/30 mb-1">
+                                    {performer.recommendedRole}
+                                  </Badge>
+                                  <div className="text-lg font-bold text-primary">{performer.overallScore}/100</div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    <Card className="glass-effect border-primary/20">
+                      <CardHeader>
+                        <CardTitle className="flex items-center">
+                          <LineChartIcon className="w-5 h-5 mr-2 text-primary" />
+                          College Performance Analysis
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={350}> 
+                          <BarChart 
+                            data={analysisResults.collegePerformance}
+                            margin={{ top: 5, right: 0, left: -20, bottom: 80 }}
+                           > 
+                            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.3} /> 
+                            <XAxis
+                              dataKey="name"
+                              stroke="var(--muted-foreground)"
+                              angle={-45}
+                              textAnchor="end"
+                              height={100}
+                              interval={0}
+                              tick={{ fontSize: 10 }}
+                            />
+                            <YAxis 
+                              stroke="var(--muted-foreground)"
+                              tick={{ fontSize: 11 }}
+                              label={{ value: 'Score / Count', angle: -90, position: 'insideLeft', fill: 'var(--muted-foreground)', fontSize: 12, dx:-5 }} 
+                            />
+                            <Tooltip
+                              contentStyle={{
+                                backgroundColor: "var(--popover)",
+                                border: "1px solid var(--border)",
+                                borderRadius: "var(--radius-md)",
+                                color: "var(--popover-foreground)",
+                                fontSize: "12px",
+                                boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+                              }}
+                              cursor={{ fill: "var(--primary)", fillOpacity: 0.1 }}
+                              itemStyle={{ color: "var(--popover-foreground)"}}
+                              labelStyle={{ color: "var(--foreground)", fontWeight: "bold"}}
+                            />
+                            <Legend 
+                               wrapperStyle={{ 
+                                 color: 'var(--muted-foreground)', 
+                                 fontSize: '12px',
+                                 paddingTop: '10px'
+                               }} 
+                               verticalAlign="top"
+                               align="right"
+                             /> 
+                            <Bar dataKey="avgScore" fill="var(--accent)" name="Avg Score" radius={[4, 4, 0, 0]} /> 
+                            <Bar dataKey="count" fill="var(--chart-3)" name="Count" radius={[4, 4, 0, 0]} /> 
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+                  </>
+                )}
               </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {spotlightTalents.map((talent, index) => (
-                  <Card key={index} className="glass-effect border-accent/20 hover:border-accent/40 transition-colors">
-                    <CardHeader className="text-center">
-                      <Avatar className="w-20 h-20 mx-auto mb-4">
-                        <AvatarImage
-                          src={`/abstract-geometric-shapes.png?key=9tgqf&key=hwbad&height=80&width=80&query=${talent.name}`}
-                        />
-                        <AvatarFallback className="text-lg">
-                          {talent.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <CardTitle className="flex items-center justify-center space-x-2">
-                        <span>{talent.name}</span>
-                        <Badge className="bg-accent/20 text-accent border-accent/30">
-                          <Crown className="w-3 h-3 mr-1" />#{talent.rank}
-                        </Badge>
-                      </CardTitle>
-                      <CardDescription>
-                        {talent.college} • {talent.experience}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div className="text-center p-2 bg-muted/30 rounded">
-                          <div className="font-semibold text-primary">{talent.skills.coding}</div>
-                          <div className="text-xs text-muted-foreground">Coding</div>
-                        </div>
-                        <div className="text-center p-2 bg-muted/30 rounded">
-                          <div className="font-semibold text-accent">{talent.skills.speaking}</div>
-                          <div className="text-xs text-muted-foreground">Speaking</div>
-                        </div>
-                        <div className="text-center p-2 bg-muted/30 rounded">
-                          <div className="font-semibold text-primary">{talent.skills.logical}</div>
-                          <div className="text-xs text-muted-foreground">Logical</div>
-                        </div>
-                        <div className="text-center p-2 bg-muted/30 rounded">
-                          <div className="font-semibold text-accent">{talent.skills.personality}</div>
-                          <div className="text-xs text-muted-foreground">Personality</div>
-                        </div>
-                      </div>
-
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-primary mb-1">{talent.score}</div>
-                        <div className="text-sm text-muted-foreground">Overall Score</div>
-                      </div>
-
-                      <Button className="w-full bg-accent hover:bg-accent/90" onClick={() => openTalentProfile(talent)}>
-                        View Full Profile
-                        <Star className="w-4 h-4 ml-2" />
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <Card className="glass-effect border-primary/20">
-                <CardHeader>
-                  <CardTitle>Why These Talents Stand Out</CardTitle>
-                </CardHeader>
-                <CardContent className="grid md:grid-cols-3 gap-4">
-                  <div className="text-center p-4">
-                    <TrendingUp className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <h4 className="font-semibold mb-1">Top Performers</h4>
-                    <p className="text-sm text-muted-foreground">Consistently high scores across all skill areas</p>
-                  </div>
-                  <div className="text-center p-4">
-                    <Zap className="w-8 h-8 mx-auto mb-2 text-accent" />
-                    <h4 className="font-semibold mb-1">Rising Stars</h4>
-                    <p className="text-sm text-muted-foreground">Fresh talents with exceptional potential</p>
-                  </div>
-                  <div className="text-center p-4">
-                    <Users className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <h4 className="font-semibold mb-1">Team Players</h4>
-                    <p className="text-sm text-muted-foreground">Strong personality and communication skills</p>
-                  </div>
-                </CardContent>
-              </Card>
             </TabsContent>
           </Tabs>
         </div>
