@@ -146,7 +146,7 @@ const leaderboardData = [
   },
   {
     rank: 2,
-    name: "Arjun Sharma",
+    name: "Arjuna Sharma",
     college: "IIM Bangalore",
     score: 94,
     skills: { coding: 92, speaking: 89, logical: 96, personality: 91 },
