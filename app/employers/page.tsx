@@ -1160,16 +1160,10 @@ export default function EmployersPage() {
                     </div>
 
                     {selectedTalents.length > 0 && (
-                      <div className="flex gap-2">
-                        <Button variant="outline" className="border-accent text-accent hover:bg-accent/10">
-                          <TrendingUp className="w-4 h-4 mr-2" />
-                          Compare ({selectedTalents.length})
-                        </Button>
-                        <Button onClick={exportShortlist} className="bg-primary hover:bg-primary/90">
-                          <Download className="w-4 h-4 mr-2" />
-                          Export CSV
-                        </Button>
-                      </div>
+                      <Button onClick={exportShortlist} className="bg-primary hover:bg-primary/90">
+                        <Download className="w-4 h-4 mr-2" />
+                        Export Shortlist ({selectedTalents.length})
+                      </Button>
                     )}
                   </div>
 

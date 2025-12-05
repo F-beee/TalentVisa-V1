@@ -178,7 +178,7 @@
 
 
 /* ======================================== */
-/* GLASS EFFECT (IMPROVED)                */
+/* GLASS EFFECT                           */
 /* ======================================== */
 .glass-effect {
   backdrop-filter: blur(16px);
@@ -192,13 +192,12 @@
 }
 
 .glass-effect:hover {
-  transform: translateY(-2px); /* Physical lift feel */
-  background: rgba(25, 25, 45, 0.7);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 
-    0 10px 15px -3px rgba(0, 0, 0, 0.2), 
-    0 4px 6px -2px rgba(0, 0, 0, 0.1),
-    0 0 20px rgba(139, 92, 246, 0.15); /* Subtle glow matching primary */
+  animation: hover-glow 1.5s ease-in-out infinite;
+  box-shadow: 0 0 10px oklch(0.7 0.3 10 / 0.4),
+    0 0 20px oklch(0.65 0.28 340 / 0.3);
+  transition: all 0.3s ease-in-out;
+  background: oklch(0.1 0.04 270 / 0.9);
+  border-color: oklch(0.7 0.3 10 / 0.6);
 }
 
 
