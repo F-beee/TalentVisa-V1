@@ -181,23 +181,21 @@
 /* GLASS EFFECT                           */
 /* ======================================== */
 .glass-effect {
-  backdrop-filter: blur(16px);
-  background: rgba(20, 20, 35, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(15, 15, 20, 0.4); /* Cleaner, more transparent dark tint */
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 
-    0 4px 6px -1px rgba(0, 0, 0, 0.1), 
-    0 2px 4px -1px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.05); /* Top highlight */
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    0 8px 32px 0 rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .glass-effect:hover {
-  animation: hover-glow 1.5s ease-in-out infinite;
-  box-shadow: 0 0 10px oklch(0.7 0.3 10 / 0.4),
-    0 0 20px oklch(0.65 0.28 340 / 0.3);
-  transition: all 0.3s ease-in-out;
-  background: oklch(0.1 0.04 270 / 0.9);
-  border-color: oklch(0.7 0.3 10 / 0.6);
+  animation: hover-glow 3s ease-in-out infinite; /* Slower, more elegant pulse */
+  background: rgba(25, 25, 35, 0.55); /* Slightly brighter but same color family */
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px) scale(1.01);
 }
 
 
