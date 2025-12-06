@@ -451,52 +451,54 @@ export default function Dashboard() {
     ctx.font = "bold 48px Arial"
     ctx.fillText(`${avgScore}/100`, canvas.width / 2, 730)
 
-    ctx.fillStyle = "#000000"
-    const qrSize = 120
-    const qrX = canvas.width - 180
-    const qrY = 200
+    // QR Code Generation (Simulated High Fidelity)
+    const qrSize = 140
+    const qrX = canvas.width - 200
+    const qrY = 190
+    
+    // Background for QR
+    ctx.fillStyle = "#ffffff"
+    ctx.fillRect(qrX, qrY, qrSize, qrSize)
 
-    // Generate more realistic QR code pattern based on talent name
+    ctx.fillStyle = "#000000"
+    const moduleCount = 25 // 25x25 grid for realistic density
+    const cellSize = qrSize / moduleCount
     const nameHash = talentData.name.split("").reduce((hash, char) => hash + char.charCodeAt(0), 0)
 
-    // Create QR code pattern with more realistic structure
-    for (let i = 0; i < 15; i++) {
-      for (let j = 0; j < 15; j++) {
-        // Corner squares (finder patterns)
-        if ((i < 3 && j < 3) || (i < 3 && j > 11) || (i > 11 && j < 3)) {
-          if (i === 0 || i === 2 || j === 0 || j === 2 || (i === 1 && j === 1)) {
-            ctx.fillRect(qrX + i * 8, qrY + j * 8, 6, 6)
-          }
-        }
-        // Data pattern based on name hash for uniqueness
-        else if (
-          (i + j + nameHash) % 3 === 0 ||
-          (i * j + nameHash) % 4 === 0 ||
-          (i + nameHash) % 5 === 0 ||
-          (j + nameHash) % 6 === 0
-        ) {
-          ctx.fillRect(qrX + i * 8, qrY + j * 8, 6, 6)
-        }
-        // Timing patterns
-        else if (i === 6 && j % 2 === 0) {
-          ctx.fillRect(qrX + i * 8, qrY + j * 8, 6, 6)
-        } else if (j === 6 && i % 2 === 0) {
-          ctx.fillRect(qrX + i * 8, qrY + j * 8, 6, 6)
+    for (let i = 0; i < moduleCount; i++) {
+      for (let j = 0; j < moduleCount; j++) {
+        // Define Finder Patterns (7x7 modules at corners)
+        const isTL = i < 7 && j < 7 // Top-Left
+        const isTR = i > moduleCount - 8 && j < 7 // Top-Right
+        const isBL = i < 7 && j > moduleCount - 8 // Bottom-Left
+        
+        if (isTL || isTR || isBL) {
+           // Draw Finder Pattern (Concentric squares)
+           let ri = isTR ? i - (moduleCount - 7) : i
+           let rj = isBL ? j - (moduleCount - 7) : j
+           
+           // Outer frame (0 or 6) or Inner block (2-4)
+           if (ri === 0 || ri === 6 || rj === 0 || rj === 6 || (ri >= 2 && ri <= 4 && rj >= 2 && rj <= 4)) {
+             ctx.fillRect(qrX + i * cellSize, qrY + j * cellSize, cellSize + 0.6, cellSize + 0.6)
+           }
+        } else {
+           // Random Data Pattern (Deterministic based on name)
+           if ((i * j + nameHash) % 3 === 0 || ((i + j) % 2 === 0 && Math.random() > 0.8)) {
+             ctx.fillRect(qrX + i * cellSize, qrY + j * cellSize, cellSize + 0.6, cellSize + 0.6)
+           }
         }
       }
     }
 
-    // QR code border
-    ctx.strokeStyle = "#000000"
-    ctx.lineWidth = 2
-    ctx.strokeRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20)
-
+    // QR URL Text
     ctx.fillStyle = "#6b7280"
-    ctx.font = "12px Arial"
+    ctx.font = "14px Arial"
     ctx.textAlign = "center"
-    ctx.fillText("Scan to Verify Certificate", qrX + qrSize / 2, qrY + qrSize + 25)
+    ctx.fillText("Scan to Verify", qrX + qrSize / 2, qrY + qrSize + 20)
+    ctx.fillStyle = "#3b82f6"
+    ctx.font = "bold 14px Arial"
     ctx.fillText(
-      `TalentVisa.com/verify/${talentData.name.replace(/\s+/g, "").toLowerCase()}`,
+      `talentvisa.space`,
       qrX + qrSize / 2,
       qrY + qrSize + 40,
     )
@@ -505,8 +507,8 @@ export default function Dashboard() {
     ctx.fillStyle = "#9ca3af"
     ctx.font = "16px Arial"
     ctx.textAlign = "right"
-    const certId = `TR-${talentData.name.replace(/\s+/g, "").toUpperCase()}-${Date.now().toString().slice(-6)}`
-    ctx.fillText(`Certificate ID: ${certId}`, canvas.width - 60, canvas.height - 40)
+    const certId = `TR-${talentData.name.replace(/\s+/g, "").toUpperCase().slice(0, 6)}-${Date.now().toString().slice(-6)}`
+    ctx.fillText(`ID: ${certId}`, canvas.width - 60, canvas.height - 40)
 
     // Issue date
     ctx.textAlign = "left"
@@ -944,117 +946,108 @@ export default function Dashboard() {
                 </Card>
               </div>
 
-              <Card className="glass-effect border-primary/20">
-                <CardContent className="p-0">
-                  <div className="space-y-0">
-                    {filteredLeaderboard.map((talent, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-wrap items-start justify-between p-4 hover:bg-muted/30 transition-colors cursor-pointer border-b border-border/50 last:border-b-0" // Changed items-center to items-start
-                        onClick={() => openTalentProfile(talent)}
-                      >
-                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/20 text-primary font-bold">
-                          {talent.rank <= 3 ? (
-                            talent.rank === 1 ? (
-                              <Crown className="w-5 h-5 text-yellow-500" />
-                            ) : talent.rank === 2 ? (
-                              <Medal className="w-5 h-5 text-gray-400" />
-                            ) : (
-                              <Award className="w-5 h-5 text-amber-600" />
-                            )
-                          ) : (
-                            talent.rank
-                          )}
-                        </div>
+              <div className="space-y-3">
+                {filteredLeaderboard.map((talent, index) => (
+                  <div
+                    key={index}
+                    className={`glass-effect rounded-xl p-4 flex flex-wrap items-center gap-4 cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:shadow-lg ${
+                      talent.rank === 1
+                        ? "border-yellow-500/40 bg-yellow-500/5 shadow-[0_0_20px_rgba(234,179,8,0.1)]"
+                        : talent.rank === 2
+                        ? "border-zinc-400/40 bg-zinc-400/5 shadow-[0_0_20px_rgba(161,161,170,0.1)]"
+                        : talent.rank === 3
+                        ? "border-orange-500/40 bg-orange-500/5 shadow-[0_0_20px_rgba(249,115,22,0.1)]"
+                        : "border-white/5 hover:border-white/10"
+                    }`}
+                    onClick={() => openTalentProfile(talent)}
+                  >
+                    {/* Rank & Profile Group */}
+                    <div className="flex items-center gap-4 flex-1 min-w-[240px]">
+                      <div className={`flex items-center justify-center w-10 h-10 rounded-full font-bold text-base shrink-0 shadow-inner ${
+                        talent.rank === 1 ? "bg-primary/20 text-red-600" :
+                        talent.rank === 2 ? "bg-primary/20 text-yellow-500" :
+                        talent.rank === 3 ? "bg-primary/20 text-green-500" :
+                        "bg-primary/10 text-primary"
+                      }`}>
+                        {talent.rank === 1 ? <Crown className="w-5 h-5 text-yellow-500" /> :
+                         talent.rank === 2 ? <Medal className="w-5 h-5 text-gray-400" /> :
+                         talent.rank === 3 ? <Award className="w-5 h-5 text-amber-600" /> :
+                         talent.rank}
+                      </div>
 
-                        <div className="flex-1 pl-4 min-w-0">
-                          {talent.rank === 1 && (
-                            <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30 mb-1 w-fit">
-                              Top Performer
-                            </Badge>
-                          )}
-                          <div className="flex items-center gap-3">
-                            <Avatar className="w-8 h-8">
-                              <AvatarImage
-                                src={
-                                  talent.name === "Gurnaam Singh"
-                                    ? "https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=Chase"
-                                    : `https://api.dicebear.com/9.x/pixel-art-neutral/svg?seed=${talent.name}`
-                                }
-                              />
-                              <AvatarFallback className="text-xs">
-                                {talent.name.substring(0, 2)}
-                              </AvatarFallback>
-                            </Avatar>
-                            <h4 className="font-semibold min-w-[150px]">{talent.name}</h4>
-                            <div
-                              className={`text-2xl font-bold ${talent.rank === 1 ? "text-red-600" : talent.rank === 2 ? "text-yellow-500" : talent.rank === 3 ? "text-green-500" : "text-primary"}`}
-                            >
-                              {talent.score}
-                            </div>
-                          </div>
-                          <p className="text-sm text-muted-foreground">{talent.college}</p>
-                          <div className="flex flex-col space-y-0.5 mt-1">
-                            <span className="text-xs text-muted-foreground">
-                              Coding: {talent.skills.coding} | Speaking: {talent.skills.speaking}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              Logic: {talent.skills.logical} | Personality: {talent.skills.personality}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col gap-1 w-full sm:flex-row sm:space-x-1 sm:w-auto mt-2">
-                          <div className="flex flex-col gap-1 w-full sm:flex-row sm:space-x-1 sm:w-auto mt-2">
-                            {talent.rank === 1 && talent.linkedin && (
-                              <div className="flex flex-col gap-2 sm:flex-row sm:space-x-2">
-                                <Button
-                                  size="sm"
-                                  className="bg-primary hover:bg-primary/90 text-white shadow-sm transition-all"
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    window.open(talent.linkedin, "_blank")
-                                  }}
-                                >
-                                  <Users className="w-3 h-3 mr-1" />
-                                  Connect
-                                </Button>
-
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="border-primary/50 text-primary hover:bg-primary/10 hover:border-primary transition-all bg-transparent"
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    handlePreviewLeaderboardSkillCard(talent)
-                                  }}
-                                >
-                                  <CheckCircle className="w-3 h-3 mr-1" />
-                                  Verification
-                                </Button>
-                              </div>
-                            )}
-                            {talent.rank !== 1 && (
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="hover:bg-primary/20 hover:scale-105 transition-all duration-300 bg-transparent"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  handleConnectWithTalent(talent)
-                                }}
-                              >
-                                <Users className="w-3 h-3 mr-1" />
-                                Connect
-                              </Button>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <Avatar className="w-10 h-10 border border-white/10">
+                          <AvatarImage
+                            src={
+                              talent.name === "Gurnaam Singh"
+                                ? "https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=Chase"
+                                : `https://api.dicebear.com/9.x/pixel-art-neutral/svg?seed=${talent.name}`
+                            }
+                          />
+                          <AvatarFallback>{talent.name.substring(0, 2)}</AvatarFallback>
+                        </Avatar>
+                        
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-semibold text-base truncate">
+                              {talent.name}
+                            </h4>
+                            {talent.rank === 1 && (
+                              <Badge variant="outline" className="text-[10px] h-5 border-yellow-500/50 text-yellow-500 px-1.5 bg-yellow-500/5">
+                                Top
+                              </Badge>
                             )}
                           </div>
+                          <p className="text-xs text-muted-foreground truncate">{talent.college}</p>
                         </div>
                       </div>
-                    ))}
+                    </div>
+
+                    {/* Stats & Actions Group */}
+                    <div className="flex items-center justify-between gap-4 w-full sm:w-auto pl-14 sm:pl-0 mt-2 sm:mt-0 border-t sm:border-0 border-white/5 pt-3 sm:pt-0">
+                      <div className="text-right mr-4">
+                        <div className={`text-xl font-bold leading-none ${
+                          talent.rank === 1 ? "text-red-600" :
+                          talent.rank === 2 ? "text-yellow-500" :
+                          talent.rank === 3 ? "text-green-500" :
+                          "text-primary"
+                        }`}>
+                          {talent.score}
+                        </div>
+                        <div className="text-[10px] text-muted-foreground">Avg Score</div>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          className="h-8 px-3 bg-primary/90 hover:bg-primary text-white shadow-sm text-xs"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            if (talent.linkedin) window.open(talent.linkedin, "_blank")
+                            else handleConnectWithTalent(talent)
+                          }}
+                        >
+                          <Users className="w-3 h-3 mr-1.5" />
+                          Connect
+                        </Button>
+                        
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-8 px-3 border-primary/20 text-primary bg-transparent hover:bg-primary/10 text-xs"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handlePreviewLeaderboardSkillCard(talent)
+                          }}
+                        >
+                          <CheckCircle className="w-3 h-3 mr-1.5" />
+                          Verify
+                        </Button>
+                      </div>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
+                ))}
+              </div>
             </TabsContent>
 
             <TabsContent value="suggestions" className="space-y-6 pt-12">
@@ -1349,7 +1342,7 @@ export default function Dashboard() {
                     className="w-full sm:w-auto"
                     onClick={() => {
                       // Use execCommand for broader compatibility within potential iframe environments
-                      const textToCopy = `https://TalentVisa.com/verify/${skillCardTalent.name.replace(" ", "_")}_${Date.now()}`
+                      const textToCopy = `https://talentvisa.space/verify/${skillCardTalent.name.replace(/\s+/g, "_").toLowerCase()}`
                       const textArea = document.createElement("textarea")
                       textArea.value = textToCopy
                       document.body.appendChild(textArea)
