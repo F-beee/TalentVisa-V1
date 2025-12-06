@@ -181,23 +181,28 @@
 /* GLASS EFFECT                           */
 /* ======================================== */
 .glass-effect {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background: rgba(15, 15, 20, 0.4); /* Cleaner, more transparent dark tint */
+  backdrop-filter: blur(24px); /* Slightly stronger blur for premium look */
+  -webkit-backdrop-filter: blur(24px);
+  
+  /* UPDATED: Darker base with a "tad" of blue tint (rgb: 20, 30, 45) and higher opacity (0.6) */
+  background: rgba(20, 30, 45, 0.6); 
+  
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 
-    0 8px 32px 0 rgba(0, 0, 0, 0.3),
+    0 8px 32px 0 rgba(0, 0, 0, 0.4),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); /* Smoother easing */
 }
 
 .glass-effect:hover {
-  animation: hover-glow 3s ease-in-out infinite; /* Slower, more elegant pulse */
-  background: rgba(25, 25, 35, 0.55); /* Slightly brighter but same color family */
-  border-color: rgba(255, 255, 255, 0.15);
+  animation: hover-glow 2s ease-in-out infinite; /* Slower, deeper pulse */
+  
+  /* UPDATED: Slightly lighter blue tint on hover */
+  background: rgba(30, 40, 60, 0.75); 
+  
+  border-color: rgba(140, 180, 255, 0.25); /* Subtle blueish border highlight */
   transform: translateY(-4px) scale(1.01);
 }
-
 
 /* ======================================== */
 /* HYPER-DYNAMIC MESH GRADIENT FLOW */
