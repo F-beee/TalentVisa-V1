@@ -346,9 +346,10 @@ export default function Dashboard() {
   }
 
   const generateSkillCard = (talentData = mockTalentData) => {
+    if (typeof document === "undefined") return ""
     const canvas = document.createElement("canvas")
     const ctx = canvas.getContext("2d")
-    if (!ctx) return null
+    if (!ctx) return ""
 
     // High resolution canvas for better quality
     canvas.width = 1200
@@ -451,43 +452,29 @@ export default function Dashboard() {
     ctx.font = "bold 48px Arial"
     ctx.fillText(`${avgScore}/100`, canvas.width / 2, 730)
 
-    // QR Code Generation (Simulated High Fidelity)
+    // QR Code Position
     const qrSize = 140
     const qrX = canvas.width - 200
     const qrY = 190
     
-    // Background for QR
+    // Draw White Background for QR
     ctx.fillStyle = "#ffffff"
     ctx.fillRect(qrX, qrY, qrSize, qrSize)
 
-    ctx.fillStyle = "#000000"
-    const moduleCount = 25 // 25x25 grid for realistic density
-    const cellSize = qrSize / moduleCount
-    const nameHash = talentData.name.split("").reduce((hash, char) => hash + char.charCodeAt(0), 0)
-
-    for (let i = 0; i < moduleCount; i++) {
-      for (let j = 0; j < moduleCount; j++) {
-        // Define Finder Patterns (7x7 modules at corners)
-        const isTL = i < 7 && j < 7 // Top-Left
-        const isTR = i > moduleCount - 8 && j < 7 // Top-Right
-        const isBL = i < 7 && j > moduleCount - 8 // Bottom-Left
-        
-        if (isTL || isTR || isBL) {
-           // Draw Finder Pattern (Concentric squares)
-           let ri = isTR ? i - (moduleCount - 7) : i
-           let rj = isBL ? j - (moduleCount - 7) : j
-           
-           // Outer frame (0 or 6) or Inner block (2-4)
-           if (ri === 0 || ri === 6 || rj === 0 || rj === 6 || (ri >= 2 && ri <= 4 && rj >= 2 && rj <= 4)) {
-             ctx.fillRect(qrX + i * cellSize, qrY + j * cellSize, cellSize + 0.6, cellSize + 0.6)
-           }
-        } else {
-           // Random Data Pattern (Deterministic based on name)
-           if ((i * j + nameHash) % 3 === 0 || ((i + j) % 2 === 0 && Math.random() > 0.8)) {
-             ctx.fillRect(qrX + i * cellSize, qrY + j * cellSize, cellSize + 0.6, cellSize + 0.6)
-           }
-        }
+    // 🟢 NEW LOGIC: Draw the Hidden Image
+    const imgElement = document.getElementById("certificate-qr-source") as HTMLImageElement
+    if (imgElement && imgElement.complete && imgElement.naturalWidth !== 0) {
+      try {
+        ctx.drawImage(imgElement, qrX, qrY, qrSize, qrSize)
+      } catch (e) {
+        console.error("Image draw error", e)
       }
+    } else {
+      // Fallback: Draw a black placeholder box if image isn't ready
+      ctx.fillStyle = "#000000"
+      ctx.strokeRect(qrX, qrY, qrSize, qrSize)
+      ctx.font = "14px Arial"
+      ctx.fillText("QR Code", qrX + qrSize/2, qrY + qrSize/2)
     }
 
     // QR URL Text
@@ -514,7 +501,12 @@ export default function Dashboard() {
     ctx.textAlign = "left"
     ctx.fillText(`Issued: ${new Date().toLocaleDateString()}`, 60, canvas.height - 40)
 
-    return canvas.toDataURL("image/png", 1.0)
+    try {
+      return canvas.toDataURL("image/png", 1.0)
+    } catch (e) {
+      console.error("Canvas export failed", e)
+      return ""
+    }
   }
 
   const handleDownloadSkillCard = () => {
@@ -605,8 +597,18 @@ export default function Dashboard() {
     }
   }
 
-  return (
+return (
     <div className="min-h-screen bg-background">
+      {/* Hidden image source for the certificate generator */}
+      {/* Ensure this file exists in your public folder! */}
+      <img 
+        id="certificate-qr-source" 
+        src="/abstract-geometric-shapes.png" 
+        crossOrigin="anonymous"
+        className="hidden" 
+        alt="QR Source" 
+      />
+
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-float"></div>
         <div
