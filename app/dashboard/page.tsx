@@ -952,7 +952,7 @@ return (
                 {filteredLeaderboard.map((talent, index) => (
                   <div
                     key={index}
-                    className={`glass-effect rounded-xl p-4 flex flex-wrap items-center gap-4 cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:shadow-lg ${
+                    className={`glass-effect rounded-xl p-3 sm:p-4 flex flex-wrap items-center gap-3 sm:gap-4 cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:shadow-lg ${
                       talent.rank === 1
                         ? "border-yellow-500/40 bg-yellow-500/5 shadow-[0_0_20px_rgba(234,179,8,0.1)]"
                         : talent.rank === 2
@@ -964,21 +964,21 @@ return (
                     onClick={() => openTalentProfile(talent)}
                   >
                     {/* Rank & Profile Group */}
-                    <div className="flex items-center gap-4 flex-1 min-w-[240px]">
-                      <div className={`flex items-center justify-center w-10 h-10 rounded-full font-bold text-base shrink-0 shadow-inner ${
-                        talent.rank === 1 ? "bg-primary/20 text-red-600" :
-                        talent.rank === 2 ? "bg-primary/20 text-yellow-500" :
-                        talent.rank === 3 ? "bg-primary/20 text-green-500" :
-                        "bg-primary/10 text-primary"
-                      }`}>
-                        {talent.rank === 1 ? <Crown className="w-5 h-5 text-yellow-500" /> :
-                         talent.rank === 2 ? <Medal className="w-5 h-5 text-gray-400" /> :
-                         talent.rank === 3 ? <Award className="w-5 h-5 text-amber-600" /> :
-                         talent.rank}
-                      </div>
-
+                    <div className="flex items-center justify-between w-full sm:w-auto flex-1 min-w-[200px]">
                       <div className="flex items-center gap-3 min-w-0">
-                        <Avatar className="w-10 h-10 border border-white/10">
+                        <div className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full font-bold text-sm sm:text-base shrink-0 shadow-inner ${
+                          talent.rank === 1 ? "bg-primary/20 text-red-600" :
+                          talent.rank === 2 ? "bg-primary/20 text-yellow-500" :
+                          talent.rank === 3 ? "bg-primary/20 text-green-500" :
+                          "bg-primary/10 text-primary"
+                        }`}>
+                          {talent.rank === 1 ? <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" /> :
+                           talent.rank === 2 ? <Medal className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" /> :
+                           talent.rank === 3 ? <Award className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" /> :
+                           talent.rank}
+                        </div>
+
+                        <Avatar className="w-8 h-8 sm:w-10 sm:h-10 border border-white/10">
                           <AvatarImage
                             src={
                               talent.name === "Gurnaam Singh"
@@ -991,23 +991,37 @@ return (
                         
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
-                            <h4 className="font-semibold text-base truncate">
+                            <h4 className="font-semibold text-sm sm:text-base truncate">
                               {talent.name}
                             </h4>
                             {talent.rank === 1 && (
-                              <Badge variant="outline" className="text-[10px] h-5 border-yellow-500/50 text-yellow-500 px-1.5 bg-yellow-500/5">
+                              <Badge variant="outline" className="hidden sm:inline-flex text-[10px] h-5 border-yellow-500/50 text-yellow-500 px-1.5 bg-yellow-500/5">
                                 Top
                               </Badge>
                             )}
                           </div>
-                          <p className="text-xs text-muted-foreground truncate">{talent.college}</p>
+                          <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{talent.college}</p>
                         </div>
+                      </div>
+
+                      {/* MOBILE SCORE (Moved upwards right of name) */}
+                      <div className="text-right sm:hidden shrink-0 ml-2">
+                        <div className={`text-lg font-bold leading-none ${
+                          talent.rank === 1 ? "text-red-600" :
+                          talent.rank === 2 ? "text-yellow-500" :
+                          talent.rank === 3 ? "text-green-500" :
+                          "text-primary"
+                        }`}>
+                          {talent.score}
+                        </div>
+                        <div className="text-[9px] text-muted-foreground">Avg Score</div>
                       </div>
                     </div>
 
                     {/* Stats & Actions Group */}
-                    <div className="flex items-center justify-between gap-4 w-full sm:w-auto pl-14 sm:pl-0 mt-2 sm:mt-0 border-t sm:border-0 border-white/5 pt-3 sm:pt-0">
-                      <div className="text-right mr-4">
+                    <div className="flex items-center justify-between gap-3 w-full sm:w-auto mt-1 sm:mt-0 border-t sm:border-0 border-white/5 pt-2 sm:pt-0">
+                      {/* DESKTOP SCORE (Hidden on mobile) */}
+                      <div className="text-right mr-4 hidden sm:block">
                         <div className={`text-xl font-bold leading-none ${
                           talent.rank === 1 ? "text-red-600" :
                           talent.rank === 2 ? "text-yellow-500" :
@@ -1019,10 +1033,11 @@ return (
                         <div className="text-[10px] text-muted-foreground">Avg Score</div>
                       </div>
 
-                      <div className="flex gap-2">
+                      {/* Buttons (Resized for mobile) */}
+                      <div className="flex gap-2 w-full sm:w-auto">
                         <Button
                           size="sm"
-                          className="h-8 px-3 bg-primary/90 hover:bg-primary text-white shadow-sm text-xs"
+                          className="flex-1 sm:flex-none h-8 px-3 bg-primary/90 hover:bg-primary text-white shadow-sm text-xs"
                           onClick={(e) => {
                             e.stopPropagation()
                             if (talent.linkedin) window.open(talent.linkedin, "_blank")
@@ -1036,7 +1051,7 @@ return (
                         <Button
                           size="sm"
                           variant="outline"
-                          className="h-8 px-3 border-primary/20 text-primary bg-transparent hover:bg-primary/10 text-xs"
+                          className="flex-1 sm:flex-none h-8 px-3 border-primary/20 text-primary bg-transparent hover:bg-primary/10 text-xs"
                           onClick={(e) => {
                             e.stopPropagation()
                             handlePreviewLeaderboardSkillCard(talent)
