@@ -191,8 +191,8 @@
     0 8px 32px 0 rgba(0, 0, 0, 0.3),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
     
-  /* UPDATED: Much faster (0.15s) and snappier (ease-out) for tactile feel */
-  transition: all 0.15s ease-out;
+  /* UPDATED: "Graceful Snappy" - Starts fast, lands soft (Premium Feel) */
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* High opacity version specifically for the Booking Popup */
