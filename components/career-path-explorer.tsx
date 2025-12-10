@@ -143,8 +143,11 @@ export function CareerPathExplorer({ currentSkills, initialPath }: CareerPathExp
         {sortedPaths.map((path) => (
           <Card
             key={path.id}
-            className={`glass-effect cursor-pointer transition-all hover:border-primary/40 ${
-              selectedPath === path.id ? "border-primary/60 bg-primary/5" : "border-primary/20"
+            className={`glass-effect cursor-pointer transition-all duration-500 ease-in-out hover:border-primary/40 ${
+              // UPDATED: Added 'md:col-span-2' to make the expanded card take full width
+              selectedPath === path.id 
+                ? "border-primary/60 bg-primary/5 md:col-span-2 scale-[1.01]" 
+                : "border-primary/20"
             }`}
             onClick={() => setSelectedPath(selectedPath === path.id ? "" : path.id)}
           >

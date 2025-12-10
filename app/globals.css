@@ -176,34 +176,66 @@
 
 
 
-
 /* ======================================== */
 /* GLASS EFFECT                           */
 /* ======================================== */
 .glass-effect {
-  backdrop-filter: blur(24px); /* Slightly stronger blur for premium look */
-  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   
-  /* UPDATED: Darker base with a "tad" of blue tint (rgb: 20, 30, 45) and higher opacity (0.6) */
-  background: rgba(20, 30, 45, 0.6); 
+  /* Apple-like transparency (Base state) */
+  background: rgba(20, 30, 45, 0.3); 
   
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 
-    0 8px 32px 0 rgba(0, 0, 0, 0.4),
+    0 8px 32px 0 rgba(0, 0, 0, 0.3),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); /* Smoother easing */
+    
+  /* UPDATED: Much faster (0.15s) and snappier (ease-out) for tactile feel */
+  transition: all 0.15s ease-out;
+}
+
+/* High opacity version specifically for the Booking Popup */
+.glass-effect-strong {
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  background: rgba(10, 10, 15, 0.95); 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
 }
 
 .glass-effect:hover {
-  animation: hover-glow 2s ease-in-out infinite; /* Slower, deeper pulse */
+  /* YOUR EXACT ANIMATION & GLOW SETTINGS */
+  animation: hover-glow 1.5s ease-in-out infinite;
   
-  /* UPDATED: Slightly lighter blue tint on hover */
-  background: rgba(30, 40, 60, 0.75); 
+  box-shadow: 0 0 10px oklch(0.7 0.3 10 / 0.4),
+    0 0 20px oklch(0.65 0.28 340 / 0.3);
+    
+  border-color: oklch(0.7 0.3 10 / 0.6);
   
-  border-color: rgba(140, 180, 255, 0.25); /* Subtle blueish border highlight */
+  /* Background remains subtle/glassy */
+  background: rgba(30, 35, 50, 0.5); 
+  
   transform: translateY(-4px) scale(1.01);
 }
-
+/* YOUR EXACT KEYFRAMES */
+@keyframes hover-glow {
+  0% {
+    box-shadow: 0 0 10px oklch(0.7 0.3 10 / 0.4),
+      0 0 20px oklch(0.65 0.28 340 / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px oklch(0.75 0.35 10 / 0.7),
+      0 0 50px oklch(0.7 0.32 340 / 0.5),
+      inset 0 0 20px oklch(0.8 0.3 10 / 0.3);
+  }
+  100% {
+    box-shadow: 0 0 10px oklch(0.7 0.3 10 / 0.4),
+      0 0 20px oklch(0.65 0.28 340 / 0.3);
+  }
+}
 /* ======================================== */
 /* HYPER-DYNAMIC MESH GRADIENT FLOW */
 /* ======================================== */
