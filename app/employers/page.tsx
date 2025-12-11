@@ -417,7 +417,7 @@ export default function EmployersPage() {
       </div>
 
       <div className="relative z-10">
-        <header className="glass-effect border-b border-primary/20 sticky top-0 z-50">
+        <header className="glass-effect-static border-b border-primary/20 sticky top-0 z-50">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <div 
               className="flex items-center space-x-4 cursor-pointer hover:opacity-80 transition-opacity"

@@ -351,117 +351,150 @@ export default function Dashboard() {
     const ctx = canvas.getContext("2d")
     if (!ctx) return ""
 
-    // High resolution canvas for better quality
+    // High resolution canvas
     canvas.width = 1200
     canvas.height = 800
 
-    // White background
-    ctx.fillStyle = "#ffffff"
+    // 1. Dark Premium Background
+    ctx.fillStyle = "#0f0f13" 
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    // Add subtle border
-    ctx.strokeStyle = "#e5e7eb"
-    ctx.lineWidth = 4
-    ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40)
+    // 2. Neon Gradient Border
+    const gradBorder = ctx.createLinearGradient(0, 0, canvas.width, 0)
+    gradBorder.addColorStop(0, "#ec4899") // Pink
+    gradBorder.addColorStop(1, "#8b5cf6") // Purple
+    ctx.strokeStyle = gradBorder
+    ctx.lineWidth = 15
+    ctx.strokeRect(0, 0, canvas.width, canvas.height)
 
-    // Header section with gradient accent
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0)
-    gradient.addColorStop(0, "#3b82f6")
-    gradient.addColorStop(1, "#8b5cf6")
-    ctx.fillStyle = gradient
-    ctx.fillRect(40, 40, canvas.width - 80, 120)
-
-    // Certificate title
-    ctx.fillStyle = "#ffffff"
-    ctx.font = "bold 48px Arial"
+    // 3. Header Title
+    ctx.fillStyle = "#a1a1aa" // Muted gray
+    ctx.font = "bold 24px Arial"
     ctx.textAlign = "center"
-    ctx.fillText("SKILL CERTIFICATE", canvas.width / 2, 110)
+    ctx.fillText("CERTIFICATE OF SKILL", canvas.width / 2, 80)
 
-    // Talent name
-    ctx.fillStyle = "#1f2937"
-    ctx.font = "bold 56px Arial"
-    ctx.fillText(talentData.name, canvas.width / 2, 240)
+    // 4. Talent Name (Large & White)
+    ctx.fillStyle = "#ffffff"
+    ctx.font = "bold 64px Arial"
+    ctx.fillText(talentData.name, canvas.width / 2, 160)
 
-    // Institution
-    ctx.fillStyle = "#6b7280"
-    ctx.font = "32px Arial"
-    ctx.fillText(talentData.college, canvas.width / 2, 290)
+    // 5. College/Subtitle (Neon Pink)
+    ctx.fillStyle = "#ec4899"
+    ctx.font = "bold 32px Arial"
+    ctx.fillText(talentData.college, canvas.width / 2, 210)
 
-    // Skills section
-    ctx.fillStyle = "#1f2937"
-    ctx.font = "bold 28px Arial"
+    // Separator Line
+    ctx.shadowColor = "#ec4899"
+    ctx.shadowBlur = 15
+    ctx.fillStyle = gradBorder
+    ctx.fillRect(150, 250, canvas.width - 300, 3)
+    ctx.shadowBlur = 0
+
+    // 6. Skills Section (Better spacing)
     ctx.textAlign = "left"
-    ctx.fillText("Verified Skills:", 80, 380)
+    ctx.fillStyle = "#ffffff"
+    ctx.font = "bold 28px Arial"
+    ctx.fillText("Verified Skills", 120, 320)
 
     const skills = [
       { name: "Coding", score: talentData.skills.coding },
       { name: "Speaking", score: talentData.skills.speaking },
-      { name: "Logical Thinking", score: talentData.skills.logical },
+      { name: "Logical", score: talentData.skills.logical },
       { name: "Personality", score: talentData.skills.personality },
     ]
 
     skills.forEach((skill, index) => {
-      const y = 430 + index * 60
+      const y = 380 + index * 65 // Adjusted spacing
 
-      // Skill name
-      ctx.fillStyle = "#374151"
+      // Label
+      ctx.fillStyle = "#e4e4e7"
       ctx.font = "24px Arial"
-      ctx.fillText(skill.name, 100, y)
+      ctx.fillText(skill.name, 120, y)
 
-      // Score
-      ctx.fillStyle = "#3b82f6"
+      // Score Text (Right aligned)
+      ctx.fillStyle = "#ffffff"
       ctx.font = "bold 24px Arial"
-      ctx.fillText(`${skill.score}/100`, 300, y)
+      ctx.fillText(`${skill.score}%`, 1080, y)
 
-      // Star rating
-      const stars = Math.floor(skill.score / 20)
-      ctx.fillStyle = "#fbbf24"
-      for (let i = 0; i < 5; i++) {
-        const starX = 400 + i * 30
-        if (i < stars) {
-          ctx.fillText("★", starX, y)
-        } else {
-          ctx.fillStyle = "#d1d5db"
-          ctx.fillText("☆", starX, y)
-          ctx.fillStyle = "#fbbf24"
-        }
-      }
+      // Bar Background
+      ctx.fillStyle = "#27272a"
+      ctx.fillRect(320, y - 18, 720, 14)
 
-      // Progress bar
-      ctx.fillStyle = "#e5e7eb"
-      ctx.fillRect(580, y - 15, 200, 8)
-      ctx.fillStyle = "#3b82f6"
-      ctx.fillRect(580, y - 15, (skill.score / 100) * 200, 8)
+      // Bar Fill (Gradient + Glow)
+      const barGrad = ctx.createLinearGradient(320, 0, 1040, 0)
+      barGrad.addColorStop(0, "#ec4899")
+      barGrad.addColorStop(1, "#8b5cf6")
+      
+      ctx.fillStyle = barGrad
+      ctx.shadowColor = "#d946ef"
+      ctx.shadowBlur = 12
+      
+      const fillWidth = (skill.score / 100) * 720
+      ctx.fillRect(320, y - 18, fillWidth, 14)
+      
+      ctx.shadowBlur = 0 
     })
 
-    const avgScore = Math.round(
-      (talentData.skills.coding +
-        talentData.skills.speaking +
-        talentData.skills.logical +
-        talentData.skills.personality) /
-        4,
-    )
+    // --- BOTTOM SECTION LAYOUT ---
 
-    // Overall score
-    ctx.fillStyle = "#1f2937"
-    ctx.font = "bold 32px Arial"
-    ctx.textAlign = "center"
-    ctx.fillText("Overall Score", canvas.width / 2, 680)
-
-    ctx.fillStyle = "#3b82f6"
-    ctx.font = "bold 48px Arial"
-    ctx.fillText(`${avgScore}/100`, canvas.width / 2, 730)
-
-    // QR Code Position
-    const qrSize = 140
-    const qrX = canvas.width - 200
-    const qrY = 190
+    // 7. Overall Score (Bottom Left)
+    const scoreX = 200
+    const scoreY = 680
     
-    // Draw White Background for QR
+    // Ring
+    ctx.beginPath()
+    ctx.arc(scoreX, scoreY, 55, 0, 2 * Math.PI)
+    ctx.strokeStyle = "#3b82f6"
+    ctx.lineWidth = 8
+    ctx.stroke()
+    
+    // Score Number
     ctx.fillStyle = "#ffffff"
-    ctx.fillRect(qrX, qrY, qrSize, qrSize)
+    ctx.font = "bold 42px Arial"
+    ctx.textAlign = "center"
+    const avgScore = Math.round(
+      (talentData.skills.coding + talentData.skills.speaking + talentData.skills.logical + talentData.skills.personality) / 4
+    )
+    ctx.fillText(`${avgScore}`, scoreX, scoreY + 15)
+    
+    ctx.fillStyle = "#9ca3af"
+    ctx.font = "14px Arial"
+    ctx.fillText("Total Score", scoreX, scoreY + 85)
 
-    // 🟢 NEW LOGIC: Draw the Hidden Image
+    // 8. Signature Section (Bottom Center)
+    const sigX = canvas.width / 2
+    const sigY = 680
+
+    ctx.textAlign = "center"
+    ctx.fillStyle = "#71717a"
+    ctx.font = "14px Arial"
+    ctx.fillText("Verified & Authorized by", sigX, sigY - 30)
+
+    // "Signature" styling
+    ctx.font = "italic bold 48px Georgia" 
+    ctx.fillStyle = "#ffffff"
+    ctx.fillText("TalentVisa", sigX, sigY + 20)
+
+    // Underline
+    ctx.strokeStyle = "#ec4899"
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    ctx.moveTo(sigX - 80, sigY + 35)
+    ctx.lineTo(sigX + 80, sigY + 35)
+    ctx.stroke()
+
+    // 9. QR Code (Bottom Right)
+    const qrSize = 120
+    const qrX = canvas.width - 250
+    const qrY = 620
+    
+    // White backing
+    ctx.fillStyle = "#ffffff"
+    ctx.shadowColor = "rgba(0,0,0,0.5)"
+    ctx.shadowBlur = 20
+    ctx.fillRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20)
+    ctx.shadowBlur = 0
+
     const imgElement = document.getElementById("certificate-qr-source") as HTMLImageElement
     if (imgElement && imgElement.complete && imgElement.naturalWidth !== 0) {
       try {
@@ -470,36 +503,19 @@ export default function Dashboard() {
         console.error("Image draw error", e)
       }
     } else {
-      // Fallback: Draw a black placeholder box if image isn't ready
       ctx.fillStyle = "#000000"
       ctx.strokeRect(qrX, qrY, qrSize, qrSize)
-      ctx.font = "14px Arial"
-      ctx.fillText("QR Code", qrX + qrSize/2, qrY + qrSize/2)
     }
 
-    // QR URL Text
-    ctx.fillStyle = "#6b7280"
-    ctx.font = "14px Arial"
-    ctx.textAlign = "center"
-    ctx.fillText("Scan to Verify", qrX + qrSize / 2, qrY + qrSize + 20)
-    ctx.fillStyle = "#3b82f6"
-    ctx.font = "bold 14px Arial"
-    ctx.fillText(
-      `talentvisa.space`,
-      qrX + qrSize / 2,
-      qrY + qrSize + 40,
-    )
+    ctx.fillStyle = "#d4d4d8"
+    ctx.font = "12px Arial"
+    ctx.fillText("Scan to Verify", qrX + qrSize/2, qrY + qrSize + 35)
 
-    // Certificate ID
-    ctx.fillStyle = "#9ca3af"
-    ctx.font = "16px Arial"
-    ctx.textAlign = "right"
-    const certId = `TR-${talentData.name.replace(/\s+/g, "").toUpperCase().slice(0, 6)}-${Date.now().toString().slice(-6)}`
-    ctx.fillText(`ID: ${certId}`, canvas.width - 60, canvas.height - 40)
-
-    // Issue date
-    ctx.textAlign = "left"
-    ctx.fillText(`Issued: ${new Date().toLocaleDateString()}`, 60, canvas.height - 40)
+    // 10. Footer Footer
+    ctx.fillStyle = "#3f3f46"
+    ctx.font = "12px Arial"
+    const certId = `ID: TR-${talentData.name.replace(/\s+/g, "").toUpperCase().slice(0, 4)}-${Date.now().toString().slice(-6)}`
+    ctx.fillText(`${certId}  •  Issued: ${new Date().toLocaleDateString()}`, canvas.width/2, canvas.height - 30)
 
     try {
       return canvas.toDataURL("image/png", 1.0)
@@ -618,7 +634,7 @@ return (
       </div>
 
       <div className="relative z-10">
-        <header className="glass-effect border-b border-primary/20 sticky top-0 z-50">
+        <header className="glass-effect-static border-b border-primary/20 sticky top-0 z-50">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div
@@ -1383,135 +1399,111 @@ return (
         </div>
       )}
 
-      {isBookTestModalOpen && selectedTestCenter && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <Card className="w-full max-w-md glass-effect border-accent/20">
+{isBookTestModalOpen && selectedTestCenter && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+          <Card className="w-full max-w-md glass-effect-strong border-white/10 shadow-2xl overflow-hidden">
             {bookingStep === "confirm" ? (
               <>
-                <CardHeader>
-                  <CardTitle className="flex items-center text-primary">
-                    <Calendar className="w-6 h-6 mr-2" />
-                    Confirm Booking
-                  </CardTitle>
-                  <CardDescription>Please review your test slot details</CardDescription>
+                <CardHeader className="text-center pt-8 pb-2">
+                  <div className="mx-auto w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-4 ring-2 ring-primary/20">
+                    <Calendar className="w-6 h-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-2xl font-bold tracking-tight">Confirm Booking</CardTitle>
+                  <CardDescription className="text-muted-foreground/80">
+                    Review your appointment details
+                  </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Test Center</p>
-                      <p className="font-semibold text-lg">{selectedTestCenter.name}</p>
+                
+                <CardContent className="space-y-8 px-8 pb-8">
+                  {/* Minimalist Details List */}
+                  <div className="space-y-5">
+                    <div className="flex items-start gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors">
+                      <div className="p-2 bg-muted/20 rounded-md">
+                        <MapPin className="w-5 h-5 text-accent" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Test Center</p>
+                        <p className="text-base font-semibold">{selectedTestCenter.name}</p>
+                        <p className="text-sm text-muted-foreground leading-snug mt-0.5">{selectedTestCenter.address}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Address</p>
-                      <p className="font-medium">{selectedTestCenter.address}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Date</p>
-                      <p className="font-semibold">
-                        {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString("en-IN", {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Time Slot</p>
-                      <p className="font-semibold">10:00 AM - 1:00 PM</p>
+
+                    <div className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors">
+                      <div className="p-2 bg-muted/20 rounded-md">
+                        <Clock className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Date & Time</p>
+                        <p className="text-base font-semibold">
+                          {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString("en-IN", {
+                            weekday: "short", day: "numeric", month: "short"
+                          })} • 10:00 AM
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <div className="space-y-3">
+
+                  {/* Tactile Buttons */}
+                  <div className="grid gap-3 pt-2">
                     <Button
-                      className="w-full bg-primary hover:bg-primary/90 text-white font-semibold"
+                      className="w-full h-12 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white font-semibold text-base shadow-[0_4px_14px_0_rgba(147,51,234,0.39)] hover:shadow-[0_6px_20px_rgba(147,51,234,0.23)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 rounded-xl"
                       onClick={() => setBookingStep("success")}
                     >
                       Confirm Booking
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full border-primary/20 text-primary hover:bg-primary/10"
-                      onClick={() => handleOpenMaps(selectedTestCenter.name)}
-                    >
-                      <MapPin className="w-4 h-4 mr-2" />
-                      View on Map
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full bg-transparent hover:bg-muted/20"
-                      onClick={() => setIsBookTestModalOpen(false)}
-                    >
-                      Cancel
-                    </Button>
+                    
+                    <div className="grid grid-cols-2 gap-3">
+                      <Button
+                        variant="outline"
+                        className="h-11 border-white/10 hover:bg-white/5 hover:text-accent hover:border-accent/30 text-muted-foreground transition-all duration-200 active:scale-[0.98] rounded-xl"
+                        onClick={() => handleOpenMaps(selectedTestCenter.name)}
+                      >
+                        <MapPin className="w-4 h-4 mr-2" />
+                        Map
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        className="h-11 hover:bg-white/5 text-muted-foreground hover:text-foreground transition-all duration-200 active:scale-[0.98] rounded-xl"
+                        onClick={() => setIsBookTestModalOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </>
             ) : (
               <>
-                <CardHeader>
-                  <CardTitle className="flex items-center text-accent">
-                    <CheckCircle className="w-6 h-6 mr-2" />
-                    Test Slot Booked!
-                  </CardTitle>
-                  <CardDescription>Your assessment test has been scheduled</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-4 p-4 bg-accent/10 rounded-lg border border-accent/20">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Test Center</p>
-                      <p className="font-semibold text-lg">{selectedTestCenter.name}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Address</p>
-                      <p className="font-medium">{selectedTestCenter.address}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Scheduled Date</p>
-                      <p className="font-semibold">
-                        {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString("en-IN", {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Time Slot</p>
-                      <p className="font-semibold">10:00 AM - 1:00 PM</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Confirmation Email</p>
-                      <p className="font-medium text-sm">confirmation@TalentVisa.com</p>
-                    </div>
+                <CardContent className="pt-12 pb-10 text-center space-y-6">
+                  <div className="mx-auto w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center ring-4 ring-green-500/10 animate-in zoom-in duration-300">
+                    <CheckCircle className="w-10 h-10 text-green-500" />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <CardTitle className="text-2xl font-bold">Booking Confirmed!</CardTitle>
+                    <CardDescription className="max-w-[260px] mx-auto text-base">
+                      We've sent a confirmation email to <span className="text-foreground font-medium">user@example.com</span>
+                    </CardDescription>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="p-4 bg-muted/10 rounded-xl border border-white/5 mx-4">
+                    <p className="text-sm font-medium text-foreground">
+                      {selectedTestCenter.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()} • 10:00 AM
+                    </p>
+                  </div>
+
+                  <div className="pt-4 px-4">
                     <Button
-                      className="w-full bg-gradient-to-r from-accent to-primary hover:shadow-lg text-white font-semibold"
-                      onClick={() => {
-                        handleOpenMaps(selectedTestCenter.name)
-                      }}
-                    >
-                      <MapPin className="w-4 h-4 mr-2" />
-                      Open in Google Maps
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full bg-transparent hover:bg-accent/20"
+                      className="w-full h-11 bg-muted/20 hover:bg-muted/30 text-foreground border border-white/5 hover:border-white/10 active:scale-[0.98] transition-all rounded-xl"
                       onClick={() => {
                         setIsBookTestModalOpen(false)
-                        alert("✅ Confirmation email sent to your registered email address. See you at the test center!")
                       }}
                     >
-                      Close
+                      Done
                     </Button>
-                  </div>
-
-                  <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
-                    <p className="text-xs text-muted-foreground">
-                      <strong>Note:</strong> Please arrive 15 minutes early. Bring a valid ID and your confirmation email.
-                    </p>
                   </div>
                 </CardContent>
               </>
@@ -1519,6 +1511,3 @@ return (
           </Card>
         </div>
       )}
-    </div>
-  )
-}

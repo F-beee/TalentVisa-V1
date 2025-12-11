@@ -194,6 +194,20 @@
   /* UPDATED: "Graceful Snappy" - Starts fast, lands soft (Premium Feel) */
   transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
+/* Static Glass Effect (No Hover Animation) - For Headers */
+.glass-effect-static {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  
+  /* Same base style as glass-effect */
+  background: rgba(20, 30, 45, 0.3); 
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+    
+  /* No transition or transform needed since it shouldn't move */
+}
 
 /* High opacity version specifically for the Booking Popup */
 .glass-effect-strong {
