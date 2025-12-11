@@ -132,7 +132,6 @@ const smartSuggestions = {
     },
   ],
 }
-
 const leaderboardData = [
   {
     rank: 1,
@@ -148,7 +147,7 @@ const leaderboardData = [
     rank: 2,
     name: "Arjuna Sharma",
     college: "IIM Bangalore",
-    score: 92, // Fixed: Avg of (92+89+96+91) is 92
+    score: 92, // Fixed: Mathematical average of skills
     skills: { coding: 92, speaking: 89, logical: 96, personality: 91 },
     experience: "Experienced",
     category: "Overall",
@@ -166,7 +165,7 @@ const leaderboardData = [
     rank: 4,
     name: "Rohan Gupta",
     college: "IIT Madras",
-    score: 85, // Fixed: Avg of skills is 85
+    score: 85, // Fixed
     skills: { coding: 84, speaking: 82, logical: 88, personality: 87 },
     experience: "Fresher",
     category: "Overall",
@@ -175,7 +174,7 @@ const leaderboardData = [
     rank: 5,
     name: "Ananya Singh",
     college: "IIT Kanpur",
-    score: 82, // Fixed: Avg of skills is 82
+    score: 82, // Fixed
     skills: { coding: 81, speaking: 79, logical: 85, personality: 84 },
     experience: "Experienced",
     category: "Overall",
@@ -193,7 +192,7 @@ const leaderboardData = [
     rank: 7,
     name: "Aditya Joshi",
     college: "NIT Trichy",
-    score: 80, // Fixed: Avg of skills is 80
+    score: 80, // Fixed
     skills: { coding: 72, speaking: 93, logical: 74, personality: 82 },
     experience: "Fresher",
     category: "Speaking",
@@ -211,7 +210,7 @@ const leaderboardData = [
     rank: 9,
     name: "Karthik Menon",
     college: "IIT Guwahati",
-    score: 77, // Fixed: Avg of skills is 77
+    score: 77, // Fixed
     skills: { coding: 76, speaking: 70, logical: 72, personality: 88 },
     experience: "Fresher",
     category: "Personality",
@@ -226,7 +225,6 @@ const leaderboardData = [
     category: "Overall",
   },
 ]
-
 const mockJobRecommendations = [
   {
     role: "Software Engineer",
