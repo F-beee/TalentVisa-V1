@@ -22,8 +22,14 @@ export default function LoginPage() {
     return () => clearTimeout(timer)
   }, [])
 
+  // NEW: Scroll to the MVP Guide when the timer starts
   useEffect(() => {
     if (showAutoLoginTimer) {
+      const guideElement = document.getElementById("mvp-guide")
+      if (guideElement) {
+        guideElement.scrollIntoView({ behavior: "smooth", block: "center" })
+      }
+      
       if (autoLoginCountdown > 0) {
         const timer = setInterval(() => setAutoLoginCountdown((c) => c - 1), 1000)
         return () => clearInterval(timer)
@@ -285,14 +291,22 @@ export default function LoginPage() {
                     Continue as Guest
                   </Button>
 
-                  <div className="mt-6 p-3 rounded-lg bg-primary/5 border border-primary/10 text-sm">
-                    <h3 className="font-semibold flex items-center gap-2 mb-2 text-primary text-xs uppercase tracking-wider">
-                      <Info className="w-3 h-3" /> 
+                  {/* UPDATED MVP GUIDE SECTION */}
+                  <div
+                    id="mvp-guide"
+                    className={`mt-6 p-4 rounded-xl border text-sm transition-all duration-700 ease-in-out ${
+                      showAutoLoginTimer
+                        ? "bg-primary/15 border-primary shadow-[0_0_40px_rgba(124,58,237,0.3)] scale-105"
+                        : "bg-primary/5 border-primary/10"
+                    }`}
+                  >
+                    <h3 className="font-bold flex items-center gap-2 mb-2 text-primary text-xs uppercase tracking-wider">
+                      <Info className="w-4 h-4" /> 
                       MVP Tour Guide
                     </h3>
                     <div className="space-y-2 text-muted-foreground text-xs">
-                      <p>
-                        This is an MVP website. You don't need to login. Just chill, you will be auto-logged in as a guest in 10 seconds.
+                      <p className="leading-relaxed">
+                        This is an MVP website. You don't need to login. Just chill, you will be auto-logged in as a guest in <span className="font-bold text-foreground">10 seconds</span>.
                       </p>
                       <p>
                         <span className="font-medium text-foreground">🏢 For Employers:</span> Click the button (top-right) to browse verified candidates, analytics, and hiring tools.
