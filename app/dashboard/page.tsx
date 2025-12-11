@@ -23,7 +23,6 @@ import {
   Target,
   Briefcase,
   ChevronRight,
-  Zap,
   Search,
   Filter,
   Medal,
@@ -31,7 +30,6 @@ import {
   Award,
   CheckCircle,
   Download,
-  User,
   MapPin,
   Phone,
   Mail,
@@ -41,18 +39,13 @@ import {
   Building,
 } from "lucide-react"
 
-// Mock data for demonstration
+// Mock data
 const mockTalentData = {
   name: "Rahul Agarwal",
   college: "IIT Bombay",
   rank: 42,
   totalTalents: 10247,
-  skills: {
-    coding: 92,
-    speaking: 78,
-    logical: 85,
-    personality: 88,
-  },
+  skills: { coding: 97, speaking: 78, logical: 85, personality: 88 },
   experience: "Experienced",
   suggestedRoles: [
     { role: "Senior Software Engineer", match: 95 },
@@ -66,36 +59,12 @@ const mockTalentData = {
   overallScore: 85,
 }
 
-// Mock smart suggestions data
+// Mock smart suggestions
 const smartSuggestions = {
   topRoles: [
-    {
-      role: "Senior Software Engineer",
-      match: 95,
-      company: "Google",
-      location: "Mountain View, CA",
-      salary: "$160k - $220k",
-      reason: "Perfect match for your coding and logical reasoning skills",
-      urgency: "High demand",
-    },
-    {
-      role: "Full Stack Developer",
-      match: 92,
-      company: "Stripe",
-      location: "San Francisco, CA",
-      salary: "$140k - $190k",
-      reason: "Strong technical skills align with full-stack requirements",
-      urgency: "Actively hiring",
-    },
-    {
-      role: "Technical Lead",
-      match: 88,
-      company: "Microsoft",
-      location: "Seattle, WA",
-      salary: "$150k - $200k",
-      reason: "Leadership potential with strong technical foundation",
-      urgency: "New openings",
-    },
+    { role: "Senior Software Engineer", match: 95, company: "Google", location: "Mountain View, CA", salary: "$160k - $220k", reason: "Perfect match for your coding and logical reasoning skills", urgency: "High demand" },
+    { role: "Full Stack Developer", match: 92, company: "Stripe", location: "San Francisco, CA", salary: "$140k - $190k", reason: "Strong technical skills align with full-stack requirements", urgency: "Actively hiring" },
+    { role: "Technical Lead", match: 88, company: "Microsoft", location: "Seattle, WA", salary: "$150k - $200k", reason: "Leadership potential with strong technical foundation", urgency: "New openings" },
   ],
   dreamRoleInsights: {
     role: "Product Manager",
@@ -109,186 +78,42 @@ const smartSuggestions = {
     ],
   },
   trendingOpportunities: [
-    {
-      field: "AI/Machine Learning",
-      growth: "+45%",
-      avgSalary: "$180k",
-      skillsNeeded: ["Python", "TensorFlow", "Statistics"],
-      matchPotential: 78,
-    },
-    {
-      field: "Cloud Architecture",
-      growth: "+38%",
-      avgSalary: "$165k",
-      skillsNeeded: ["AWS", "Kubernetes", "System Design"],
-      matchPotential: 85,
-    },
-    {
-      field: "DevOps Engineering",
-      growth: "+32%",
-      avgSalary: "$155k",
-      skillsNeeded: ["Docker", "CI/CD", "Infrastructure"],
-      matchPotential: 82,
-    },
+    { field: "AI/Machine Learning", growth: "+45%", avgSalary: "$180k", skillsNeeded: ["Python", "TensorFlow", "Statistics"], matchPotential: 78 },
+    { field: "Cloud Architecture", growth: "+38%", avgSalary: "$165k", skillsNeeded: ["AWS", "Kubernetes", "System Design"], matchPotential: 85 },
+    { field: "DevOps Engineering", growth: "+32%", avgSalary: "$155k", skillsNeeded: ["Docker", "CI/CD", "Infrastructure"], matchPotential: 82 },
   ],
 }
+
+// Corrected Scores
 const leaderboardData = [
-  {
-    rank: 1,
-    name: "Gurnaam Singh",
-    college: "PSIT Kanpur",
-    score: 99,
-    skills: { coding: 99, speaking: 99, logical: 100, personality: 99 },
-    experience: "Experienced",
-    category: "Overall",
-    linkedin: "https://www.linkedin.com/in/gurnaam",
-  },
-  {
-    rank: 2,
-    name: "Arjuna Sharma",
-    college: "IIM Bangalore",
-    score: 92, // Fixed: Mathematical average of skills
-    skills: { coding: 92, speaking: 89, logical: 96, personality: 91 },
-    experience: "Experienced",
-    category: "Overall",
-  },
-  {
-    rank: 3,
-    name: "Priya Patel",
-    college: "IIT Delhi",
-    score: 89,
-    skills: { coding: 88, speaking: 85, logical: 92, personality: 90 },
-    experience: "Experienced",
-    category: "Overall",
-  },
-  {
-    rank: 4,
-    name: "Rohan Gupta",
-    college: "IIT Madras",
-    score: 85, // Fixed
-    skills: { coding: 84, speaking: 82, logical: 88, personality: 87 },
-    experience: "Fresher",
-    category: "Overall",
-  },
-  {
-    rank: 5,
-    name: "Ananya Singh",
-    college: "IIT Kanpur",
-    score: 82, // Fixed
-    skills: { coding: 81, speaking: 79, logical: 85, personality: 84 },
-    experience: "Experienced",
-    category: "Overall",
-  },
-  {
-    rank: 6,
-    name: "Kavya Nair",
-    college: "IIIT Bangalore",
-    score: 80,
-    skills: { coding: 95, speaking: 70, logical: 78, personality: 75 },
-    experience: "Experienced",
-    category: "Coding",
-  },
-  {
-    rank: 7,
-    name: "Aditya Joshi",
-    college: "NIT Trichy",
-    score: 80, // Fixed
-    skills: { coding: 72, speaking: 93, logical: 74, personality: 82 },
-    experience: "Fresher",
-    category: "Speaking",
-  },
-  {
-    rank: 8,
-    name: "Sneha Iyer",
-    college: "BITS Pilani",
-    score: 76,
-    skills: { coding: 70, speaking: 73, logical: 89, personality: 71 },
-    experience: "Experienced",
-    category: "Logical",
-  },
-  {
-    rank: 9,
-    name: "Karthik Menon",
-    college: "IIT Guwahati",
-    score: 77, // Fixed
-    skills: { coding: 76, speaking: 70, logical: 72, personality: 88 },
-    experience: "Fresher",
-    category: "Personality",
-  },
-  {
-    rank: 10,
-    name: "Deepika Rao",
-    college: "IIT Roorkee",
-    score: 72,
-    skills: { coding: 73, speaking: 71, logical: 74, personality: 70 },
-    experience: "Experienced",
-    category: "Overall",
-  },
+  { rank: 1, name: "Gurnaam Singh", college: "PSIT Kanpur", score: 99, skills: { coding: 99, speaking: 99, logical: 100, personality: 99 }, experience: "Experienced", category: "Overall", linkedin: "https://www.linkedin.com/in/gurnaam" },
+  { rank: 2, name: "Arjuna Sharma", college: "IIM Bangalore", score: 92, skills: { coding: 92, speaking: 89, logical: 96, personality: 91 }, experience: "Experienced", category: "Overall" },
+  { rank: 3, name: "Priya Patel", college: "IIT Delhi", score: 89, skills: { coding: 88, speaking: 85, logical: 92, personality: 90 }, experience: "Experienced", category: "Overall" },
+  { rank: 4, name: "Rohan Gupta", college: "IIT Madras", score: 85, skills: { coding: 84, speaking: 82, logical: 88, personality: 87 }, experience: "Fresher", category: "Overall" },
+  { rank: 5, name: "Ananya Singh", college: "IIT Kanpur", score: 82, skills: { coding: 81, speaking: 79, logical: 85, personality: 84 }, experience: "Experienced", category: "Overall" },
+  { rank: 6, name: "Kavya Nair", college: "IIIT Bangalore", score: 80, skills: { coding: 95, speaking: 70, logical: 78, personality: 75 }, experience: "Experienced", category: "Coding" },
+  { rank: 7, name: "Aditya Joshi", college: "NIT Trichy", score: 80, skills: { coding: 72, speaking: 93, logical: 74, personality: 82 }, experience: "Fresher", category: "Speaking" },
+  { rank: 8, name: "Sneha Iyer", college: "BITS Pilani", score: 76, skills: { coding: 70, speaking: 73, logical: 89, personality: 71 }, experience: "Experienced", category: "Logical" },
+  { rank: 9, name: "Karthik Menon", college: "IIT Guwahati", score: 77, skills: { coding: 76, speaking: 70, logical: 72, personality: 88 }, experience: "Fresher", category: "Personality" },
+  { rank: 10, name: "Deepika Rao", college: "IIT Roorkee", score: 72, skills: { coding: 73, speaking: 71, logical: 74, personality: 70 }, experience: "Experienced", category: "Overall" },
 ]
+
 const mockJobRecommendations = [
-  {
-    role: "Software Engineer",
-    company: "Google",
-    match: 95,
-    salary: "$150k - $180k",
-    skills: ["JavaScript", "React", "Node.js", "HTML", "CSS"],
-  },
-  {
-    role: "Data Scientist",
-    company: "Microsoft",
-    match: 92,
-    salary: "$160k - $200k",
-    skills: ["Python", "Machine Learning", "Statistics", "SQL", "Data Visualization"],
-  },
-  {
-    role: "Product Manager",
-    company: "Amazon",
-    match: 88,
-    salary: "$140k - $170k",
-    skills: ["Product Strategy", "Market Analysis", "User Research", "Agile", "Communication"],
-  },
+  { role: "Software Engineer", company: "Google", match: 95, salary: "$150k - $180k", skills: ["JavaScript", "React", "Node.js", "HTML", "CSS"] },
+  { role: "Data Scientist", company: "Microsoft", match: 92, salary: "$160k - $200k", skills: ["Python", "Machine Learning", "Statistics", "SQL", "Data Visualization"] },
+  { role: "Product Manager", company: "Amazon", match: 88, salary: "$140k - $170k", skills: ["Product Strategy", "Market Analysis", "User Research", "Agile", "Communication"] },
 ]
 
 const mockSkillSuggestions = [
-  {
-    skill: "Public Speaking",
-    impact: 15,
-    reason: "Improve communication skills to unlock more opportunities.",
-  },
-  {
-    skill: "Data Analysis",
-    impact: 20,
-    reason: "Enhance analytical skills to excel in data-driven roles.",
-  },
-  {
-    skill: "Leadership",
-    impact: 18,
-    reason: "Develop leadership skills to lead teams and projects effectively.",
-  },
+  { skill: "Public Speaking", impact: 15, reason: "Improve communication skills to unlock more opportunities." },
+  { skill: "Data Analysis", impact: 20, reason: "Enhance analytical skills to excel in data-driven roles." },
+  { skill: "Leadership", impact: 18, reason: "Develop leadership skills to lead teams and projects effectively." },
 ]
 
 const testCenters = [
-  {
-    name: "Bangalore Test Center",
-    address: "Tech Park, Whitefield, Bangalore - 560066",
-    phone: "+91-80-4141-5000",
-    email: "bangalore@TalentVisa.com",
-    timings: "Mon-Sat: 9:00 AM - 6:00 PM",
-  },
-  {
-    name: "Delhi Test Center",
-    address: "Business Hub, Connaught Place, New Delhi - 110001",
-    phone: "+91-11-4141-5000",
-    email: "delhi@TalentVisa.com",
-    timings: "Mon-Sat: 9:00 AM - 6:00 PM",
-  },
-  {
-    name: "Mumbai Test Center",
-    address: "Corporate Tower, Bandra, Mumbai - 400050",
-    phone: "+91-22-4141-5000",
-    email: "mumbai@TalentVisa.com",
-    timings: "Mon-Sat: 9:00 AM - 6:00 PM",
-  },
+  { name: "Bangalore Test Center", address: "Tech Park, Whitefield, Bangalore - 560066", phone: "+91-80-4141-5000", email: "bangalore@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
+  { name: "Delhi Test Center", address: "Business Hub, Connaught Place, New Delhi - 110001", phone: "+91-11-4141-5000", email: "delhi@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
+  { name: "Mumbai Test Center", address: "Corporate Tower, Bandra, Mumbai - 400050", phone: "+91-22-4141-5000", email: "mumbai@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
 ]
 
 export default function Dashboard() {
@@ -329,7 +154,6 @@ export default function Dashboard() {
       "Full Stack Developer": "full-stack-dev",
       "Product Manager": "product-manager",
     }
-
     const pathId = roleMap[roleName]
     if (pathId) {
       setSelectedCareerPath(pathId)
@@ -343,25 +167,21 @@ export default function Dashboard() {
     }
   }
 
+  // UPDATED: Synchronous, Dark Mode, Hidden Image Logic
   const generateSkillCard = (talentData = mockTalentData) => {
-    // 1. Safety check for Server-Side Rendering
     if (typeof document === "undefined") return ""
-    
     const canvas = document.createElement("canvas")
     const ctx = canvas.getContext("2d")
     if (!ctx) return ""
 
-    // High resolution canvas
     canvas.width = 1200
     canvas.height = 800
 
-    // --- DESIGN START ---
-
-    // 2. Dark Premium Background
+    // Dark Premium Background
     ctx.fillStyle = "#0f0f13" 
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    // 3. Neon Gradient Border
+    // Neon Gradient Border
     const gradBorder = ctx.createLinearGradient(0, 0, canvas.width, 0)
     gradBorder.addColorStop(0, "#ec4899") // Pink
     gradBorder.addColorStop(1, "#8b5cf6") // Purple
@@ -369,30 +189,30 @@ export default function Dashboard() {
     ctx.lineWidth = 15
     ctx.strokeRect(0, 0, canvas.width, canvas.height)
 
-    // 4. Header Title
-    ctx.fillStyle = "#a1a1aa" // Muted gray
+    // Header Title
+    ctx.fillStyle = "#a1a1aa"
     ctx.font = "bold 24px Arial"
     ctx.textAlign = "center"
     ctx.fillText("CERTIFICATE OF SKILL", canvas.width / 2, 80)
 
-    // 5. Talent Name (Large & White)
+    // Talent Name
     ctx.fillStyle = "#ffffff"
     ctx.font = "bold 64px Arial"
     ctx.fillText(talentData.name, canvas.width / 2, 160)
 
-    // 6. College/Subtitle (Neon Pink)
+    // College
     ctx.fillStyle = "#ec4899"
     ctx.font = "bold 32px Arial"
     ctx.fillText(talentData.college, canvas.width / 2, 210)
 
-    // Separator Line
+    // Separator
     ctx.shadowColor = "#ec4899"
     ctx.shadowBlur = 15
     ctx.fillStyle = gradBorder
     ctx.fillRect(150, 250, canvas.width - 300, 3)
     ctx.shadowBlur = 0
 
-    // 7. Skills Section (Aligned)
+    // Skills
     ctx.textAlign = "left"
     ctx.fillStyle = "#ffffff"
     ctx.font = "bold 28px Arial"
@@ -406,76 +226,57 @@ export default function Dashboard() {
     ]
 
     skills.forEach((skill, index) => {
-      const y = 380 + index * 65 
-
-      // Label
+      const y = 380 + index * 65
       ctx.fillStyle = "#e4e4e7"
       ctx.font = "24px Arial"
       ctx.fillText(skill.name, 120, y)
 
-      // Score Text (Right aligned)
       ctx.fillStyle = "#ffffff"
       ctx.font = "bold 24px Arial"
       ctx.fillText(`${skill.score}%`, 1080, y)
 
-      // Bar Background
       ctx.fillStyle = "#27272a"
       ctx.fillRect(320, y - 18, 720, 14)
 
-      // Bar Fill (Gradient + Glow)
       const barGrad = ctx.createLinearGradient(320, 0, 1040, 0)
       barGrad.addColorStop(0, "#ec4899")
       barGrad.addColorStop(1, "#8b5cf6")
-      
       ctx.fillStyle = barGrad
       ctx.shadowColor = "#d946ef"
       ctx.shadowBlur = 12
-      
-      const fillWidth = (skill.score / 100) * 720
-      ctx.fillRect(320, y - 18, fillWidth, 14)
-      
+      ctx.fillRect(320, y - 18, (skill.score / 100) * 720, 14)
       ctx.shadowBlur = 0 
     })
 
-    // 8. Overall Score (Bottom Left)
+    // Overall Score
     const scoreX = 200
     const scoreY = 680
-    
-    // Ring
     ctx.beginPath()
     ctx.arc(scoreX, scoreY, 55, 0, 2 * Math.PI)
     ctx.strokeStyle = "#3b82f6"
     ctx.lineWidth = 8
     ctx.stroke()
     
-    // Score Number
     ctx.fillStyle = "#ffffff"
     ctx.font = "bold 42px Arial"
     ctx.textAlign = "center"
-    // Recalculate average here to be safe
-    const avgScore = Math.round(
-      (talentData.skills.coding + talentData.skills.speaking + talentData.skills.logical + talentData.skills.personality) / 4
-    )
+    const avgScore = Math.round((talentData.skills.coding + talentData.skills.speaking + talentData.skills.logical + talentData.skills.personality) / 4)
     ctx.fillText(`${avgScore}`, scoreX, scoreY + 15)
     
     ctx.fillStyle = "#9ca3af"
     ctx.font = "14px Arial"
     ctx.fillText("Total Score", scoreX, scoreY + 85)
 
-    // 9. Signature Section (Bottom Center)
+    // Signature
     const sigX = canvas.width / 2
     const sigY = 680
-
     ctx.textAlign = "center"
     ctx.fillStyle = "#71717a"
     ctx.font = "14px Arial"
     ctx.fillText("Verified & Authorized by", sigX, sigY - 30)
-
     ctx.font = "italic bold 48px Georgia" 
     ctx.fillStyle = "#ffffff"
     ctx.fillText("TalentVisa", sigX, sigY + 20)
-
-    // Signature Underline
     ctx.strokeStyle = "#ec4899"
     ctx.lineWidth = 2
     ctx.beginPath()
@@ -483,30 +284,26 @@ export default function Dashboard() {
     ctx.lineTo(sigX + 80, sigY + 35)
     ctx.stroke()
 
-    // 10. QR Code (Bottom Right)
+    // QR Code
     const qrSize = 120
     const qrX = canvas.width - 250
     const qrY = 620
-    
-    // White backing for QR (Essential for scanning)
     ctx.fillStyle = "#ffffff"
     ctx.shadowColor = "rgba(0,0,0,0.5)"
     ctx.shadowBlur = 20
     ctx.fillRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20)
     ctx.shadowBlur = 0
 
-    // Draw the Hidden Image
+    // Hidden Image logic
     const imgElement = document.getElementById("certificate-qr-source") as HTMLImageElement
     if (imgElement && imgElement.complete && imgElement.naturalWidth !== 0) {
       try {
         ctx.drawImage(imgElement, qrX, qrY, qrSize, qrSize)
       } catch (e) {
-        // Silent fail to text if image blocked
         ctx.fillStyle = "#000000"
         ctx.fillText("QR", qrX + qrSize/2, qrY + qrSize/2)
       }
     } else {
-      // Fallback
       ctx.fillStyle = "#000000"
       ctx.strokeRect(qrX, qrY, qrSize, qrSize)
     }
@@ -516,18 +313,24 @@ export default function Dashboard() {
     ctx.textAlign = "center"
     ctx.fillText("Scan to Verify", qrX + qrSize/2, qrY + qrSize + 35)
 
-    // 11. ID Footer
+    // Footer
     ctx.fillStyle = "#3f3f46"
     ctx.font = "12px Arial"
     ctx.textAlign = "center"
     const certId = `ID: TR-${talentData.name.replace(/\s+/g, "").toUpperCase().slice(0, 4)}-${Date.now().toString().slice(-6)}`
     ctx.fillText(`${certId}  •  Issued: ${new Date().toLocaleDateString()}`, canvas.width/2, canvas.height - 30)
 
-    return canvas.toDataURL("image/png", 1.0)
+    try {
+      return canvas.toDataURL("image/png", 1.0)
+    } catch (e) {
+      console.error("Canvas export failed", e)
+      return ""
+    }
   }
 
   const handleDownloadSkillCard = () => {
     const imageData = generateSkillCard()
+    if (!imageData) return
     const link = document.createElement("a")
     link.href = imageData
     link.download = `${mockTalentData.name.replace(" ", "_")}_TalentVisa_Certificate.png`
@@ -541,7 +344,6 @@ export default function Dashboard() {
 
   const handleViewCareerPath = () => {
     setActiveTab("suggestions")
-
     setTimeout(() => {
       const careerPathSection = document.getElementById("career-path-section")
       if (careerPathSection) {
@@ -560,6 +362,7 @@ export default function Dashboard() {
 
   const handleDownloadLeaderboardSkillCard = (talent: any) => {
     const imageData = generateSkillCard(talent)
+    if (!imageData) return
     const link = document.createElement("a")
     link.href = imageData
     link.download = `${talent.name.replace(" ", "_")}_TalentVisa_Certificate.png`
@@ -571,9 +374,7 @@ export default function Dashboard() {
   }
 
   const handleConnectWithEmployers = () => {
-    alert(
-      "Connection request sent to employers! They can now view your profile and reach out directly. Check your email for updates.",
-    )
+    alert("Connection request sent to employers! They can now view your profile and reach out directly.")
   }
 
   const handleApplyToJob = (role: any) => {
@@ -614,10 +415,9 @@ export default function Dashboard() {
     }
   }
 
-return (
+  return (
     <div className="min-h-screen bg-background">
       {/* Hidden image source for the certificate generator */}
-      {/* Ensure this file exists in your public folder! */}
       <img 
         id="certificate-qr-source" 
         src="/abstract-geometric-shapes.png" 
@@ -702,7 +502,6 @@ return (
 
             <TabsContent value="overview" className="space-y-6 pt-12">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Profile Overview */}
                 <Card className="glass-effect border-primary/20 md:col-span-2 lg:col-span-2">
                   <CardHeader className="pb-2">
                     <div className="flex flex-row items-center justify-between gap-2">
@@ -766,7 +565,6 @@ return (
                   </CardContent>
                 </Card>
 
-                {/* Skill Certificate */}
                 <Card className="glass-effect border-accent/20">
                   <CardHeader>
                     <CardTitle className="flex items-center text-accent">
@@ -805,7 +603,6 @@ return (
                   </CardContent>
                 </Card>
 
-                {/* Suggested Roles */}
                 <Card className="glass-effect border-primary/20">
                   <CardHeader>
                     <CardTitle className="flex items-center">
@@ -837,7 +634,6 @@ return (
                   </CardContent>
                 </Card>
 
-                {/* Improvement Areas */}
                 <Card className="glass-effect border-accent/20">
                   <CardHeader>
                     <CardTitle className="flex items-center text-accent">
@@ -862,7 +658,6 @@ return (
                   </CardContent>
                 </Card>
 
-                {/* Action Buttons */}
                 <div className="flex flex-col gap-4 justify-center md:col-span-1 lg:col-span-1">
                   <Button
                     className="w-full h-14 justify-start bg-transparent hover:bg-primary/20 hover:scale-105 transition-all duration-300 border border-primary/20"
@@ -980,7 +775,6 @@ return (
                     }`}
                     onClick={() => openTalentProfile(talent)}
                   >
-                    {/* Rank & Profile Group */}
                     <div className="flex items-center justify-between w-full sm:w-auto flex-1 min-w-[200px]">
                       <div className="flex items-center gap-3 min-w-0">
                         <div className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full font-bold text-sm sm:text-base shrink-0 shadow-inner ${
@@ -1021,7 +815,6 @@ return (
                         </div>
                       </div>
 
-                      {/* MOBILE SCORE (Moved upwards right of name) */}
                       <div className="text-right sm:hidden shrink-0 ml-2">
                         <div className={`text-lg font-bold leading-none ${
                           talent.rank === 1 ? "text-red-600" :
@@ -1035,9 +828,7 @@ return (
                       </div>
                     </div>
 
-                    {/* Stats & Actions Group */}
                     <div className="flex items-center justify-between gap-3 w-full sm:w-auto mt-1 sm:mt-0 border-t sm:border-0 border-white/5 pt-2 sm:pt-0">
-                      {/* DESKTOP SCORE (Hidden on mobile) */}
                       <div className="text-right mr-4 hidden sm:block">
                         <div className={`text-xl font-bold leading-none ${
                           talent.rank === 1 ? "text-red-600" :
@@ -1050,7 +841,6 @@ return (
                         <div className="text-[10px] text-muted-foreground">Avg Score</div>
                       </div>
 
-                      {/* Buttons (Resized for mobile) */}
                       <div className="flex gap-2 w-full sm:w-auto">
                         <Button
                           size="sm"
@@ -1362,36 +1152,32 @@ return (
                 </Button>
               </div>
               <div className="text-center">
+                {/* Fixed Image Source */}
                 <img
                   src={generateSkillCard(skillCardTalent) || "/placeholder.svg"}
                   alt="Skill Certificate"
                   className="mx-auto border rounded-lg shadow-lg max-w-full h-auto"
                 />
-                <div className="mt-4 flex flex-col sm:flex-row gap-2 justify-center">
-                  <Button onClick={() => handleDownloadLeaderboardSkillCard(skillCardTalent)} className="w-full sm:w-auto">
+                
+                {/* Creative Buttons */}
+                <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <Button 
+                    onClick={() => handleDownloadLeaderboardSkillCard(skillCardTalent)} 
+                    className="w-full sm:w-auto h-11 px-8 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-semibold rounded-full shadow-[0_0_20px_rgba(236,72,153,0.4)] hover:shadow-[0_0_35px_rgba(236,72,153,0.6)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 border-0"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
                     Download Certificate
                   </Button>
+                  
                   <Button
                     variant="outline"
-                    className="w-full sm:w-auto"
+                    className="w-full sm:w-auto h-11 px-6 border-white/10 bg-white/5 hover:bg-white/10 text-white hover:border-pink-500/50 rounded-full backdrop-blur-md transition-all duration-300 active:scale-95 group"
                     onClick={() => {
-                      // Use execCommand for broader compatibility within potential iframe environments
                       const textToCopy = `https://talentvisa.space/verify/${skillCardTalent.name.replace(/\s+/g, "_").toLowerCase()}`
-                      const textArea = document.createElement("textarea")
-                      textArea.value = textToCopy
-                      document.body.appendChild(textArea)
-                      textArea.select()
-                      try {
-                        document.execCommand("copy")
-                        alert("Verification link copied to clipboard!")
-                      } catch (err) {
-                        console.error("Failed to copy text: ", err)
-                        alert("Failed to copy link. Please try again or copy manually.")
-                      }
-                      document.body.removeChild(textArea)
+                      navigator.clipboard.writeText(textToCopy).then(() => alert("Link copied!"))
                     }}
                   >
-                    Copy Verification Link
+                    <span className="group-hover:text-pink-400 transition-colors duration-300">Copy Link</span>
                   </Button>
                 </div>
               </div>
@@ -1400,7 +1186,7 @@ return (
         </div>
       )}
 
-{isBookTestModalOpen && selectedTestCenter && (
+      {isBookTestModalOpen && selectedTestCenter && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
           <Card className="w-full max-w-md glass-effect-strong border-white/10 shadow-2xl overflow-hidden">
             {bookingStep === "confirm" ? (
@@ -1416,7 +1202,6 @@ return (
                 </CardHeader>
                 
                 <CardContent className="space-y-8 px-8 pb-8">
-                  {/* Minimalist Details List */}
                   <div className="space-y-5">
                     <div className="flex items-start gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors">
                       <div className="p-2 bg-muted/20 rounded-md">
@@ -1444,7 +1229,6 @@ return (
                     </div>
                   </div>
 
-                  {/* Tactile Buttons */}
                   <div className="grid gap-3 pt-2">
                     <Button
                       className="w-full h-12 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white font-semibold text-base shadow-[0_4px_14px_0_rgba(147,51,234,0.39)] hover:shadow-[0_6px_20px_rgba(147,51,234,0.23)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 rounded-xl"
@@ -1512,3 +1296,6 @@ return (
           </Card>
         </div>
       )}
+    </div>
+  )
+}
