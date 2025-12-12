@@ -1189,8 +1189,8 @@ export default function EmployersPage() {
                                     }
                                   />
                                   <AvatarFallback className="text-sm font-semibold">
-                                    {talent.name.substring(0, 2)}
-                                  </AvatarFallback>
+  {talent.name.split(" ").map((n) => n[0]).join("")}
+</AvatarFallback>
                                 </Avatar>
                                 <div>
                                   <h4 className="text-base font-bold text-foreground leading-tight">{talent.name}</h4>

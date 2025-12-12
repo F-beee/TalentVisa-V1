@@ -797,7 +797,9 @@ export default function Dashboard() {
                                 : `https://api.dicebear.com/9.x/pixel-art-neutral/svg?seed=${talent.name}`
                             }
                           />
-                          <AvatarFallback>{talent.name.substring(0, 2)}</AvatarFallback>
+                          <AvatarFallback>
+  {talent.name.split(" ").map((n) => n[0]).join("")}
+</AvatarFallback>
                         </Avatar>
                         
                         <div className="min-w-0">

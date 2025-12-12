@@ -10,20 +10,20 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { Zap, Users, TrendingUp, Shield, Star, ArrowRight, Building, Info, Award } from "lucide-react"
+import { Users, TrendingUp, Star, ArrowRight, Building, Info, Award } from "lucide-react"
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
-  const [autoLoginCountdown, setAutoLoginCountdown] = useState(10) // Optimized: 10 Seconds
+  const [autoLoginCountdown, setAutoLoginCountdown] = useState(7) // Set to 10 seconds
   const [showAutoLoginTimer, setShowAutoLoginTimer] = useState(false)
 
-  // 1. Trigger the Timer Appearance after 3 seconds (Faster entry)
+  // 1. Trigger the MVP Guide focus after 3 seconds
   useEffect(() => {
     const timer = setTimeout(() => setShowAutoLoginTimer(true), 3000)
     return () => clearTimeout(timer)
   }, [])
 
-  // 2. Handle Countdown & Auto-Login
+  // 2. Handle Countdown & Auto-Login Logic
   useEffect(() => {
     if (showAutoLoginTimer) {
       if (autoLoginCountdown > 0) {
@@ -35,10 +35,9 @@ export default function LoginPage() {
     }
   }, [showAutoLoginTimer, autoLoginCountdown])
 
-  // 3. Handle Scroll & Focus Animation
+  // 3. Smooth Scroll to Guide
   useEffect(() => {
     if (showAutoLoginTimer) {
-      // Small delay to ensure the element is rendered and ready for transition
       setTimeout(() => {
         const guideElement = document.getElementById("mvp-guide")
         if (guideElement) {
@@ -111,6 +110,7 @@ export default function LoginPage() {
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-8">
             <div className="space-y-4">
+              {/* Blue, Glowing Badge */}
               <Badge className="bg-primary/20 text-primary border-primary/30 animate-pulse-glow text-xl text-base py-6 px-9 -mt-12">
                 <Award className="w-4 h-4 mr-2" />
                 Next-Gen Talent Platform
@@ -282,6 +282,7 @@ export default function LoginPage() {
 
                   <Separator className="my-4" />
 
+                  {/* Restored the Blue Timer Badge (Dynamic) */}
                   {showAutoLoginTimer && (
                     <div className="text-center mb-2">
                       <Badge variant="outline" className="bg-primary/5 text-primary text-xs animate-pulse">
@@ -299,7 +300,7 @@ export default function LoginPage() {
                     Continue as Guest
                   </Button>
 
-                  {/* UPDATED MVP GUIDE SECTION: PC Optimized with Zoom & Glow */}
+                  {/* MVP Guide - Static Text "10 seconds" */}
                   <div
                     id="mvp-guide"
                     className={`mt-6 p-4 rounded-xl border text-sm transition-all duration-1000 ease-in-out transform origin-center ${
@@ -314,7 +315,7 @@ export default function LoginPage() {
                     </h3>
                     <div className="space-y-2 text-muted-foreground text-xs">
                       <p className="leading-relaxed">
-                        This is an MVP website. You don't need to login. Just chill, you will be auto-logged in as a guest in <span className="font-bold text-foreground text-base">{autoLoginCountdown} seconds</span>.
+                        This is an MVP website. You don't need to login. Just chill, you will be auto-logged in as a guest in <span className="font-bold text-foreground">10 seconds</span>.
                       </p>
                       <p>
                         <span className="font-medium text-foreground">🏢 For Employers:</span> Click the button (top-right) to browse verified candidates, analytics, and hiring tools.
