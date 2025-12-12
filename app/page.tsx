@@ -10,26 +10,22 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { Zap, Users, TrendingUp, Shield, Star, ArrowRight, Building, Info, Award, } from "lucide-react"
+import { Zap, Users, TrendingUp, Shield, Star, ArrowRight, Building, Info, Award } from "lucide-react"
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
-  const [autoLoginCountdown, setAutoLoginCountdown] = useState(4)
+  const [autoLoginCountdown, setAutoLoginCountdown] = useState(10) // Optimized: 10 Seconds
   const [showAutoLoginTimer, setShowAutoLoginTimer] = useState(false)
 
+  // 1. Trigger the Timer Appearance after 3 seconds (Faster entry)
   useEffect(() => {
-    const timer = setTimeout(() => setShowAutoLoginTimer(true), 5000)
+    const timer = setTimeout(() => setShowAutoLoginTimer(true), 3000)
     return () => clearTimeout(timer)
   }, [])
 
-  // NEW: Scroll to the MVP Guide when the timer starts
+  // 2. Handle Countdown & Auto-Login
   useEffect(() => {
     if (showAutoLoginTimer) {
-      const guideElement = document.getElementById("mvp-guide")
-      if (guideElement) {
-        guideElement.scrollIntoView({ behavior: "smooth", block: "center" })
-      }
-      
       if (autoLoginCountdown > 0) {
         const timer = setInterval(() => setAutoLoginCountdown((c) => c - 1), 1000)
         return () => clearInterval(timer)
@@ -39,10 +35,22 @@ export default function LoginPage() {
     }
   }, [showAutoLoginTimer, autoLoginCountdown])
 
+  // 3. Handle Scroll & Focus Animation
+  useEffect(() => {
+    if (showAutoLoginTimer) {
+      // Small delay to ensure the element is rendered and ready for transition
+      setTimeout(() => {
+        const guideElement = document.getElementById("mvp-guide")
+        if (guideElement) {
+          guideElement.scrollIntoView({ behavior: "smooth", block: "center" })
+        }
+      }, 100)
+    }
+  }, [showAutoLoginTimer])
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    // Simulate login
     setTimeout(() => {
       setIsLoading(false)
       window.location.href = "/dashboard"
@@ -291,13 +299,13 @@ export default function LoginPage() {
                     Continue as Guest
                   </Button>
 
-                  {/* UPDATED MVP GUIDE SECTION */}
+                  {/* UPDATED MVP GUIDE SECTION: PC Optimized with Zoom & Glow */}
                   <div
                     id="mvp-guide"
-                    className={`mt-6 p-4 rounded-xl border text-sm transition-all duration-700 ease-in-out ${
+                    className={`mt-6 p-4 rounded-xl border text-sm transition-all duration-1000 ease-in-out transform origin-center ${
                       showAutoLoginTimer
-                        ? "bg-primary/15 border-primary shadow-[0_0_40px_rgba(124,58,237,0.3)] scale-105"
-                        : "bg-primary/5 border-primary/10"
+                        ? "bg-primary/20 border-primary ring-4 ring-primary/20 shadow-[0_0_50px_rgba(124,58,237,0.4)] scale-110"
+                        : "bg-primary/5 border-primary/10 scale-100"
                     }`}
                   >
                     <h3 className="font-bold flex items-center gap-2 mb-2 text-primary text-xs uppercase tracking-wider">
@@ -306,7 +314,7 @@ export default function LoginPage() {
                     </h3>
                     <div className="space-y-2 text-muted-foreground text-xs">
                       <p className="leading-relaxed">
-                        This is an MVP website. You don't need to login. Just chill, you will be auto-logged in as a guest in <span className="font-bold text-foreground">10 seconds</span>.
+                        This is an MVP website. You don't need to login. Just chill, you will be auto-logged in as a guest in <span className="font-bold text-foreground text-base">{autoLoginCountdown} seconds</span>.
                       </p>
                       <p>
                         <span className="font-medium text-foreground">🏢 For Employers:</span> Click the button (top-right) to browse verified candidates, analytics, and hiring tools.
