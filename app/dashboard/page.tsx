@@ -167,57 +167,66 @@ export default function Dashboard() {
     }
   }
 
-  // UPDATED: Synchronous, Dark Mode, Hidden Image Logic
-  const generateSkillCard = (talentData = mockTalentData) => {
+const generateSkillCard = (talentData = mockTalentData) => {
     if (typeof document === "undefined") return ""
     const canvas = document.createElement("canvas")
     const ctx = canvas.getContext("2d")
     if (!ctx) return ""
 
+    // High resolution canvas
     canvas.width = 1200
     canvas.height = 800
 
-    // Dark Premium Background
-    ctx.fillStyle = "#0f0f13" 
+    // 1. Background (Clean White)
+    ctx.fillStyle = "#ffffff" 
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    // Neon Gradient Border
-    const gradBorder = ctx.createLinearGradient(0, 0, canvas.width, 0)
-    gradBorder.addColorStop(0, "#ec4899") // Pink
-    gradBorder.addColorStop(1, "#8b5cf6") // Purple
-    ctx.strokeStyle = gradBorder
-    ctx.lineWidth = 15
-    ctx.strokeRect(0, 0, canvas.width, canvas.height)
+    // 2. Professional Border (Navy & Gold)
+    // Outer Navy Border
+    ctx.strokeStyle = "#1e3a8a" 
+    ctx.lineWidth = 4
+    ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80)
+    
+    // Inner Gold Border
+    ctx.strokeStyle = "#d97706"
+    ctx.lineWidth = 2
+    ctx.strokeRect(55, 55, canvas.width - 110, canvas.height - 110)
 
-    // Header Title
-    ctx.fillStyle = "#a1a1aa"
-    ctx.font = "bold 24px Arial"
-    ctx.textAlign = "center"
-    ctx.fillText("CERTIFICATE OF SKILL", canvas.width / 2, 80)
+    // 3. Header Section
+    // Logo (Centered & Styled)
+    ctx.fillStyle = "#1e3a8a" // Navy Blue
+    ctx.font = "bold 40px 'Times New Roman', serif"
+    ctx.textAlign = "center" // CENTERED now
+    ctx.fillText("TalentVisa", canvas.width / 2, 110)
 
-    // Talent Name
-    ctx.fillStyle = "#ffffff"
+    // Main Title
+    ctx.fillStyle = "#0f172a"
+    ctx.font = "bold 56px 'Times New Roman', serif" 
+    ctx.fillText("CERTIFICATE OF EXCELLENCE", canvas.width / 2, 170)
+
+    // 4. Candidate Section
+    // "Proudly awarded to"
+    ctx.fillStyle = "#64748b" 
+    ctx.font = "italic 24px Arial"
+    ctx.fillText("Proudly awarded to", canvas.width / 2, 220)
+
+    // Candidate Name
+    ctx.fillStyle = "#000000"
     ctx.font = "bold 64px Arial"
-    ctx.fillText(talentData.name, canvas.width / 2, 160)
+    ctx.fillText(talentData.name, canvas.width / 2, 285)
 
-    // College
-    ctx.fillStyle = "#ec4899"
-    ctx.font = "bold 32px Arial"
-    ctx.fillText(talentData.college, canvas.width / 2, 210)
+    // Context Text
+    ctx.fillStyle = "#475569"
+    ctx.font = "20px Arial"
+    ctx.fillText(`For successfully demonstrating exceptional proficiency`, canvas.width / 2, 330)
+    ctx.fillText(`in the verified skill assessment.`, canvas.width / 2, 355)
 
-    // Separator
-    ctx.shadowColor = "#ec4899"
-    ctx.shadowBlur = 15
-    ctx.fillStyle = gradBorder
-    ctx.fillRect(150, 250, canvas.width - 300, 3)
-    ctx.shadowBlur = 0
+    // Gold Separator
+    ctx.fillStyle = "#d97706"
+    ctx.fillRect(canvas.width / 2 - 80, 380, 160, 2)
 
-    // Skills
+    // 5. Skills Grid (Moved up slightly)
     ctx.textAlign = "left"
-    ctx.fillStyle = "#ffffff"
-    ctx.font = "bold 28px Arial"
-    ctx.fillText("Verified Skills", 120, 320)
-
     const skills = [
       { name: "Coding", score: talentData.skills.coding },
       { name: "Speaking", score: talentData.skills.speaking },
@@ -225,109 +234,104 @@ export default function Dashboard() {
       { name: "Personality", score: talentData.skills.personality },
     ]
 
+    const startY = 430
+    const col1X = 180
+    const col2X = 680
+    
     skills.forEach((skill, index) => {
-      const y = 380 + index * 65
-      ctx.fillStyle = "#e4e4e7"
-      ctx.font = "24px Arial"
-      ctx.fillText(skill.name, 120, y)
+      const isCol2 = index % 2 !== 0
+      const x = isCol2 ? col2X : col1X
+      const y = startY + Math.floor(index / 2) * 80
 
-      ctx.fillStyle = "#ffffff"
-      ctx.font = "bold 24px Arial"
-      ctx.fillText(`${skill.score}%`, 1080, y)
+      // Skill Label
+      ctx.fillStyle = "#334155"
+      ctx.font = "bold 20px Arial"
+      ctx.fillText(skill.name, x, y)
 
-      ctx.fillStyle = "#27272a"
-      ctx.fillRect(320, y - 18, 720, 14)
+      // Score Value
+      ctx.textAlign = "right"
+      ctx.fillStyle = "#0f172a"
+      ctx.fillText(`${skill.score}%`, x + 350, y)
+      ctx.textAlign = "left"
 
-      const barGrad = ctx.createLinearGradient(320, 0, 1040, 0)
-      barGrad.addColorStop(0, "#ec4899")
-      barGrad.addColorStop(1, "#8b5cf6")
-      ctx.fillStyle = barGrad
-      ctx.shadowColor = "#d946ef"
-      ctx.shadowBlur = 12
-      ctx.fillRect(320, y - 18, (skill.score / 100) * 720, 14)
-      ctx.shadowBlur = 0 
+      // Bar Background
+      ctx.fillStyle = "#e2e8f0"
+      ctx.fillRect(x, y + 12, 350, 8)
+
+      // Bar Fill (Navy)
+      ctx.fillStyle = "#1e3a8a" 
+      const fillWidth = (skill.score / 100) * 350
+      ctx.fillRect(x, y + 12, fillWidth, 8)
     })
 
-    // Overall Score
-    const scoreX = 200
-    const scoreY = 680
-    ctx.beginPath()
-    ctx.arc(scoreX, scoreY, 55, 0, 2 * Math.PI)
-    ctx.strokeStyle = "#3b82f6"
-    ctx.lineWidth = 8
-    ctx.stroke()
-    
-    ctx.fillStyle = "#ffffff"
-    ctx.font = "bold 42px Arial"
-    ctx.textAlign = "center"
-    const avgScore = Math.round((talentData.skills.coding + talentData.skills.speaking + talentData.skills.logical + talentData.skills.personality) / 4)
-    ctx.fillText(`${avgScore}`, scoreX, scoreY + 15)
-    
-    ctx.fillStyle = "#9ca3af"
-    ctx.font = "14px Arial"
-    ctx.fillText("Total Score", scoreX, scoreY + 85)
+    // 6. Footer Section (Lifted UP to avoid overflow)
+    const footerY = 630 // Lifted from 660 to 630 (Plenty of space now)
 
-    // Signature
+    // LEFT: Date & ID
+    ctx.textAlign = "left"
+    ctx.fillStyle = "#64748b"
+    ctx.font = "14px Arial"
+    ctx.fillText("DATE ISSUED", 100, footerY)
+    ctx.fillStyle = "#0f172a"
+    ctx.font = "bold 16px Arial"
+    ctx.fillText(new Date().toLocaleDateString(), 100, footerY + 25)
+
+    ctx.fillStyle = "#64748b"
+    ctx.font = "14px Arial"
+    ctx.fillText("CERTIFICATE ID", 100, footerY + 60)
+    const certId = `TR-${talentData.name.replace(/\s+/g, "").toUpperCase().slice(0, 4)}-${Date.now().toString().slice(-6)}`
+    ctx.fillStyle = "#0f172a"
+    ctx.font = "bold 16px Arial"
+    ctx.fillText(certId, 100, footerY + 85)
+
+    // CENTER: Signature (TalentVisa)
     const sigX = canvas.width / 2
-    const sigY = 680
     ctx.textAlign = "center"
-    ctx.fillStyle = "#71717a"
+    
+    // Signature Font
+    ctx.font = "italic 56px 'Brush Script MT', cursive" 
+    ctx.fillStyle = "#000000"
+    ctx.fillText("TalentVisa", sigX, footerY + 40) // Changed to TalentVisa
+    
+    // Line & Title
+    ctx.fillStyle = "#94a3b8" 
+    ctx.fillRect(sigX - 100, footerY + 50, 200, 1)
+    
+    ctx.fillStyle = "#64748b"
     ctx.font = "14px Arial"
-    ctx.fillText("Verified & Authorized by", sigX, sigY - 30)
-    ctx.font = "italic bold 48px Georgia" 
-    ctx.fillStyle = "#ffffff"
-    ctx.fillText("TalentVisa", sigX, sigY + 20)
-    ctx.strokeStyle = "#ec4899"
-    ctx.lineWidth = 2
-    ctx.beginPath()
-    ctx.moveTo(sigX - 80, sigY + 35)
-    ctx.lineTo(sigX + 80, sigY + 35)
-    ctx.stroke()
+    ctx.fillText("AUTHORIZED SIGNATORY", sigX, footerY + 75)
 
-    // QR Code
-    const qrSize = 120
-    const qrX = canvas.width - 250
-    const qrY = 620
-    ctx.fillStyle = "#ffffff"
-    ctx.shadowColor = "rgba(0,0,0,0.5)"
-    ctx.shadowBlur = 20
-    ctx.fillRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20)
-    ctx.shadowBlur = 0
-
-    // Hidden Image logic
+    // RIGHT: QR Code (Inside Border)
+    const qrSize = 90 // Slightly smaller to be safe
+    const qrX = canvas.width - 210 
+    const qrY = footerY - 5 
+    
+    // Draw QR Image
     const imgElement = document.getElementById("certificate-qr-source") as HTMLImageElement
     if (imgElement && imgElement.complete && imgElement.naturalWidth !== 0) {
       try {
         ctx.drawImage(imgElement, qrX, qrY, qrSize, qrSize)
       } catch (e) {
+        ctx.strokeStyle = "#000000"
+        ctx.lineWidth = 1
+        ctx.strokeRect(qrX, qrY, qrSize, qrSize)
         ctx.fillStyle = "#000000"
+        ctx.textAlign = "center"
         ctx.fillText("QR", qrX + qrSize/2, qrY + qrSize/2)
       }
     } else {
-      ctx.fillStyle = "#000000"
+      ctx.strokeStyle = "#cbd5e1"
       ctx.strokeRect(qrX, qrY, qrSize, qrSize)
     }
 
-    ctx.fillStyle = "#d4d4d8"
-    ctx.font = "12px Arial"
     ctx.textAlign = "center"
-    ctx.fillText("Scan to Verify", qrX + qrSize/2, qrY + qrSize + 35)
-
-    // Footer
-    ctx.fillStyle = "#3f3f46"
+    ctx.fillStyle = "#64748b"
     ctx.font = "12px Arial"
-    ctx.textAlign = "center"
-    const certId = `ID: TR-${talentData.name.replace(/\s+/g, "").toUpperCase().slice(0, 4)}-${Date.now().toString().slice(-6)}`
-    ctx.fillText(`${certId}  •  Issued: ${new Date().toLocaleDateString()}`, canvas.width/2, canvas.height - 30)
+    ctx.fillText("Scan to Verify", qrX + qrSize/2, qrY + qrSize + 20)
 
-    try {
-      return canvas.toDataURL("image/png", 1.0)
-    } catch (e) {
-      console.error("Canvas export failed", e)
-      return ""
-    }
-  }
-
+    return canvas.toDataURL("image/png", 1.0)
+  }    
+  
   const handleDownloadSkillCard = () => {
     const imageData = generateSkillCard()
     if (!imageData) return
