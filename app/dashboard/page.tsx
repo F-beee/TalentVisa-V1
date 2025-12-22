@@ -112,7 +112,7 @@ const mockSkillSuggestions = [
 
 const testCenters = [
   { name: "Bangalore Test Center", address: "Tech Park, Whitefield, Bangalore - 560066", phone: "+91-80-4141-5000", email: "bangalore@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
-  { name: "Delhi Test Center", address: "Business Hub, Connaught Place, New Delhi - 110001", phone: "+91-11-4141-5000", email: "delhi@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
+  { name: "Delhi Test Center", address: "DLF CyberCity, Sector 24, Gurugram - 110001", phone: "+91-11-4141-5000", email: "delhi@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
   { name: "Mumbai Test Center", address: "Corporate Tower, Bandra, Mumbai - 400050", phone: "+91-22-4141-5000", email: "mumbai@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
 ]
 
@@ -178,54 +178,55 @@ const generateSkillCard = (talentData = mockTalentData) => {
     canvas.height = 800
 
     // 1. Background (Clean White)
-    ctx.fillStyle = "#ffffff" 
+    ctx.fillStyle = "#ffffff"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     // 2. Professional Border (Navy & Gold)
     // Outer Navy Border
-    ctx.strokeStyle = "#1e3a8a" 
-    ctx.lineWidth = 4
+    ctx.strokeStyle = "#1e3a8a"
+    ctx.lineWidth = 5
     ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80)
-    
+
     // Inner Gold Border
     ctx.strokeStyle = "#d97706"
     ctx.lineWidth = 2
     ctx.strokeRect(55, 55, canvas.width - 110, canvas.height - 110)
 
     // 3. Header Section
-    // Logo (Centered & Styled)
+    // LOGO: Fancier, Minimalist Font (Cinzel Decorative)
     ctx.fillStyle = "#1e3a8a" // Navy Blue
-    ctx.font = "bold 40px 'Times New Roman', serif"
-    ctx.textAlign = "center" // CENTERED now
-    ctx.fillText("TalentVisa", canvas.width / 2, 110)
+    // Using a sophisticated, decorative font for a "fancy" look
+    ctx.font = "bold 50px 'Cinzel Decorative', serif"
+    ctx.textAlign = "center"
+    ctx.fillText("TalentVisa", canvas.width / 2, 130)
 
     // Main Title
     ctx.fillStyle = "#0f172a"
-    ctx.font = "bold 56px 'Times New Roman', serif" 
-    ctx.fillText("CERTIFICATE OF EXCELLENCE", canvas.width / 2, 170)
+    ctx.font = "bold 52px 'Times New Roman', serif"
+    ctx.fillText("CERTIFICATE OF EXCELLENCE", canvas.width / 2, 195)
 
     // 4. Candidate Section
     // "Proudly awarded to"
-    ctx.fillStyle = "#64748b" 
+    ctx.fillStyle = "#64748b"
     ctx.font = "italic 24px Arial"
-    ctx.fillText("Proudly awarded to", canvas.width / 2, 220)
+    ctx.fillText("Proudly awarded to", canvas.width / 2, 245)
 
     // Candidate Name
     ctx.fillStyle = "#000000"
     ctx.font = "bold 64px Arial"
-    ctx.fillText(talentData.name, canvas.width / 2, 285)
+    ctx.fillText(talentData.name, canvas.width / 2, 310)
 
     // Context Text
     ctx.fillStyle = "#475569"
     ctx.font = "20px Arial"
-    ctx.fillText(`For successfully demonstrating exceptional proficiency`, canvas.width / 2, 330)
-    ctx.fillText(`in the verified skill assessment.`, canvas.width / 2, 355)
+    ctx.fillText(`For successfully demonstrating exceptional proficiency`, canvas.width / 2, 355)
+    ctx.fillText(`in the verified skill assessment.`, canvas.width / 2, 380)
 
     // Gold Separator
     ctx.fillStyle = "#d97706"
-    ctx.fillRect(canvas.width / 2 - 80, 380, 160, 2)
+    ctx.fillRect(canvas.width / 2 - 80, 405, 160, 3)
 
-    // 5. Skills Grid (Moved up slightly)
+    // 5. Skills Grid
     ctx.textAlign = "left"
     const skills = [
       { name: "Coding", score: talentData.skills.coding },
@@ -234,10 +235,10 @@ const generateSkillCard = (talentData = mockTalentData) => {
       { name: "Personality", score: talentData.skills.personality },
     ]
 
-    const startY = 430
+    const startY = 455
     const col1X = 180
     const col2X = 680
-    
+
     skills.forEach((skill, index) => {
       const isCol2 = index % 2 !== 0
       const x = isCol2 ? col2X : col1X
@@ -259,13 +260,13 @@ const generateSkillCard = (talentData = mockTalentData) => {
       ctx.fillRect(x, y + 12, 350, 8)
 
       // Bar Fill (Navy)
-      ctx.fillStyle = "#1e3a8a" 
+      ctx.fillStyle = "#1e3a8a"
       const fillWidth = (skill.score / 100) * 350
       ctx.fillRect(x, y + 12, fillWidth, 8)
     })
 
-    // 6. Footer Section (Lifted UP to avoid overflow)
-    const footerY = 630 // Lifted from 660 to 630 (Plenty of space now)
+    // 6. Footer Section
+    const footerY = 640
 
     // LEFT: Date & ID
     ctx.textAlign = "left"
@@ -287,25 +288,25 @@ const generateSkillCard = (talentData = mockTalentData) => {
     // CENTER: Signature (TalentVisa)
     const sigX = canvas.width / 2
     ctx.textAlign = "center"
-    
-    // Signature Font
-    ctx.font = "italic 56px 'Brush Script MT', cursive" 
+
+    // Improved Signature Font (More elegant script)
+    ctx.font = "italic 50px 'Edwardian Script ITC', cursive"
     ctx.fillStyle = "#000000"
-    ctx.fillText("TalentVisa", sigX, footerY + 40) // Changed to TalentVisa
-    
+    ctx.fillText("TalentVisa", sigX, footerY + 35)
+
     // Line & Title
-    ctx.fillStyle = "#94a3b8" 
-    ctx.fillRect(sigX - 100, footerY + 50, 200, 1)
-    
+    ctx.fillStyle = "#94a3b8"
+    ctx.fillRect(sigX - 120, footerY + 50, 240, 1)
+
     ctx.fillStyle = "#64748b"
     ctx.font = "14px Arial"
-    ctx.fillText("AUTHORIZED SIGNATORY", sigX, footerY + 75)
+    ctx.fillText("AUTHORIZED SIGNATORY", sigX, footerY + 70)
 
-    // RIGHT: QR Code (Inside Border)
-    const qrSize = 90 // Slightly smaller to be safe
-    const qrX = canvas.width - 210 
-    const qrY = footerY - 5 
-    
+    // RIGHT: QR Code
+    const qrSize = 90
+    const qrX = canvas.width - 210
+    const qrY = footerY - 5
+
     // Draw QR Image
     const imgElement = document.getElementById("certificate-qr-source") as HTMLImageElement
     if (imgElement && imgElement.complete && imgElement.naturalWidth !== 0) {
@@ -327,10 +328,11 @@ const generateSkillCard = (talentData = mockTalentData) => {
     ctx.textAlign = "center"
     ctx.fillStyle = "#64748b"
     ctx.font = "12px Arial"
-    ctx.fillText("Scan to Verify", qrX + qrSize/2, qrY + qrSize + 20)
+    // Moved up by reducing the Y offset from +25 to +15
+    ctx.fillText("Scan to Verify", qrX + qrSize/2, qrY + qrSize + 15)
 
     return canvas.toDataURL("image/png", 1.0)
-  }    
+  }
   
   const handleDownloadSkillCard = () => {
     const imageData = generateSkillCard()
@@ -410,8 +412,8 @@ const generateSkillCard = (talentData = mockTalentData) => {
 
   const handleOpenMaps = (centerName: string) => {
     const mapsUrls: { [key: string]: string } = {
-      "Bangalore Test Center": "https://maps.google.com/?q=123+Tech+Park,+Whitefield,+Bangalore+560066",
-      "Delhi Test Center": "https://maps.google.com/?q=456+Business+Hub,+Connaught+Place,+New+Delhi+110001",
+      "Bangalore Test Center": "https://maps.google.com/?q=Tech+Park,+Whitefield,+Bangalore+560066",
+      "Delhi Test Center": "https://maps.google.com/?q=DLF CYBERCITY,+Sector 24,+Gurugram",
       "Mumbai Test Center": "https://maps.google.com/?q=789+Corporate+Tower,+Bandra,+Mumbai+400050",
     }
     if (mapsUrls[centerName]) {
@@ -1273,7 +1275,7 @@ const generateSkillCard = (talentData = mockTalentData) => {
                   <div className="space-y-2">
                     <CardTitle className="text-2xl font-bold">Booking Confirmed!</CardTitle>
                     <CardDescription className="max-w-[260px] mx-auto text-base">
-                      We've sent a confirmation email to <span className="text-foreground font-medium">user@example.com</span>
+                      We've sent a confirmation email to <span className="text-foreground font-medium">Rahul67@gmail.com</span>
                     </CardDescription>
                   </div>
 
