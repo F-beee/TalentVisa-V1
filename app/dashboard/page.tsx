@@ -84,11 +84,11 @@ const smartSuggestions = {
   ],
 }
 
-// Corrected Scores & Initials
+// Corrected Scores
 const leaderboardData = [
-  { rank: 1, name: "Gurnaam Singh", college: "PSIT Kanpur", score: 99, skills: { coding: 99, speaking: 99, logical: 100, personality: 99 }, experience: "Experienced", category: "Overall", linkedin: "https://www.linkedin.com/in/gurnaam" },
-  { rank: 2, name: "Arjuna Sharma", college: "IIM Bangalore", score: 92, skills: { coding: 92, speaking: 89, logical: 96, personality: 91 }, experience: "Experienced", category: "Overall" },
-  { rank: 3, name: "Priya Patel", college: "IIT Delhi", score: 89, skills: { coding: 88, speaking: 85, logical: 92, personality: 90 }, experience: "Experienced", category: "Overall" },
+  { rank: 1, name: "Gurnaam Singh", college: "PSIT Kanpur", score: 99, skills: { coding: 99, speaking: 99, logical: 100, personality: 98 }, experience: "Experienced", category: "Overall", linkedin: "https://www.linkedin.com/in/gurnaam" },
+  { rank: 2, name: "Shraddha Kapoor", college: "IIM Bangalore", score: 92, skills: { coding: 92, speaking: 89, logical: 96, personality: 91 }, experience: "Experienced", category: "Overall" },
+  { rank: 3, name: "Vihaan Patel", college: "IIT Delhi", score: 89, skills: { coding: 88, speaking: 85, logical: 92, personality: 90 }, experience: "Experienced", category: "Overall" },
   { rank: 4, name: "Rohan Gupta", college: "IIT Madras", score: 85, skills: { coding: 84, speaking: 82, logical: 88, personality: 87 }, experience: "Fresher", category: "Overall" },
   { rank: 5, name: "Ananya Singh", college: "IIT Kanpur", score: 82, skills: { coding: 81, speaking: 79, logical: 85, personality: 84 }, experience: "Experienced", category: "Overall" },
   { rank: 6, name: "Kavya Nair", college: "IIIT Bangalore", score: 80, skills: { coding: 95, speaking: 70, logical: 78, personality: 75 }, experience: "Experienced", category: "Coding" },
@@ -112,7 +112,7 @@ const mockSkillSuggestions = [
 
 const testCenters = [
   { name: "Bangalore Test Center", address: "Tech Park, Whitefield, Bangalore - 560066", phone: "+91-80-4141-5000", email: "bangalore@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
-  { name: "Delhi Test Center", address: "Business Hub, Connaught Place, New Delhi - 110001", phone: "+91-11-4141-5000", email: "delhi@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
+  { name: "Delhi Test Center", address: "DLF CyberCity, Sector 24, Gurugram - 110001", phone: "+91-11-4141-5000", email: "delhi@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
   { name: "Mumbai Test Center", address: "Corporate Tower, Bandra, Mumbai - 400050", phone: "+91-22-4141-5000", email: "mumbai@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
 ]
 
@@ -122,11 +122,8 @@ export default function Dashboard() {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
   const [leaderboardFilter, setLeaderboardFilter] = useState("Overall")
   const [searchQuery, setSearchQuery] = useState("")
-  
-  // State for Certificate Preview
   const [skillCardTalent, setSkillCardTalent] = useState<any>(null)
-  const [previewUrl, setPreviewUrl] = useState("")
-
+  const [previewUrl, setPreviewUrl] = useState("") // New State for Preview URL
   const [activeTab, setActiveTab] = useState("overview")
   const [isBookTestModalOpen, setIsBookTestModalOpen] = useState(false)
   const [selectedTestCenter, setSelectedTestCenter] = useState<any>(null)
@@ -138,15 +135,16 @@ export default function Dashboard() {
     setIsGuest(urlParams.get("guest") === "true")
   }, [])
 
-  // Auto-generate certificate when opening preview
+  // Generate certificate URL when talent is selected for preview
   useEffect(() => {
     if (skillCardTalent) {
-      setPreviewUrl("") // Clear previous
+      setPreviewUrl("") // Clear previous URL
       generateSkillCard(skillCardTalent).then((url) => {
         setPreviewUrl(url)
       })
     }
   }, [skillCardTalent])
+
 
   const filteredLeaderboard = leaderboardData.filter((talent) => {
     const matchesFilter = leaderboardFilter === "Overall" || talent.category === leaderboardFilter
@@ -181,13 +179,14 @@ export default function Dashboard() {
     }
   }
 
-  // UPDATED: Async Function with Real QR Code
+  // --- UPDATED generateSkillCard Function ---
   const generateSkillCard = async (talentData = mockTalentData) => {
     if (typeof document === "undefined") return ""
     const canvas = document.createElement("canvas")
     const ctx = canvas.getContext("2d")
     if (!ctx) return ""
 
+    // High resolution canvas
     canvas.width = 1200
     canvas.height = 800
 
@@ -196,16 +195,20 @@ export default function Dashboard() {
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     // 2. Professional Border (Navy & Gold)
+    // Outer Navy Border
     ctx.strokeStyle = "#1e3a8a"
     ctx.lineWidth = 5
     ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80)
+
+    // Inner Gold Border
     ctx.strokeStyle = "#d97706"
     ctx.lineWidth = 2
     ctx.strokeRect(55, 55, canvas.width - 110, canvas.height - 110)
 
     // 3. Header Section
-    // LOGO: Fancier Font
+    // LOGO: Fancier, Minimalist Font (Cinzel Decorative)
     ctx.fillStyle = "#1e3a8a" // Navy Blue
+    // Using a sophisticated, decorative font for a "fancy" look
     ctx.font = "bold 50px 'Cinzel Decorative', serif"
     ctx.textAlign = "center"
     ctx.fillText("TalentVisa", canvas.width / 2, 130)
@@ -216,19 +219,23 @@ export default function Dashboard() {
     ctx.fillText("CERTIFICATE OF EXCELLENCE", canvas.width / 2, 195)
 
     // 4. Candidate Section
+    // "Proudly awarded to"
     ctx.fillStyle = "#64748b"
     ctx.font = "italic 24px Arial"
     ctx.fillText("Proudly awarded to", canvas.width / 2, 245)
 
+    // Candidate Name
     ctx.fillStyle = "#000000"
     ctx.font = "bold 64px Arial"
     ctx.fillText(talentData.name, canvas.width / 2, 310)
 
+    // Context Text
     ctx.fillStyle = "#475569"
     ctx.font = "20px Arial"
     ctx.fillText(`For successfully demonstrating exceptional proficiency`, canvas.width / 2, 355)
     ctx.fillText(`in the verified skill assessment.`, canvas.width / 2, 380)
 
+    // Gold Separator
     ctx.fillStyle = "#d97706"
     ctx.fillRect(canvas.width / 2 - 80, 405, 160, 3)
 
@@ -250,18 +257,22 @@ export default function Dashboard() {
       const x = isCol2 ? col2X : col1X
       const y = startY + Math.floor(index / 2) * 80
 
+      // Skill Label
       ctx.fillStyle = "#334155"
       ctx.font = "bold 20px Arial"
       ctx.fillText(skill.name, x, y)
 
+      // Score Value
       ctx.textAlign = "right"
       ctx.fillStyle = "#0f172a"
       ctx.fillText(`${skill.score}%`, x + 350, y)
       ctx.textAlign = "left"
 
+      // Bar Background
       ctx.fillStyle = "#e2e8f0"
       ctx.fillRect(x, y + 12, 350, 8)
 
+      // Bar Fill (Navy)
       ctx.fillStyle = "#1e3a8a"
       const fillWidth = (skill.score / 100) * 350
       ctx.fillRect(x, y + 12, fillWidth, 8)
@@ -270,6 +281,7 @@ export default function Dashboard() {
     // 6. Footer Section
     const footerY = 640
 
+    // LEFT: Date & ID
     ctx.textAlign = "left"
     ctx.fillStyle = "#64748b"
     ctx.font = "14px Arial"
@@ -286,13 +298,16 @@ export default function Dashboard() {
     ctx.font = "bold 16px Arial"
     ctx.fillText(certId, 100, footerY + 85)
 
-    // Signature
+    // CENTER: Signature (TalentVisa)
     const sigX = canvas.width / 2
     ctx.textAlign = "center"
+
+    // Improved Signature Font (More elegant script)
     ctx.font = "italic 50px 'Edwardian Script ITC', cursive"
     ctx.fillStyle = "#000000"
     ctx.fillText("TalentVisa", sigX, footerY + 35)
 
+    // Line & Title
     ctx.fillStyle = "#94a3b8"
     ctx.fillRect(sigX - 120, footerY + 50, 240, 1)
 
@@ -300,50 +315,65 @@ export default function Dashboard() {
     ctx.font = "14px Arial"
     ctx.fillText("AUTHORIZED SIGNATORY", sigX, footerY + 70)
 
-    // 7. REAL QR Code Logic
+    // RIGHT: QR Code
     const qrSize = 90
     const qrX = canvas.width - 210
     const qrY = footerY - 5
 
-    // Generate dynamic QR URL pointing to the user's verify page
-    const verifyUrl = `https://talentvisa.space/verify/${talentData.name.replace(/\s+/g, "_").toLowerCase()}`
-    // Using api.qrserver.com which is robust and CORS friendly
-    const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(verifyUrl)}&bgcolor=ffffff`
+    // --- QR CODE LOGIC ---
+    // Check if the user is Rahul Agarwal, Gurnaam Singh, or Shraddha Kapoor
+    if (["Rahul Agarwal", "Gurnaam Singh", "Shraddha Kapoor"].includes(talentData.name)) {
+        // Generate REAL QR Code using API
+        const verifyUrl = `${typeof window !== "undefined" ? window.location.origin : "https://talentvisa.space"}/verify/rahul_agarwal`
+        const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(verifyUrl)}&bgcolor=ffffff`
 
-    // Create a new image object for the QR code
-    const qrImage = new Image()
-    qrImage.crossOrigin = "Anonymous" // Essential for toDataURL to work later
-    qrImage.src = qrImgUrl
+        const qrImage = new Image()
+        qrImage.crossOrigin = "Anonymous"
+        qrImage.src = qrImgUrl
 
-    // Wait for the QR code to load
-    await new Promise((resolve) => {
-      qrImage.onload = resolve
-      qrImage.onerror = resolve // proceed even if it fails (will just be blank)
-    })
+        await new Promise((resolve) => {
+            qrImage.onload = resolve
+            qrImage.onerror = resolve
+        })
 
-    // Draw the Real QR Code
-    try {
-        ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize)
-    } catch (e) {
-        // Fallback if CORS fails unpredictably
-        ctx.strokeStyle = "#cbd5e1"
-        ctx.strokeRect(qrX, qrY, qrSize, qrSize)
-        ctx.fillStyle = "#64748b"
-        ctx.font = "10px Arial"
-        ctx.fillText("QR Load Error", qrX + qrSize/2, qrY + qrSize/2)
+        try {
+            ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize)
+        } catch (e) {
+            // Fallback if load fails
+            ctx.strokeStyle = "#cbd5e1"
+            ctx.strokeRect(qrX, qrY, qrSize, qrSize)
+        }
+    } else {
+        // Use STATIC Image for everyone else (original behavior)
+        const imgElement = document.getElementById("certificate-qr-source") as HTMLImageElement
+        if (imgElement && imgElement.complete && imgElement.naturalWidth !== 0) {
+            try {
+                ctx.drawImage(imgElement, qrX, qrY, qrSize, qrSize)
+            } catch (e) {
+                ctx.strokeStyle = "#000000"
+                ctx.lineWidth = 1
+                ctx.strokeRect(qrX, qrY, qrSize, qrSize)
+                ctx.fillStyle = "#000000"
+                ctx.textAlign = "center"
+                ctx.fillText("QR", qrX + qrSize/2, qrY + qrSize/2)
+            }
+        } else {
+            ctx.strokeStyle = "#cbd5e1"
+            ctx.strokeRect(qrX, qrY, qrSize, qrSize)
+        }
     }
 
     ctx.textAlign = "center"
     ctx.fillStyle = "#64748b"
     ctx.font = "12px Arial"
+    // Moved up by reducing the Y offset from +25 to +15
     ctx.fillText("Scan to Verify", qrX + qrSize/2, qrY + qrSize + 15)
 
     return canvas.toDataURL("image/png", 1.0)
   }
 
   const handleDownloadSkillCard = async () => {
-    // Generate for the default mocked user
-    const imageData = await generateSkillCard(mockTalentData)
+    const imageData = await generateSkillCard(mockTalentData) // Await async function
     if (!imageData) return
     const link = document.createElement("a")
     link.href = imageData
@@ -375,7 +405,7 @@ export default function Dashboard() {
   }
 
   const handleDownloadLeaderboardSkillCard = async (talent: any) => {
-    const imageData = await generateSkillCard(talent)
+    const imageData = await generateSkillCard(talent) // Await async function
     if (!imageData) return
     const link = document.createElement("a")
     link.href = imageData
@@ -383,7 +413,7 @@ export default function Dashboard() {
     link.click()
     alert("🎉 Skill Certificate downloaded successfully! Share this with employers to verify your skills.")
   }
-
+  
   const handlePreviewLeaderboardSkillCard = (talent: any) => {
     setSkillCardTalent(talent)
   }
@@ -404,6 +434,15 @@ export default function Dashboard() {
     alert(`🚀 Exploring career path in ${field}. Detailed roadmap and skill requirements will be sent to your email.`)
   }
 
+  const handleOpenProfile = () => {
+    setSelectedTalent(mockTalentData)
+    setIsProfileModalOpen(true)
+  }
+
+  const handleGoHome = () => {
+    window.location.href = "/"
+  }
+
   const handleBookTest = (center: any) => {
     setSelectedTestCenter(center)
     setBookingStep("confirm")
@@ -412,8 +451,8 @@ export default function Dashboard() {
 
   const handleOpenMaps = (centerName: string) => {
     const mapsUrls: { [key: string]: string } = {
-      "Bangalore Test Center": "https://maps.google.com/?q=123+Tech+Park,+Whitefield,+Bangalore+560066",
-      "Delhi Test Center": "https://maps.google.com/?q=456+Business+Hub,+Connaught+Place,+New+Delhi+110001",
+      "Bangalore Test Center": "https://maps.google.com/?q=Tech+Park,+Whitefield,+Bangalore+560066",
+      "Delhi Test Center": "https://maps.google.com/?q=DLF CYBERCITY,+Sector 24,+Gurugram",
       "Mumbai Test Center": "https://maps.google.com/?q=789+Corporate+Tower,+Bandra,+Mumbai+400050",
     }
     if (mapsUrls[centerName]) {
@@ -423,6 +462,15 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Hidden image source for the certificate generator */}
+      <img 
+        id="certificate-qr-source" 
+        src="/abstract-geometric-shapes.png" 
+        crossOrigin="anonymous"
+        className="hidden" 
+        alt="QR Source" 
+      />
+
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-float"></div>
         <div
@@ -465,11 +513,36 @@ export default function Dashboard() {
         <div className="container mx-auto px-4 py-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="grid grid-cols-2 w-full h-auto gap-2 bg-muted/50 z-20 p-1 lg:grid lg:w-fit lg:grid-cols-5">
-              <TabsTrigger value="overview">My Profile</TabsTrigger>
-              <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
-              <TabsTrigger value="suggestions">Smart Match</TabsTrigger>
-              <TabsTrigger value="trending">Trending</TabsTrigger>
-              <TabsTrigger value="book-test">📋 Book Test</TabsTrigger>
+              <TabsTrigger
+                value="overview"
+                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+              >
+                My Profile
+              </TabsTrigger>
+              <TabsTrigger
+                value="leaderboard"
+                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+              >
+                Leaderboard
+              </TabsTrigger>
+              <TabsTrigger
+                value="suggestions"
+                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+              >
+                Smart Match
+              </TabsTrigger>
+              <TabsTrigger
+                value="trending"
+                className="rounded-md px-3 py-2 transition-all duration-300 hover:bg-primary/20 hover:scale-105 data-[state=active]:bg-none data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:scale-105"
+              >
+                Trending
+              </TabsTrigger>
+              <TabsTrigger
+                value="book-test"
+                className="col-span-2 lg:col-span-1 rounded-md px-3 py-2 bg-gradient-to-r from-accent to-primary text-white hover:shadow-lg hover:scale-110 transition-all duration-300 font-semibold"
+              >
+                📋 Book Test
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6 pt-12">
@@ -493,31 +566,42 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent className="space-y-4 pt-0">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {/* Skills Progress Bars */}
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="flex items-center"><Code className="w-3 h-3 mr-1.5 text-primary" />Coding</span>
+                          <span className="flex items-center">
+                            <Code className="w-3 h-3 mr-1.5 text-primary" />
+                            Coding
+                          </span>
                           <span className="font-semibold">{mockTalentData.skills.coding}/100</span>
                         </div>
                         <Progress value={mockTalentData.skills.coding} className="h-1.5" />
                       </div>
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="flex items-center"><MessageSquare className="w-3 h-3 mr-1.5 text-accent" />Speaking</span>
+                          <span className="flex items-center">
+                            <MessageSquare className="w-3 h-3 mr-1.5 text-accent" />
+                            Speaking
+                          </span>
                           <span className="font-semibold">{mockTalentData.skills.speaking}/100</span>
                         </div>
                         <Progress value={mockTalentData.skills.speaking} className="h-1.5" />
                       </div>
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="flex items-center"><Brain className="w-3 h-3 mr-1.5 text-primary" />Logical</span>
+                          <span className="flex items-center">
+                            <Brain className="w-3 h-3 mr-1.5 text-primary" />
+                            Logical
+                          </span>
                           <span className="font-semibold">{mockTalentData.skills.logical}/100</span>
                         </div>
                         <Progress value={mockTalentData.skills.logical} className="h-1.5" />
                       </div>
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="flex items-center"><Users className="w-3 h-3 mr-1.5 text-accent" />Personality</span>
+                          <span className="flex items-center">
+                            <Users className="w-3 h-3 mr-1.5 text-accent" />
+                            Personality
+                          </span>
                           <span className="font-semibold">{mockTalentData.skills.personality}/100</span>
                         </div>
                         <Progress value={mockTalentData.skills.personality} className="h-1.5" />
@@ -544,7 +628,7 @@ export default function Dashboard() {
                         </Badge>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        Your skills have been verified. Share this certificate with employers.
+                        Your skills have been verified and certified. Share this certificate with employers.
                       </p>
                     </div>
                     <div className="flex flex-col gap-2">
