@@ -7,26 +7,24 @@ import { Progress } from "@/components/ui/progress"
 import { CheckCircle, Shield, Calendar, MapPin, Download, ExternalLink } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-export default function RahulVerificationPage() {
+export default function GurnaamVerificationPage() {
   const candidate = {
-    name: "Rahul Agarwal",
-    id: "TR-RAHU-615807",
-    college: "IIT Bombay",
+    name: "Gurnaam Singh",
+    id: "TR-GURN-882910",
+    college: "PSIT Kanpur",
     issueDate: new Date().toLocaleDateString(),
     status: "Verified",
-    scores: { coding: 97, speaking: 78, logical: 85, personality: 88 }
+    scores: { coding: 99, speaking: 99, logical: 100, personality: 98 }
   }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
-      {/* Brand Header */}
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold text-slate-900 font-serif">TalentVisa</h1>
         <p className="text-slate-500 text-sm tracking-widest uppercase mt-1">Official Verification Portal</p>
       </div>
 
       <Card className="w-full max-w-lg shadow-xl border-slate-200 bg-white overflow-hidden">
-        {/* Verification Banner */}
         <div className="bg-green-100 border-b border-green-200 p-4 flex items-center justify-center gap-2 text-green-800">
           <CheckCircle className="w-5 h-5 fill-green-600 text-white" />
           <span className="font-semibold">Officially Verified Candidate</span>
@@ -35,8 +33,8 @@ export default function RahulVerificationPage() {
         <CardHeader className="text-center pb-2">
           <div className="mx-auto mb-4 relative">
             <Avatar className="w-24 h-24 border-4 border-white shadow-lg mx-auto">
-              <AvatarImage src={`https://api.dicebear.com/9.x/pixel-art-neutral/svg?seed=${candidate.name}`} />
-              <AvatarFallback>RA</AvatarFallback>
+              <AvatarImage src="https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=Chase" />
+              <AvatarFallback>GS</AvatarFallback>
             </Avatar>
             <div className="absolute bottom-0 right-0 bg-blue-600 text-white p-1.5 rounded-full shadow-sm border-2 border-white" title="Identity Verified">
                 <Shield className="w-4 h-4" />
@@ -54,10 +52,8 @@ export default function RahulVerificationPage() {
         </CardHeader>
 
         <CardContent className="space-y-6 pt-6">
-          {/* Scores Grid */}
           <div className="space-y-4">
             <h3 className="text-xs font-semibold uppercase text-slate-400 tracking-wider mb-3">Verified Skill Scores</h3>
-            
             <div className="grid grid-cols-2 gap-4">
                {Object.entries(candidate.scores).map(([skill, score]) => (
                  <div key={skill} className="bg-slate-50 p-3 rounded-lg border border-slate-100">
@@ -71,7 +67,6 @@ export default function RahulVerificationPage() {
             </div>
           </div>
 
-          {/* Footer Info */}
           <div className="border-t border-slate-100 pt-4 flex items-center justify-between text-xs text-slate-500">
             <div className="flex items-center gap-1">
                 <Calendar className="w-3 h-3" />
@@ -80,7 +75,6 @@ export default function RahulVerificationPage() {
             <span>TalentVisa Auth v1.0</span>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex flex-col gap-3 pt-2">
             <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-md">
               <Download className="w-4 h-4 mr-2" />

@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -116,14 +117,24 @@ const testCenters = [
   { name: "Mumbai Test Center", address: "Corporate Tower, Bandra, Mumbai - 400050", phone: "+91-22-4141-5000", email: "mumbai@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
 ]
 
+// --- MAIN WRAPPER (Fixes useSearchParams Error) ---
 export default function Dashboard() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <DashboardContent />
+    </Suspense>
+  )
+}
+
+function DashboardContent() {
+  const searchParams = useSearchParams()
   const [isGuest, setIsGuest] = useState(false)
   const [selectedTalent, setSelectedTalent] = useState<any>(null)
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
   const [leaderboardFilter, setLeaderboardFilter] = useState("Overall")
   const [searchQuery, setSearchQuery] = useState("")
   const [skillCardTalent, setSkillCardTalent] = useState<any>(null)
-  const [previewUrl, setPreviewUrl] = useState("") // New State for Preview URL
+  const [previewUrl, setPreviewUrl] = useState("")
   const [activeTab, setActiveTab] = useState("overview")
   const [isBookTestModalOpen, setIsBookTestModalOpen] = useState(false)
   const [selectedTestCenter, setSelectedTestCenter] = useState<any>(null)
@@ -131,9 +142,8 @@ export default function Dashboard() {
   const [bookingStep, setBookingStep] = useState<"confirm" | "success">("confirm")
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    setIsGuest(urlParams.get("guest") === "true")
-  }, [])
+    setIsGuest(searchParams.get("guest") === "true")
+  }, [searchParams])
 
   // Generate certificate URL when talent is selected for preview
   useEffect(() => {
@@ -144,7 +154,6 @@ export default function Dashboard() {
       })
     }
   }, [skillCardTalent])
-
 
   const filteredLeaderboard = leaderboardData.filter((talent) => {
     const matchesFilter = leaderboardFilter === "Overall" || talent.category === leaderboardFilter
@@ -179,7 +188,7 @@ export default function Dashboard() {
     }
   }
 
-  // --- UPDATED generateSkillCard Function ---
+  // --- CERTIFICATE GENERATOR ---
   const generateSkillCard = async (talentData = mockTalentData) => {
     if (typeof document === "undefined") return ""
     const canvas = document.createElement("canvas")
@@ -195,47 +204,38 @@ export default function Dashboard() {
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     // 2. Professional Border (Navy & Gold)
-    // Outer Navy Border
     ctx.strokeStyle = "#1e3a8a"
     ctx.lineWidth = 5
     ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80)
 
-    // Inner Gold Border
     ctx.strokeStyle = "#d97706"
     ctx.lineWidth = 2
     ctx.strokeRect(55, 55, canvas.width - 110, canvas.height - 110)
 
     // 3. Header Section
-    // LOGO: Fancier, Minimalist Font (Cinzel Decorative)
-    ctx.fillStyle = "#1e3a8a" // Navy Blue
-    // Using a sophisticated, decorative font for a "fancy" look
+    ctx.fillStyle = "#1e3a8a"
     ctx.font = "bold 50px 'Cinzel Decorative', serif"
     ctx.textAlign = "center"
     ctx.fillText("TalentVisa", canvas.width / 2, 130)
 
-    // Main Title
     ctx.fillStyle = "#0f172a"
     ctx.font = "bold 52px 'Times New Roman', serif"
     ctx.fillText("CERTIFICATE OF EXCELLENCE", canvas.width / 2, 195)
 
     // 4. Candidate Section
-    // "Proudly awarded to"
     ctx.fillStyle = "#64748b"
     ctx.font = "italic 24px Arial"
     ctx.fillText("Proudly awarded to", canvas.width / 2, 245)
 
-    // Candidate Name
     ctx.fillStyle = "#000000"
     ctx.font = "bold 64px Arial"
     ctx.fillText(talentData.name, canvas.width / 2, 310)
 
-    // Context Text
     ctx.fillStyle = "#475569"
     ctx.font = "20px Arial"
     ctx.fillText(`For successfully demonstrating exceptional proficiency`, canvas.width / 2, 355)
     ctx.fillText(`in the verified skill assessment.`, canvas.width / 2, 380)
 
-    // Gold Separator
     ctx.fillStyle = "#d97706"
     ctx.fillRect(canvas.width / 2 - 80, 405, 160, 3)
 
@@ -257,22 +257,18 @@ export default function Dashboard() {
       const x = isCol2 ? col2X : col1X
       const y = startY + Math.floor(index / 2) * 80
 
-      // Skill Label
       ctx.fillStyle = "#334155"
       ctx.font = "bold 20px Arial"
       ctx.fillText(skill.name, x, y)
 
-      // Score Value
       ctx.textAlign = "right"
       ctx.fillStyle = "#0f172a"
       ctx.fillText(`${skill.score}%`, x + 350, y)
       ctx.textAlign = "left"
 
-      // Bar Background
       ctx.fillStyle = "#e2e8f0"
       ctx.fillRect(x, y + 12, 350, 8)
 
-      // Bar Fill (Navy)
       ctx.fillStyle = "#1e3a8a"
       const fillWidth = (skill.score / 100) * 350
       ctx.fillRect(x, y + 12, fillWidth, 8)
@@ -281,7 +277,6 @@ export default function Dashboard() {
     // 6. Footer Section
     const footerY = 640
 
-    // LEFT: Date & ID
     ctx.textAlign = "left"
     ctx.fillStyle = "#64748b"
     ctx.font = "14px Arial"
@@ -298,16 +293,13 @@ export default function Dashboard() {
     ctx.font = "bold 16px Arial"
     ctx.fillText(certId, 100, footerY + 85)
 
-    // CENTER: Signature (TalentVisa)
+    // Center Signature
     const sigX = canvas.width / 2
     ctx.textAlign = "center"
-
-    // Improved Signature Font (More elegant script)
     ctx.font = "italic 50px 'Edwardian Script ITC', cursive"
     ctx.fillStyle = "#000000"
     ctx.fillText("TalentVisa", sigX, footerY + 35)
 
-    // Line & Title
     ctx.fillStyle = "#94a3b8"
     ctx.fillRect(sigX - 120, footerY + 50, 240, 1)
 
@@ -320,11 +312,18 @@ export default function Dashboard() {
     const qrX = canvas.width - 210
     const qrY = footerY - 5
 
-    // --- QR CODE LOGIC ---
-    // Check if the user is Rahul Agarwal, Gurnaam Singh, or Shraddha Kapoor
-    if (["Rahul Agarwal", "Gurnaam Singh", "Shraddha Kapoor"].includes(talentData.name)) {
-        // Generate REAL QR Code using API
-        const verifyUrl = `${typeof window !== "undefined" ? window.location.origin : "https://talentvisa.space"}/verify/rahul_agarwal`
+    // --- SMART QR LOGIC ---
+    // Mapping for specific users to their custom pages
+    const realQrUsers: Record<string, string> = {
+        "Rahul Agarwal": "rahul_agarwal",
+        "Gurnaam Singh": "gurnaam_singh",
+        "Shraddha Kapoor": "shraddha_kapoor"
+    };
+    
+    if (realQrUsers[talentData.name]) {
+        // Generate REAL QR Code pointing to their specific page
+        const slug = realQrUsers[talentData.name];
+        const verifyUrl = `${typeof window !== "undefined" ? window.location.origin : "https://talentvisa.space"}/verify/${slug}`
         const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(verifyUrl)}&bgcolor=ffffff`
 
         const qrImage = new Image()
@@ -339,23 +338,19 @@ export default function Dashboard() {
         try {
             ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize)
         } catch (e) {
-            // Fallback if load fails
+            // Fallback
             ctx.strokeStyle = "#cbd5e1"
             ctx.strokeRect(qrX, qrY, qrSize, qrSize)
         }
     } else {
-        // Use STATIC Image for everyone else (original behavior)
+        // Use STATIC Image for everyone else
         const imgElement = document.getElementById("certificate-qr-source") as HTMLImageElement
         if (imgElement && imgElement.complete && imgElement.naturalWidth !== 0) {
             try {
                 ctx.drawImage(imgElement, qrX, qrY, qrSize, qrSize)
             } catch (e) {
                 ctx.strokeStyle = "#000000"
-                ctx.lineWidth = 1
                 ctx.strokeRect(qrX, qrY, qrSize, qrSize)
-                ctx.fillStyle = "#000000"
-                ctx.textAlign = "center"
-                ctx.fillText("QR", qrX + qrSize/2, qrY + qrSize/2)
             }
         } else {
             ctx.strokeStyle = "#cbd5e1"
@@ -366,14 +361,13 @@ export default function Dashboard() {
     ctx.textAlign = "center"
     ctx.fillStyle = "#64748b"
     ctx.font = "12px Arial"
-    // Moved up by reducing the Y offset from +25 to +15
     ctx.fillText("Scan to Verify", qrX + qrSize/2, qrY + qrSize + 15)
 
     return canvas.toDataURL("image/png", 1.0)
   }
 
   const handleDownloadSkillCard = async () => {
-    const imageData = await generateSkillCard(mockTalentData) // Await async function
+    const imageData = await generateSkillCard(mockTalentData)
     if (!imageData) return
     const link = document.createElement("a")
     link.href = imageData
@@ -405,7 +399,7 @@ export default function Dashboard() {
   }
 
   const handleDownloadLeaderboardSkillCard = async (talent: any) => {
-    const imageData = await generateSkillCard(talent) // Await async function
+    const imageData = await generateSkillCard(talent)
     if (!imageData) return
     const link = document.createElement("a")
     link.href = imageData
@@ -462,7 +456,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hidden image source for the certificate generator */}
       <img 
         id="certificate-qr-source" 
         src="/abstract-geometric-shapes.png" 
@@ -568,40 +561,28 @@ export default function Dashboard() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="flex items-center">
-                            <Code className="w-3 h-3 mr-1.5 text-primary" />
-                            Coding
-                          </span>
+                          <span className="flex items-center"><Code className="w-3 h-3 mr-1.5 text-primary" />Coding</span>
                           <span className="font-semibold">{mockTalentData.skills.coding}/100</span>
                         </div>
                         <Progress value={mockTalentData.skills.coding} className="h-1.5" />
                       </div>
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="flex items-center">
-                            <MessageSquare className="w-3 h-3 mr-1.5 text-accent" />
-                            Speaking
-                          </span>
+                          <span className="flex items-center"><MessageSquare className="w-3 h-3 mr-1.5 text-accent" />Speaking</span>
                           <span className="font-semibold">{mockTalentData.skills.speaking}/100</span>
                         </div>
                         <Progress value={mockTalentData.skills.speaking} className="h-1.5" />
                       </div>
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="flex items-center">
-                            <Brain className="w-3 h-3 mr-1.5 text-primary" />
-                            Logical
-                          </span>
+                          <span className="flex items-center"><Brain className="w-3 h-3 mr-1.5 text-primary" />Logical</span>
                           <span className="font-semibold">{mockTalentData.skills.logical}/100</span>
                         </div>
                         <Progress value={mockTalentData.skills.logical} className="h-1.5" />
                       </div>
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="flex items-center">
-                            <Users className="w-3 h-3 mr-1.5 text-accent" />
-                            Personality
-                          </span>
+                          <span className="flex items-center"><Users className="w-3 h-3 mr-1.5 text-accent" />Personality</span>
                           <span className="font-semibold">{mockTalentData.skills.personality}/100</span>
                         </div>
                         <Progress value={mockTalentData.skills.personality} className="h-1.5" />
@@ -1199,7 +1180,6 @@ export default function Dashboard() {
                 </Button>
               </div>
               <div className="text-center">
-                
                 {/* Dynamically Loaded Image Preview */}
                 {previewUrl ? (
                    <img
