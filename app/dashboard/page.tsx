@@ -481,7 +481,7 @@ function DashboardContent() {
                 className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
                 onClick={() => (window.location.href = "/")}
               >
-                <Award className="w-5 h-5 text-white" />
+                <img src="/logo.png" alt="Logo" className="w-6 h-6 object-contain" />
               </div>
               <h1
                 className="text-lg md:text-xl font-bold cursor-pointer hover:text-primary transition-colors"
