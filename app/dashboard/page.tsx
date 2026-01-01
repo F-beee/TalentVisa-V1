@@ -1301,7 +1301,7 @@ function DashboardContent() {
                   <div className="space-y-2">
                     <CardTitle className="text-2xl font-bold">Booking Confirmed!</CardTitle>
                     <CardDescription className="max-w-[260px] mx-auto text-base">
-                      We've sent a confirmation email to <span className="text-foreground font-medium">user@example.com</span>
+                      We've sent a confirmation email to <span className="text-foreground font-medium">rahulagrwal05@gmail.com</span>
                     </CardDescription>
                   </div>
 
