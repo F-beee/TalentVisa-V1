@@ -644,7 +644,7 @@ export default function EmployersPage() {
                       <code className="text-xs text-muted-foreground block whitespace-pre-wrap break-all">
                         Name,College,Coding,Speaking,Logical,Personality,Experience
                         <br />
-                        Akshay Kapoor,PSIT,85,78,92,88,Experienced
+                        Kashi Mishra,PSIT,85,78,92,88,Experienced
                       </code>
                     </div>
                   </CardContent>
