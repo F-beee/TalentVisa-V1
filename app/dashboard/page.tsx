@@ -88,7 +88,7 @@ const smartSuggestions = {
 // Corrected Scores
 const leaderboardData = [
   { rank: 1, name: "Gurnaam Singh", college: "PSIT Kanpur", score: 99, skills: { coding: 99, speaking: 99, logical: 100, personality: 98 }, experience: "Experienced", category: "Overall", linkedin: "https://www.linkedin.com/in/gurnaam" },
-  { rank: 2, name: "Sayali Konduri", college: "IIM Bangalore", score: 92, skills: { coding: 92, speaking: 89, logical: 96, personality: 91 }, experience: "Experienced", category: "Overall" },
+  { rank: 2, name: "Sayali Kamath", college: "IIM Bangalore", score: 92, skills: { coding: 92, speaking: 89, logical: 96, personality: 91 }, experience: "Experienced", category: "Overall" },
   { rank: 3, name: "Vihaan Patel", college: "IIT Delhi", score: 89, skills: { coding: 88, speaking: 85, logical: 92, personality: 90 }, experience: "Experienced", category: "Overall" },
   { rank: 4, name: "Rohan Gupta", college: "IIT Madras", score: 85, skills: { coding: 84, speaking: 82, logical: 88, personality: 87 }, experience: "Fresher", category: "Overall" },
   { rank: 5, name: "Ananya Singh", college: "IIT Kanpur", score: 82, skills: { coding: 81, speaking: 79, logical: 85, personality: 84 }, experience: "Experienced", category: "Overall" },
