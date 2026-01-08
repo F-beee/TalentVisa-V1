@@ -299,7 +299,7 @@ function DashboardContent() {
        // Improved Signature Font (More elegant script)
     ctx.font = "italic 49px 'Edwardian Script ITC', cursive"
     ctx.fillStyle = "#000000"
-    ctx.fillText("TalentVisa", sigX, footerY + 35)
+    ctx.fillText("Talent Visa", sigX, footerY + 35)
 
     ctx.fillStyle = "#94a3b8"
     ctx.fillRect(sigX - 120, footerY + 50, 240, 1)
