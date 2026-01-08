@@ -293,12 +293,17 @@ function DashboardContent() {
     ctx.font = "bold 16px Arial"
     ctx.fillText(certId, 100, footerY + 85)
 
-    // Center Signature
+   // Center Signature
     const sigX = canvas.width / 2
     ctx.textAlign = "center"
-       // Improved Signature Font (More elegant script)
-    ctx.font = "italic 49px 'Edwardian Script ITC', cursive"
+    
+    // Force wait for the fancy font to load before drawing
+    await document.fonts.load("52px 'Pinyon Script'")
+
+    // Use the reliable Google Font
+    ctx.font = "52px 'Pinyon Script', cursive"
     ctx.fillStyle = "#000000"
+    // Added a slight space in the name for better cursive readability
     ctx.fillText("Talent Visa", sigX, footerY + 35)
 
     ctx.fillStyle = "#94a3b8"
@@ -457,6 +462,8 @@ function DashboardContent() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Load Google Font for Signature */}
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');`}</style>
       <img 
         id="certificate-qr-source" 
         src="/abstract-geometric-shapes.png" 
