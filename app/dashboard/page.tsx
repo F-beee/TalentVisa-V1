@@ -297,7 +297,7 @@ function DashboardContent() {
     const sigX = canvas.width / 2
     ctx.textAlign = "center"
        // Improved Signature Font (More elegant script)
-    ctx.font = "italic 50px 'Edwardian Script ITC', cursive"
+    ctx.font = "italic 49px 'Edwardian Script ITC', cursive"
     ctx.fillStyle = "#000000"
     ctx.fillText("TalentVisa", sigX, footerY + 35)
 
