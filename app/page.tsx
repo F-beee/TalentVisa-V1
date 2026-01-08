@@ -113,7 +113,7 @@ export default function LoginPage() {
               {/* Blue, Glowing Badge */}
               <Badge className="bg-primary/20 text-primary border-primary/30 animate-pulse-glow text-xl text-base py-6 px-9 -mt-12">
                 <Award className="w-4 h-4 mr-2" />
-                Next-Gen Talent Platform
+                Next-Gen Talent Benchmarking
               </Badge>
               <h1 className="text-5xl lg:text-7xl font-bold text-balance leading-tight">
                 Your{" "}
