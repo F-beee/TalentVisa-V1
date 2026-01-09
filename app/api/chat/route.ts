@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
     if (!apiKey) {
       return NextResponse.json(
-        { reply: "Server Error: API Key is missing." },
+        { reply: "API key is turned off in production to save tokens." },
         { status: 500 }
       );
     }
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       4. FEEDBACK - Give specific areas for improvement.
       5. TONE - Professional, encouraging, and futuristic.
       6. ANTI-CHEAT - Firmly state that the Authenticity Engine tracks gaze/tabs if asked about cheating.
-      
+      7.Dont use astersisks,(for making bold, so just dont bold anything)
       CRITICAL: Be concise. Save tokens. Answer like a chat bot.
 
       User Question: "${message}"
