@@ -39,6 +39,7 @@ import {
   Info,
   Building,
 } from "lucide-react"
+import { AiAssistant } from "@/components/ai-assistant"
 
 // Mock data
 const mockTalentData = {
@@ -63,9 +64,33 @@ const mockTalentData = {
 // Mock smart suggestions
 const smartSuggestions = {
   topRoles: [
-    { role: "Senior Software Engineer", match: 95, company: "Google", location: "Mountain View, CA", salary: "$160k - $220k", reason: "Perfect match for your coding and logical reasoning skills", urgency: "High demand" },
-    { role: "Full Stack Developer", match: 92, company: "Stripe", location: "San Francisco, CA", salary: "$140k - $190k", reason: "Strong technical skills align with full-stack requirements", urgency: "Actively hiring" },
-    { role: "Technical Lead", match: 88, company: "Microsoft", location: "Seattle, WA", salary: "$150k - $200k", reason: "Leadership potential with strong technical foundation", urgency: "New openings" },
+    {
+      role: "Senior Software Engineer",
+      match: 95,
+      company: "Google",
+      location: "Mountain View, CA",
+      salary: "$160k - $220k",
+      reason: "Perfect match for your coding and logical reasoning skills",
+      urgency: "High demand",
+    },
+    {
+      role: "Full Stack Developer",
+      match: 92,
+      company: "Stripe",
+      location: "San Francisco, CA",
+      salary: "$140k - $190k",
+      reason: "Strong technical skills align with full-stack requirements",
+      urgency: "Actively hiring",
+    },
+    {
+      role: "Technical Lead",
+      match: 88,
+      company: "Microsoft",
+      location: "Seattle, WA",
+      salary: "$150k - $200k",
+      reason: "Leadership potential with strong technical foundation",
+      urgency: "New openings",
+    },
   ],
   dreamRoleInsights: {
     role: "Product Manager",
@@ -79,30 +104,147 @@ const smartSuggestions = {
     ],
   },
   trendingOpportunities: [
-    { field: "AI/Machine Learning", growth: "+45%", avgSalary: "$180k", skillsNeeded: ["Python", "TensorFlow", "Statistics"], matchPotential: 78 },
-    { field: "Cloud Architecture", growth: "+38%", avgSalary: "$165k", skillsNeeded: ["AWS", "Kubernetes", "System Design"], matchPotential: 85 },
-    { field: "DevOps Engineering", growth: "+32%", avgSalary: "$155k", skillsNeeded: ["Docker", "CI/CD", "Infrastructure"], matchPotential: 82 },
+    {
+      field: "AI/Machine Learning",
+      growth: "+45%",
+      avgSalary: "$180k",
+      skillsNeeded: ["Python", "TensorFlow", "Statistics"],
+      matchPotential: 78,
+    },
+    {
+      field: "Cloud Architecture",
+      growth: "+38%",
+      avgSalary: "$165k",
+      skillsNeeded: ["AWS", "Kubernetes", "System Design"],
+      matchPotential: 85,
+    },
+    {
+      field: "DevOps Engineering",
+      growth: "+32%",
+      avgSalary: "$155k",
+      skillsNeeded: ["Docker", "CI/CD", "Infrastructure"],
+      matchPotential: 82,
+    },
   ],
 }
 
 // Corrected Scores
 const leaderboardData = [
-  { rank: 1, name: "Gurnaam Singh", college: "PSIT Kanpur", score: 99, skills: { coding: 99, speaking: 99, logical: 100, personality: 98 }, experience: "Experienced", category: "Overall", linkedin: "https://www.linkedin.com/in/gurnaam" },
-  { rank: 2, name: "Sayali Kamath", college: "IIM Bangalore", score: 92, skills: { coding: 92, speaking: 89, logical: 96, personality: 91 }, experience: "Experienced", category: "Overall" },
-  { rank: 3, name: "Maruti Konduri", college: "IIM Ahmedabad", score: 89, skills: { coding: 88, speaking: 85, logical: 92, personality: 90 }, experience: "Experienced", category: "Overall" },
-  { rank: 4, name: "Rohan Gupta", college: "IIT Madras", score: 85, skills: { coding: 84, speaking: 82, logical: 88, personality: 87 }, experience: "Fresher", category: "Overall" },
-  { rank: 5, name: "Ananya Singh", college: "IIT Kanpur", score: 82, skills: { coding: 81, speaking: 79, logical: 85, personality: 84 }, experience: "Experienced", category: "Overall" },
-  { rank: 6, name: "Kavya Nair", college: "IIIT Bangalore", score: 80, skills: { coding: 95, speaking: 70, logical: 78, personality: 75 }, experience: "Experienced", category: "Coding" },
-  { rank: 7, name: "Aditya Joshi", college: "NIT Trichy", score: 80, skills: { coding: 72, speaking: 93, logical: 74, personality: 82 }, experience: "Fresher", category: "Speaking" },
-  { rank: 8, name: "Sneha Iyer", college: "BITS Pilani", score: 76, skills: { coding: 70, speaking: 73, logical: 89, personality: 71 }, experience: "Experienced", category: "Logical" },
-  { rank: 9, name: "Karthik Menon", college: "IIT Guwahati", score: 77, skills: { coding: 76, speaking: 70, logical: 72, personality: 88 }, experience: "Fresher", category: "Personality" },
-  { rank: 10, name: "Deepika Rao", college: "IIT Roorkee", score: 72, skills: { coding: 73, speaking: 71, logical: 74, personality: 70 }, experience: "Experienced", category: "Overall" },
+  {
+    rank: 1,
+    name: "Gurnaam Singh",
+    college: "PSIT Kanpur",
+    score: 99,
+    skills: { coding: 99, speaking: 99, logical: 100, personality: 98 },
+    experience: "Experienced",
+    category: "Overall",
+    linkedin: "https://www.linkedin.com/in/gurnaam",
+  },
+  {
+    rank: 2,
+    name: "Sayali Kamath",
+    college: "IIM Bangalore",
+    score: 92,
+    skills: { coding: 92, speaking: 89, logical: 96, personality: 91 },
+    experience: "Experienced",
+    category: "Overall",
+  },
+  {
+    rank: 3,
+    name: "Maruti Konduri",
+    college: "IIM Ahmedabad",
+    score: 89,
+    skills: { coding: 88, speaking: 85, logical: 92, personality: 90 },
+    experience: "Experienced",
+    category: "Overall",
+  },
+  {
+    rank: 4,
+    name: "Rohan Gupta",
+    college: "IIT Madras",
+    score: 85,
+    skills: { coding: 84, speaking: 82, logical: 88, personality: 87 },
+    experience: "Fresher",
+    category: "Overall",
+  },
+  {
+    rank: 5,
+    name: "Ananya Singh",
+    college: "IIT Kanpur",
+    score: 82,
+    skills: { coding: 81, speaking: 79, logical: 85, personality: 84 },
+    experience: "Experienced",
+    category: "Overall",
+  },
+  {
+    rank: 6,
+    name: "Kavya Nair",
+    college: "IIIT Bangalore",
+    score: 80,
+    skills: { coding: 95, speaking: 70, logical: 78, personality: 75 },
+    experience: "Experienced",
+    category: "Coding",
+  },
+  {
+    rank: 7,
+    name: "Aditya Joshi",
+    college: "NIT Trichy",
+    score: 80,
+    skills: { coding: 72, speaking: 93, logical: 74, personality: 82 },
+    experience: "Fresher",
+    category: "Speaking",
+  },
+  {
+    rank: 8,
+    name: "Sneha Iyer",
+    college: "BITS Pilani",
+    score: 76,
+    skills: { coding: 70, speaking: 73, logical: 89, personality: 71 },
+    experience: "Experienced",
+    category: "Logical",
+  },
+  {
+    rank: 9,
+    name: "Karthik Menon",
+    college: "IIT Guwahati",
+    score: 77,
+    skills: { coding: 76, speaking: 70, logical: 72, personality: 88 },
+    experience: "Fresher",
+    category: "Personality",
+  },
+  {
+    rank: 10,
+    name: "Deepika Rao",
+    college: "IIT Roorkee",
+    score: 72,
+    skills: { coding: 73, speaking: 71, logical: 74, personality: 70 },
+    experience: "Experienced",
+    category: "Overall",
+  },
 ]
 
 const mockJobRecommendations = [
-  { role: "Software Engineer", company: "Google", match: 95, salary: "$150k - $180k", skills: ["JavaScript", "React", "Node.js", "HTML", "CSS"] },
-  { role: "Data Scientist", company: "Microsoft", match: 92, salary: "$160k - $200k", skills: ["Python", "Machine Learning", "Statistics", "SQL", "Data Visualization"] },
-  { role: "Product Manager", company: "Amazon", match: 88, salary: "$140k - $170k", skills: ["Product Strategy", "Market Analysis", "User Research", "Agile", "Communication"] },
+  {
+    role: "Software Engineer",
+    company: "Google",
+    match: 95,
+    salary: "$150k - $180k",
+    skills: ["JavaScript", "React", "Node.js", "HTML", "CSS"],
+  },
+  {
+    role: "Data Scientist",
+    company: "Microsoft",
+    match: 92,
+    salary: "$160k - $200k",
+    skills: ["Python", "Machine Learning", "Statistics", "SQL", "Data Visualization"],
+  },
+  {
+    role: "Product Manager",
+    company: "Amazon",
+    match: 88,
+    salary: "$140k - $170k",
+    skills: ["Product Strategy", "Market Analysis", "User Research", "Agile", "Communication"],
+  },
 ]
 
 const mockSkillSuggestions = [
@@ -112,9 +254,27 @@ const mockSkillSuggestions = [
 ]
 
 const testCenters = [
-  { name: "Bangalore Test Center", address: "Tech Park, Whitefield, Bangalore - 560066", phone: "+91-80-4141-5000", email: "bangalore@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
-  { name: "Delhi Test Center", address: "DLF CyberCity, Sector 24, Gurugram - 110001", phone: "+91-11-4141-5000", email: "delhi@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
-  { name: "Mumbai Test Center", address: "Corporate Tower, Bandra, Mumbai - 400050", phone: "+91-22-4141-5000", email: "mumbai@TalentVisa.com", timings: "Mon-Sat: 9:00 AM - 6:00 PM" },
+  {
+    name: "Bangalore Test Center",
+    address: "Tech Park, Whitefield, Bangalore - 560066",
+    phone: "+91-80-4141-5000",
+    email: "bangalore@TalentVisa.com",
+    timings: "Mon-Sat: 9:00 AM - 6:00 PM",
+  },
+  {
+    name: "Delhi Test Center",
+    address: "DLF CyberCity, Sector 24, Gurugram - 110001",
+    phone: "+91-11-4141-5000",
+    email: "delhi@TalentVisa.com",
+    timings: "Mon-Sat: 9:00 AM - 6:00 PM",
+  },
+  {
+    name: "Mumbai Test Center",
+    address: "Corporate Tower, Bandra, Mumbai - 400050",
+    phone: "+91-22-4141-5000",
+    email: "mumbai@TalentVisa.com",
+    timings: "Mon-Sat: 9:00 AM - 6:00 PM",
+  },
 ]
 
 // --- MAIN WRAPPER (Fixes useSearchParams Error) ---
@@ -293,10 +453,10 @@ function DashboardContent() {
     ctx.font = "bold 16px Arial"
     ctx.fillText(certId, 100, footerY + 85)
 
-   // Center Signature
+    // Center Signature
     const sigX = canvas.width / 2
     ctx.textAlign = "center"
-    
+
     // Force wait for the fancy font to load before drawing
     await document.fonts.load("52px 'Pinyon Script'")
 
@@ -321,53 +481,53 @@ function DashboardContent() {
     // --- SMART QR LOGIC ---
     // Mapping for specific users to their custom pages
     const realQrUsers: Record<string, string> = {
-        "Rahul Agarwal": "rahul_agarwal",
-        "Gurnaam Singh": "gurnaam_singh",
-        "Shraddha Kapoor": "shraddha_kapoor"
-    };
-    
+      "Rahul Agarwal": "rahul_agarwal",
+      "Gurnaam Singh": "gurnaam_singh",
+      "Shraddha Kapoor": "shraddha_kapoor",
+    }
+
     if (realQrUsers[talentData.name]) {
-        // Generate REAL QR Code pointing to their specific page
-        const slug = realQrUsers[talentData.name];
-        const verifyUrl = `${typeof window !== "undefined" ? window.location.origin : "https://talentvisa.space"}/verify/${slug}`
-        const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(verifyUrl)}&bgcolor=ffffff`
+      // Generate REAL QR Code pointing to their specific page
+      const slug = realQrUsers[talentData.name]
+      const verifyUrl = `${typeof window !== "undefined" ? window.location.origin : "https://talentvisa.space"}/verify/${slug}`
+      const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(verifyUrl)}&bgcolor=ffffff`
 
-        const qrImage = new Image()
-        qrImage.crossOrigin = "Anonymous"
-        qrImage.src = qrImgUrl
+      const qrImage = new Image()
+      qrImage.crossOrigin = "Anonymous"
+      qrImage.src = qrImgUrl
 
-        await new Promise((resolve) => {
-            qrImage.onload = resolve
-            qrImage.onerror = resolve
-        })
+      await new Promise((resolve) => {
+        qrImage.onload = resolve
+        qrImage.onerror = resolve
+      })
 
-        try {
-            ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize)
-        } catch (e) {
-            // Fallback
-            ctx.strokeStyle = "#cbd5e1"
-            ctx.strokeRect(qrX, qrY, qrSize, qrSize)
-        }
+      try {
+        ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize)
+      } catch (e) {
+        // Fallback
+        ctx.strokeStyle = "#cbd5e1"
+        ctx.strokeRect(qrX, qrY, qrSize, qrSize)
+      }
     } else {
-        // Use STATIC Image for everyone else
-        const imgElement = document.getElementById("certificate-qr-source") as HTMLImageElement
-        if (imgElement && imgElement.complete && imgElement.naturalWidth !== 0) {
-            try {
-                ctx.drawImage(imgElement, qrX, qrY, qrSize, qrSize)
-            } catch (e) {
-                ctx.strokeStyle = "#000000"
-                ctx.strokeRect(qrX, qrY, qrSize, qrSize)
-            }
-        } else {
-            ctx.strokeStyle = "#cbd5e1"
-            ctx.strokeRect(qrX, qrY, qrSize, qrSize)
+      // Use STATIC Image for everyone else
+      const imgElement = document.getElementById("certificate-qr-source") as HTMLImageElement
+      if (imgElement && imgElement.complete && imgElement.naturalWidth !== 0) {
+        try {
+          ctx.drawImage(imgElement, qrX, qrY, qrSize, qrSize)
+        } catch (e) {
+          ctx.strokeStyle = "#000000"
+          ctx.strokeRect(qrX, qrY, qrSize, qrSize)
         }
+      } else {
+        ctx.strokeStyle = "#cbd5e1"
+        ctx.strokeRect(qrX, qrY, qrSize, qrSize)
+      }
     }
 
     ctx.textAlign = "center"
     ctx.fillStyle = "#64748b"
     ctx.font = "12px Arial"
-    ctx.fillText("Scan to Verify", qrX + qrSize/2, qrY + qrSize + 15)
+    ctx.fillText("Scan to Verify", qrX + qrSize / 2, qrY + qrSize + 15)
 
     return canvas.toDataURL("image/png", 1.0)
   }
@@ -413,7 +573,7 @@ function DashboardContent() {
     link.click()
     alert("🎉 Skill Certificate downloaded successfully! Share this with employers to verify your skills.")
   }
-  
+
   const handlePreviewLeaderboardSkillCard = (talent: any) => {
     setSkillCardTalent(talent)
   }
@@ -461,15 +621,15 @@ function DashboardContent() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-black via-slate-900 to-black">
       {/* Load Google Font for Signature */}
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');`}</style>
-      <img 
-        id="certificate-qr-source" 
-        src="/abstract-geometric-shapes.png" 
+      <img
+        id="certificate-qr-source"
+        src="/abstract-geometric-shapes.png"
         crossOrigin="anonymous"
-        className="hidden" 
-        alt="QR Source" 
+        className="hidden"
+        alt="QR Source"
       />
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -496,13 +656,15 @@ function DashboardContent() {
               >
                 TalentVisa
               </h1>
-              <Badge className="hidden md:inline-flex bg-primary/20 text-primary border-primary/30">Performance Platform</Badge>
+              <Badge className="hidden md:inline-flex bg-primary/20 text-primary border-primary/30">
+                Performance Platform
+              </Badge>
             </div>
 
             <div className="flex items-center space-x-4">
-              <Button 
+              <Button
                 className="bg-gradient-to-r from-primary via-purple-500 to-accent text-white border-0 shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:shadow-[0_0_25px_rgba(168,85,247,0.8)] hover:scale-105 transition-all duration-300 animate-pulse-glow mr-2 font-bold tracking-wide"
-                onClick={() => window.location.href = "/employers"}
+                onClick={() => (window.location.href = "/employers")}
               >
                 <Building className="w-4 h-4 mr-2 fill-white/20" />
                 For Employers
@@ -569,28 +731,40 @@ function DashboardContent() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="flex items-center"><Code className="w-3 h-3 mr-1.5 text-primary" />Coding</span>
+                          <span className="flex items-center">
+                            <Code className="w-3 h-3 mr-1.5 text-primary" />
+                            Coding
+                          </span>
                           <span className="font-semibold">{mockTalentData.skills.coding}/100</span>
                         </div>
                         <Progress value={mockTalentData.skills.coding} className="h-1.5" />
                       </div>
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="flex items-center"><MessageSquare className="w-3 h-3 mr-1.5 text-accent" />Speaking</span>
+                          <span className="flex items-center">
+                            <MessageSquare className="w-3 h-3 mr-1.5 text-accent" />
+                            Speaking
+                          </span>
                           <span className="font-semibold">{mockTalentData.skills.speaking}/100</span>
                         </div>
                         <Progress value={mockTalentData.skills.speaking} className="h-1.5" />
                       </div>
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="flex items-center"><Brain className="w-3 h-3 mr-1.5 text-primary" />Logical</span>
+                          <span className="flex items-center">
+                            <Brain className="w-3 h-3 mr-1.5 text-primary" />
+                            Logical
+                          </span>
                           <span className="font-semibold">{mockTalentData.skills.logical}/100</span>
                         </div>
                         <Progress value={mockTalentData.skills.logical} className="h-1.5" />
                       </div>
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <span className="flex items-center"><Users className="w-3 h-3 mr-1.5 text-accent" />Personality</span>
+                          <span className="flex items-center">
+                            <Users className="w-3 h-3 mr-1.5 text-accent" />
+                            Personality
+                          </span>
                           <span className="font-semibold">{mockTalentData.skills.personality}/100</span>
                         </div>
                         <Progress value={mockTalentData.skills.personality} className="h-1.5" />
@@ -802,25 +976,35 @@ function DashboardContent() {
                       talent.rank === 1
                         ? "border-yellow-500/40 bg-yellow-500/5 shadow-[0_0_20px_rgba(234,179,8,0.1)]"
                         : talent.rank === 2
-                        ? "border-zinc-400/40 bg-zinc-400/5 shadow-[0_0_20px_rgba(161,161,170,0.1)]"
-                        : talent.rank === 3
-                        ? "border-orange-500/40 bg-orange-500/5 shadow-[0_0_20px_rgba(249,115,22,0.1)]"
-                        : "border-white/5 hover:border-white/10"
+                          ? "border-zinc-400/40 bg-zinc-400/5 shadow-[0_0_20px_rgba(161,161,170,0.1)]"
+                          : talent.rank === 3
+                            ? "border-orange-500/40 bg-orange-500/5 shadow-[0_0_20px_rgba(249,115,22,0.1)]"
+                            : "border-white/5 hover:border-white/10"
                     }`}
                     onClick={() => openTalentProfile(talent)}
                   >
                     <div className="flex items-center justify-between w-full sm:w-auto flex-1 min-w-[200px]">
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full font-bold text-sm sm:text-base shrink-0 shadow-inner ${
-                          talent.rank === 1 ? "bg-primary/20 text-red-600" :
-                          talent.rank === 2 ? "bg-primary/20 text-yellow-500" :
-                          talent.rank === 3 ? "bg-primary/20 text-green-500" :
-                          "bg-primary/10 text-primary"
-                        }`}>
-                          {talent.rank === 1 ? <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" /> :
-                           talent.rank === 2 ? <Medal className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" /> :
-                           talent.rank === 3 ? <Award className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" /> :
-                           talent.rank}
+                        <div
+                          className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full font-bold text-sm sm:text-base shrink-0 shadow-inner ${
+                            talent.rank === 1
+                              ? "bg-primary/20 text-red-600"
+                              : talent.rank === 2
+                                ? "bg-primary/20 text-yellow-500"
+                                : talent.rank === 3
+                                  ? "bg-primary/20 text-green-500"
+                                  : "bg-primary/10 text-primary"
+                          }`}
+                        >
+                          {talent.rank === 1 ? (
+                            <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
+                          ) : talent.rank === 2 ? (
+                            <Medal className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
+                          ) : talent.rank === 3 ? (
+                            <Award className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
+                          ) : (
+                            talent.rank
+                          )}
                         </div>
 
                         <Avatar className="w-8 h-8 sm:w-10 sm:h-10 border border-white/10">
@@ -832,17 +1016,21 @@ function DashboardContent() {
                             }
                           />
                           <AvatarFallback>
-                            {talent.name.split(" ").map((n) => n[0]).join("")}
+                            {talent.name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
                           </AvatarFallback>
                         </Avatar>
-                        
+
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
-                            <h4 className="font-semibold text-sm sm:text-base truncate">
-                              {talent.name}
-                            </h4>
+                            <h4 className="font-semibold text-sm sm:text-base truncate">{talent.name}</h4>
                             {talent.rank === 1 && (
-                              <Badge variant="outline" className="hidden sm:inline-flex text-[10px] h-5 border-yellow-500/50 text-yellow-500 px-1.5 bg-yellow-500/5">
+                              <Badge
+                                variant="outline"
+                                className="hidden sm:inline-flex text-[10px] h-5 border-yellow-500/50 text-yellow-500 px-1.5 bg-yellow-500/5"
+                              >
                                 Top
                               </Badge>
                             )}
@@ -852,12 +1040,17 @@ function DashboardContent() {
                       </div>
 
                       <div className="text-right sm:hidden shrink-0 ml-2">
-                        <div className={`text-lg font-bold leading-none ${
-                          talent.rank === 1 ? "text-red-600" :
-                          talent.rank === 2 ? "text-yellow-500" :
-                          talent.rank === 3 ? "text-green-500" :
-                          "text-primary"
-                        }`}>
+                        <div
+                          className={`text-lg font-bold leading-none ${
+                            talent.rank === 1
+                              ? "text-red-600"
+                              : talent.rank === 2
+                                ? "text-yellow-500"
+                                : talent.rank === 3
+                                  ? "text-green-500"
+                                  : "text-primary"
+                          }`}
+                        >
                           {talent.score}
                         </div>
                         <div className="text-[9px] text-muted-foreground">Avg Score</div>
@@ -866,12 +1059,17 @@ function DashboardContent() {
 
                     <div className="flex items-center justify-between gap-3 w-full sm:w-auto mt-1 sm:mt-0 border-t sm:border-0 border-white/5 pt-2 sm:pt-0">
                       <div className="text-right mr-4 hidden sm:block">
-                        <div className={`text-xl font-bold leading-none ${
-                          talent.rank === 1 ? "text-red-600" :
-                          talent.rank === 2 ? "text-yellow-500" :
-                          talent.rank === 3 ? "text-green-500" :
-                          "text-primary"
-                        }`}>
+                        <div
+                          className={`text-xl font-bold leading-none ${
+                            talent.rank === 1
+                              ? "text-red-600"
+                              : talent.rank === 2
+                                ? "text-yellow-500"
+                                : talent.rank === 3
+                                  ? "text-green-500"
+                                  : "text-primary"
+                          }`}
+                        >
                           {talent.score}
                         </div>
                         <div className="text-[10px] text-muted-foreground">Avg Score</div>
@@ -890,7 +1088,7 @@ function DashboardContent() {
                           <Users className="w-3 h-3 mr-1.5" />
                           Connect
                         </Button>
-                        
+
                         <Button
                           size="sm"
                           variant="outline"
@@ -1190,26 +1388,26 @@ function DashboardContent() {
               <div className="text-center">
                 {/* Dynamically Loaded Image Preview */}
                 {previewUrl ? (
-                   <img
-                    src={previewUrl}
+                  <img
+                    src={previewUrl || "/placeholder.svg"}
                     alt="Skill Certificate"
                     className="mx-auto border rounded-lg shadow-lg max-w-full h-auto"
-                   />
+                  />
                 ) : (
                   <div className="w-full h-64 flex items-center justify-center text-muted-foreground">
                     Generating Certificate with QR...
                   </div>
                 )}
-                
+
                 <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
-                  <Button 
-                    onClick={() => handleDownloadLeaderboardSkillCard(skillCardTalent)} 
+                  <Button
+                    onClick={() => handleDownloadLeaderboardSkillCard(skillCardTalent)}
                     className="w-full sm:w-auto h-11 px-8 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-semibold rounded-full shadow-[0_0_20px_rgba(236,72,153,0.4)] hover:shadow-[0_0_35px_rgba(236,72,153,0.6)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 border-0"
                   >
                     <Download className="w-4 h-4 mr-2" />
                     Download Certificate
                   </Button>
-                  
+
                   <Button
                     variant="outline"
                     className="w-full sm:w-auto h-11 px-6 border-white/10 bg-white/5 hover:bg-white/10 text-white hover:border-pink-500/50 rounded-full backdrop-blur-md transition-all duration-300 active:scale-95 group"
@@ -1241,7 +1439,7 @@ function DashboardContent() {
                     Review your appointment details
                   </CardDescription>
                 </CardHeader>
-                
+
                 <CardContent className="space-y-8 px-8 pb-8">
                   <div className="space-y-5">
                     <div className="flex items-start gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors">
@@ -1249,9 +1447,13 @@ function DashboardContent() {
                         <MapPin className="w-5 h-5 text-accent" />
                       </div>
                       <div>
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Test Center</p>
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                          Test Center
+                        </p>
                         <p className="text-base font-semibold">{selectedTestCenter.name}</p>
-                        <p className="text-sm text-muted-foreground leading-snug mt-0.5">{selectedTestCenter.address}</p>
+                        <p className="text-sm text-muted-foreground leading-snug mt-0.5">
+                          {selectedTestCenter.address}
+                        </p>
                       </div>
                     </div>
 
@@ -1260,11 +1462,16 @@ function DashboardContent() {
                         <Clock className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Date & Time</p>
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                          Date & Time
+                        </p>
                         <p className="text-base font-semibold">
                           {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString("en-IN", {
-                            weekday: "short", day: "numeric", month: "short"
-                          })} • 10:00 AM
+                            weekday: "short",
+                            day: "numeric",
+                            month: "short",
+                          })}{" "}
+                          • 10:00 AM
                         </p>
                       </div>
                     </div>
@@ -1277,11 +1484,11 @@ function DashboardContent() {
                     >
                       Confirm Booking
                     </Button>
-                    
+
                     <div className="grid grid-cols-2 gap-3">
                       <Button
                         variant="outline"
-                        className="h-11 border-white/10 hover:bg-white/5 hover:text-accent hover:border-accent/30 text-muted-foreground transition-all duration-200 active:scale-[0.98] rounded-xl"
+                        className="h-11 border-white/10 hover:bg-white/5 hover:text-accent hover:border-accent/30 text-muted-foreground transition-all duration-200 active:scale-[0.98] rounded-xl bg-transparent"
                         onClick={() => handleOpenMaps(selectedTestCenter.name)}
                       >
                         <MapPin className="w-4 h-4 mr-2" />
@@ -1304,18 +1511,17 @@ function DashboardContent() {
                   <div className="mx-auto w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center ring-4 ring-green-500/10 animate-in zoom-in duration-300">
                     <CheckCircle className="w-10 h-10 text-green-500" />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <CardTitle className="text-2xl font-bold">Booking Confirmed!</CardTitle>
                     <CardDescription className="max-w-[260px] mx-auto text-base">
-                      We've sent a confirmation email to <span className="text-foreground font-medium">rahulagrwal05@gmail.com</span>
+                      We've sent a confirmation email to{" "}
+                      <span className="text-foreground font-medium">rahulagrwal05@gmail.com</span>
                     </CardDescription>
                   </div>
 
                   <div className="p-4 bg-muted/10 rounded-xl border border-white/5 mx-4">
-                    <p className="text-sm font-medium text-foreground">
-                      {selectedTestCenter.name}
-                    </p>
+                    <p className="text-sm font-medium text-foreground">{selectedTestCenter.name}</p>
                     <p className="text-xs text-muted-foreground mt-1">
                       {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()} • 10:00 AM
                     </p>
@@ -1337,6 +1543,8 @@ function DashboardContent() {
           </Card>
         </div>
       )}
+
+      <AiAssistant talentData={mockTalentData} />
     </div>
   )
 }
