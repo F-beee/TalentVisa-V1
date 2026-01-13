@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,22 +9,25 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { Users, TrendingUp, Star, ArrowRight, Building, Info, Award } from "lucide-react"
+import { Users, TrendingUp, Star, ArrowRight, Building, Info, Award, Hand, PauseCircle } from "lucide-react"
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
-  const [autoLoginCountdown, setAutoLoginCountdown] = useState(7) // Set to 10 seconds
+  
+  // TIMER STATE
+  const [autoLoginCountdown, setAutoLoginCountdown] = useState(10) 
   const [showAutoLoginTimer, setShowAutoLoginTimer] = useState(false)
+  const [isAutoLoginPaused, setIsAutoLoginPaused] = useState(false) // <--- PAUSE STATE
 
-  // 1. Trigger the MVP Guide focus after 3 seconds
+  // 1. Show Guide after 3 seconds
   useEffect(() => {
     const timer = setTimeout(() => setShowAutoLoginTimer(true), 3000)
     return () => clearTimeout(timer)
   }, [])
 
-  // 2. Handle Countdown & Auto-Login Logic
+  // 2. Countdown Logic (Respects Pause)
   useEffect(() => {
-    if (showAutoLoginTimer) {
+    if (showAutoLoginTimer && !isAutoLoginPaused) {
       if (autoLoginCountdown > 0) {
         const timer = setInterval(() => setAutoLoginCountdown((c) => c - 1), 1000)
         return () => clearInterval(timer)
@@ -33,9 +35,9 @@ export default function LoginPage() {
         handleGuestLogin()
       }
     }
-  }, [showAutoLoginTimer, autoLoginCountdown])
+  }, [showAutoLoginTimer, autoLoginCountdown, isAutoLoginPaused])
 
-  // 3. Smooth Scroll to Guide
+  // 3. Auto-scroll to guide
   useEffect(() => {
     if (showAutoLoginTimer) {
       setTimeout(() => {
@@ -108,13 +110,23 @@ export default function LoginPage() {
 
       <div className="relative z-10 flex items-center justify-center min-h-screen p-4 pt-32 sm:pt-4">
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
+          
+          {/* LEFT SIDE: HERO CONTENT */}
           <div className="space-y-8">
             <div className="space-y-4">
-              {/* Blue, Glowing Badge */}
-              <Badge className="bg-primary/20 text-primary border-primary/30 animate-pulse-glow text-xl text-base py-6 px-9 -mt-12">
-                <Award className="w-4 h-4 mr-2" />
-                Next-Gen Talent Benchmarking
+              
+              {/* FIXED BADGE: Static Blue Halo + Mobile Break */}
+              <Badge className="bg-blue-950/30 text-blue-200 border-blue-500/50 shadow-[0_0_25px_rgba(59,130,246,0.6)] text-base sm:text-lg lg:text-xl py-3 px-6 lg:py-6 lg:px-9 mt-0 lg:-mt-12 w-fit mb-6 lg:mb-0 border h-auto whitespace-normal">
+                <div className="flex items-center gap-2">
+                  <Award className="w-5 h-5 text-blue-400 shrink-0" />
+                  <span className="text-center sm:text-left leading-tight">
+                    Next-Gen Talent 
+                    <br className="block sm:hidden" /> 
+                    Benchmarking
+                  </span>
+                </div>
               </Badge>
+              
               <h1 className="text-5xl lg:text-7xl font-bold text-balance leading-tight">
                 Your{" "}
                 <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-gradient">
@@ -147,6 +159,7 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {/* RIGHT SIDE: LOGIN CARD */}
           <div className="flex justify-center">
             <Card className="w-full max-w-md glass-effect border-primary/20">
               <CardHeader className="text-center space-y-2">
@@ -160,6 +173,7 @@ export default function LoginPage() {
                     <TabsTrigger value="signup">Sign Up</TabsTrigger>
                   </TabsList>
 
+                  {/* LOGIN TAB */}
                   <TabsContent value="login" className="space-y-4">
                     <form onSubmit={handleLogin} className="space-y-4">
                       <div className="space-y-2">
@@ -192,6 +206,7 @@ export default function LoginPage() {
                     </form>
                   </TabsContent>
 
+                  {/* SIGN UP TAB (RESTORED & UPDATED) */}
                   <TabsContent value="signup" className="space-y-4">
                     <form onSubmit={handleLogin} className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
@@ -199,7 +214,7 @@ export default function LoginPage() {
                           <Label htmlFor="firstName">First Name</Label>
                           <Input
                             id="firstName"
-                            placeholder="John"
+                            placeholder="Rahul"  /* UPDATED */
                             className="bg-background/50 border-primary/30 focus:border-primary"
                             required
                           />
@@ -208,7 +223,7 @@ export default function LoginPage() {
                           <Label htmlFor="lastName">Last Name</Label>
                           <Input
                             id="lastName"
-                            placeholder="Doe"
+                            placeholder="Agarwal" /* UPDATED */
                             className="bg-background/50 border-primary/30 focus:border-primary"
                             required
                           />
@@ -282,13 +297,33 @@ export default function LoginPage() {
 
                   <Separator className="my-4" />
 
-                  {/* Restored the Blue Timer Badge (Dynamic) */}
-                  {showAutoLoginTimer && (
-                    <div className="text-center mb-2">
-                      <Badge variant="outline" className="bg-primary/5 text-primary text-xs animate-pulse">
-                        Auto-login in {autoLoginCountdown}s
+                  {/* TIMER SECTION + WAIT BUTTON */}
+                  {showAutoLoginTimer && !isAutoLoginPaused && (
+                    <div className="flex items-center justify-center gap-2 mb-2 animate-in fade-in slide-in-from-top-2 duration-500">
+                      <Badge variant="outline" className="bg-primary/5 text-primary text-xs animate-pulse border-primary/20 pl-3 pr-1 py-1 h-7 flex items-center gap-2">
+                        <span>Auto-login in {autoLoginCountdown}s</span>
+                        
+                        {/* THE "WAIT" BUTTON */}
+                        <Button 
+                          size="sm" 
+                          variant="ghost" 
+                          onClick={() => setIsAutoLoginPaused(true)}
+                          className="h-5 px-2 text-[10px] hover:bg-red-500/10 hover:text-red-500 text-muted-foreground ml-1"
+                        >
+                          <Hand className="w-3 h-3 mr-1" />
+                          Wait
+                        </Button>
                       </Badge>
                     </div>
+                  )}
+
+                  {/* PAUSED STATE */}
+                  {isAutoLoginPaused && (
+                     <div className="text-center mb-2 animate-in fade-in zoom-in duration-300">
+                        <Badge variant="outline" className="bg-yellow-500/10 text-yellow-600 border-yellow-500/20 text-xs">
+                           <PauseCircle className="w-3 h-3 mr-1" /> Auto-login stopped
+                        </Badge>
+                     </div>
                   )}
 
                   <Button
@@ -300,22 +335,20 @@ export default function LoginPage() {
                     Continue as Guest
                   </Button>
 
-                  {/* MVP Guide - Static Text "10 seconds" */}
                   <div
                     id="mvp-guide"
                     className={`mt-6 p-4 rounded-xl border text-sm transition-all duration-1000 ease-in-out transform origin-center ${
-                      showAutoLoginTimer
+                      showAutoLoginTimer && !isAutoLoginPaused
                         ? "bg-primary/20 border-primary ring-4 ring-primary/20 shadow-[0_0_50px_rgba(124,58,237,0.4)] scale-110"
                         : "bg-primary/5 border-primary/10 scale-100"
                     }`}
                   >
                     <h3 className="font-bold flex items-center gap-2 mb-2 text-primary text-xs uppercase tracking-wider">
-                      <Info className="w-4 h-4" /> 
-                      MVP Tour Guide
+                      <Info className="w-4 h-4" /> MVP Tour Guide
                     </h3>
                     <div className="space-y-2 text-muted-foreground text-xs">
                       <p className="leading-relaxed">
-                        This is an MVP website. You don't need to login. Just chill, you will be auto-logged in as a guest in <span className="font-bold text-foreground">10 seconds</span>.
+                        This is an MVP website. You will be auto-logged in as a guest in <span className="font-bold text-foreground">{autoLoginCountdown} seconds</span> unless you press 'Wait'.
                       </p>
                       <p>
                         <span className="font-medium text-foreground">🏢 For Employers:</span> Click the button (top-right) to browse verified candidates, analytics, and hiring tools.
@@ -329,7 +362,6 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Cool Trademark Footer */}
       <footer className="fixed bottom-6 left-0 right-0 flex justify-center z-50">
         <div className="glass-effect px-5 py-2 rounded-full border border-primary/20 shadow-lg backdrop-blur-md">
           <p className="text-xs sm:text-sm font-medium text-muted-foreground">
