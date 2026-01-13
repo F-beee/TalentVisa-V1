@@ -483,7 +483,7 @@ function DashboardContent() {
     const realQrUsers: Record<string, string> = {
       "Rahul Agarwal": "rahul_agarwal",
       "Gurnaam Singh": "gurnaam_singh",
-      "Sayali Kamath": "sayali_Kamath",
+      "Sayali Kamath": "sayali_kamath",
     }
 
     if (realQrUsers[talentData.name]) {
