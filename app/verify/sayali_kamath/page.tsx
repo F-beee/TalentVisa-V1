@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress"
 import { CheckCircle, Shield, Calendar, MapPin, Download, ExternalLink } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-export default function ShraddhaVerificationPage() {
+export default function SayaliVerificationPage() {
   const candidate = {
     name: "Sayali Kamath",
     id: "TR-Saya-772401",
