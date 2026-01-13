@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 export default function SayaliVerificationPage() {
   const candidate = {
     name: "Sayali Kamath",
-    id: "TR-Saya-772401",
+    id: "TR-Saya-629780",
     college: "IIM Bangalore",
     issueDate: new Date().toLocaleDateString(),
     status: "Verified",
