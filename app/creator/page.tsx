@@ -41,7 +41,7 @@ export default function ArchitectPage() {
         <div className="space-y-6 mb-16 sm:mb-24">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-400 mb-2">
             <Compass className="w-3.5 h-3.5 text-blue-400" />
-            Bhubaneswar, India • XIMB BM '26-28
+            Bhubaneswar, India • XIMB BM &apos;26-28
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
             Architecting ideas into <br className="hidden sm:block" />
