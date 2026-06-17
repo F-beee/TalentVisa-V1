@@ -198,7 +198,7 @@ export default function ArchitectPage() {
           </div>
           <div className="space-y-4 text-zinc-300 leading-relaxed font-mono text-sm relative">
             
-            {/* First Paragraph: Types out at normal speed, hides cursor when done */}
+            {/* First Paragraph: Normal speed */}
             <p className="min-h-[100px]">
               <TypewriterText 
                 text="I am passionate about understanding how ideas evolve into products, businesses, and systems that create meaningful impact. While I love the mechanics of building, my ultimate goal is to work at the intersection of technology and strategy, bringing a builder's analytical execution to a larger ecosystem to create some impact." 
@@ -207,12 +207,12 @@ export default function ArchitectPage() {
               />
             </p>
             
-            {/* Second Paragraph: Waits exactly until the first is done (4000ms), then types very fast (4ms) */}
-            <p className="min-h-[100px]">
+            {/* Second Paragraph: Starts 4.5 seconds later, types at a more relaxed 9ms speed */}
+            <p className="min-h-[100px] animate-in fade-in duration-1000 fill-mode-both" style={{ animationDelay: '4.5s' }}>
               <TypewriterText 
-                text="I approach challenges with an analytical mindset. Over time, I have developed a habit of questioning assumptions, testing ideas, and learning through outcomes rather than relying solely on theory. This mindset dictates my approach to projects, decisions, and continuous learning." 
-                delay={4} 
-                startDelay={4000} 
+                text="I approach challenges with an analytical mindset, but I know the best solutions often come from genuine conversations. Over time, I have developed a habit of questioning assumptions, connecting with diverse perspectives, and learning through outcomes rather than relying solely on theory. This mindset dictates my approach to projects, decisions, and continuous learning." 
+                delay={9} 
+                startDelay={4500} 
               />
             </p>
 
@@ -404,13 +404,13 @@ export default function ArchitectPage() {
                Sub-Directory: /architect
             </div>
             <p className="text-xs text-zinc-400 max-w-[290px] sm:text-right mb-2 leading-relaxed">
-              Talk is cheap and resumes are static. See how I translate this exact philosophy into a live, scalable platform:
+              Reading about a system is one thing; interacting with it is another. Step out of the sub-directory and experience the live execution:
             </p>
             <div className="relative group cursor-pointer" onClick={() => window.location.href = '/'}>
               <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse" />
               <button className="relative flex items-center gap-2 px-6 py-2.5 bg-black rounded-full leading-none text-white border border-white/10 font-medium">
                 <Zap className="w-4 h-4 text-amber-400" />
-                <span>Access TalentVisa MVP</span>
+                <span>Enter TalentVisa Platform</span>
                 <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
