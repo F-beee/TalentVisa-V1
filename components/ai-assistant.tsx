@@ -9,16 +9,22 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Send, Bot, X, MessageCircle, Loader2 } from "lucide-react"
 
 interface AiAssistantProps {
-  talentData: any
+  talentData?: any
+  mode?: "coach" | "creator"
+  customContext?: any
+  customGreeting?: string
 }
 
-export function AiAssistant({ talentData }: AiAssistantProps) {
+export function AiAssistant({ talentData, mode = "coach", customContext, customGreeting }: AiAssistantProps) {
   const [isOpen, setIsOpen] = useState(false)
   
+  // Dynamically set the greeting based on the mode
+  const initialMessage = customGreeting || `Hello ${talentData?.name?.split(" ")[0] || "there"}! I see your Coding score is ${talentData?.skills?.coding || 0}%. That's impressive! How can I help you today?`
+
   const [messages, setMessages] = useState([
     {
       role: "system",
-      content: `Hello ${talentData?.name?.split(" ")[0] || "there"}! I see your Coding score is ${talentData?.skills?.coding || 0}%. That's impressive! How can I help you today?`,
+      content: initialMessage,
     },
   ])
   
@@ -46,7 +52,8 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: userMessage,
-          context: talentData 
+          // Send the massive creator context if in creator mode, otherwise send the user's talentData
+          context: mode === "creator" ? customContext : talentData 
         }),
       })
 
@@ -62,6 +69,10 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
       setIsLoading(false)
     }
   }
+
+  // Dynamic Text for the Header
+  const titleText = mode === "creator" ? "Gurnaam's AI Agent" : "TalentVisa AI"
+  const descriptionText = mode === "creator" ? "Ask me anything about Gurnaam or his projects" : `Coach for ${talentData?.name?.split(" ")[0] || "User"}`
 
   // =========================================================
   // 1. THE FLASHY BUTTON (Closed State)
@@ -87,27 +98,26 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
   // 2. THE HUGE NEON WINDOW (Open State)
   // =========================================================
   return (
-    // FIX: CENTERED ON MOBILE (left-1/2 -translate-x-1/2)
-    // DESKTOP: Bottom Right (sm:left-auto sm:translate-x-0 sm:right-6)
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-6 sm:bottom-6 z-50 w-[90vw] sm:w-[450px] h-[80vh] sm:h-[650px] animate-in zoom-in-95 fade-in duration-300 origin-bottom">
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-6 sm:bottom-6 z-50 w-[95vw] sm:w-[450px] h-[85vh] sm:h-[650px] animate-in zoom-in-95 fade-in duration-300 origin-bottom">
        
        {/* RGB NEON HALO */}
-       <div className="absolute -inset-[3px] rounded-2xl bg-gradient-to-r from-[#FF0000] via-[#00FF00] to-[#0000FF] opacity-75 blur-lg animate-pulse" />
+       <div className="absolute -inset-[3px] rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 opacity-75 blur-lg animate-pulse" />
 
-       <Card className="relative h-full flex flex-col border-none shadow-2xl bg-zinc-900 text-white rounded-2xl overflow-hidden">
+       <Card className="relative h-full flex flex-col border-none shadow-2xl bg-zinc-950 text-white rounded-2xl overflow-hidden">
         
         {/* HEADER */}
-        <CardHeader className="bg-zinc-900/50 backdrop-blur-md pb-4 border-b border-white/10 p-4 sm:p-5">
-          <div className="flex items-center gap-4">
-            <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl shadow-lg shadow-blue-500/20">
-              <Bot className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+        <CardHeader className="bg-zinc-900/80 backdrop-blur-md pb-4 border-b border-white/10 p-4 sm:p-5">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl shadow-lg shadow-blue-500/20 relative">
+              <Bot className="h-5 w-5 sm:h-6 sm:w-6 text-white relative z-10" />
+              <div className="absolute inset-0 bg-white/20 rounded-xl animate-pulse" />
             </div>
             <div className="flex-1">
               <CardTitle className="text-lg sm:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                TalentVisa AI
+                {titleText}
               </CardTitle>
               <CardDescription className="text-xs sm:text-sm text-zinc-400">
-                Coach for {talentData?.name?.split(" ")[0]}
+                {descriptionText}
               </CardDescription>
             </div>
             <Button 
@@ -122,7 +132,7 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
         </CardHeader>
 
         {/* CHAT AREA */}
-        <CardContent className="flex-1 p-0 overflow-hidden bg-black/40">
+        <CardContent className="flex-1 p-0 overflow-hidden bg-[#0a0a0a]">
           <ScrollArea className="h-full px-4 sm:px-5 py-4 sm:py-5">
             <div className="space-y-6 pb-4">
               {messages.map((message, index) => (
@@ -132,7 +142,6 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
                 >
                   {message.role === "system" && (
                     <Avatar className="h-8 w-8 sm:h-9 sm:w-9 mt-1 ring-2 ring-blue-500/30">
-                      <AvatarImage src="/bot-avatar.png" />
                       <AvatarFallback className="bg-gradient-to-br from-blue-600 to-purple-600 text-white text-xs">AI</AvatarFallback>
                     </Avatar>
                   )}
@@ -141,7 +150,7 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
                     className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-md leading-relaxed ${
                       message.role === "user"
                         ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-tr-none shadow-blue-500/20"
-                        : "bg-zinc-800 text-zinc-100 border border-white/10 rounded-tl-none"
+                        : "bg-zinc-900 text-zinc-300 border border-white/10 rounded-tl-none"
                     }`}
                   >
                     {message.content}
@@ -154,9 +163,9 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
                    <Avatar className="h-8 w-8 sm:h-9 sm:w-9 mt-1">
                       <AvatarFallback className="bg-zinc-800 text-zinc-400 text-xs">AI</AvatarFallback>
                     </Avatar>
-                    <div className="bg-zinc-800/50 rounded-2xl rounded-tl-none px-5 py-3.5 flex items-center border border-white/5">
+                    <div className="bg-zinc-900 rounded-2xl rounded-tl-none px-5 py-3.5 flex items-center border border-white/5">
                       <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
-                      <span className="text-sm text-zinc-400 ml-2 font-medium">Analyzing...</span>
+                      <span className="text-sm text-zinc-400 ml-2 font-medium">Analyzing Data...</span>
                     </div>
                 </div>
               )}
@@ -166,7 +175,7 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
         </CardContent>
 
         {/* FOOTER */}
-        <CardFooter className="p-4 bg-zinc-900 border-t border-white/10">
+        <CardFooter className="p-4 bg-zinc-900/80 backdrop-blur-md border-t border-white/10">
           <form
             onSubmit={(e) => {
               e.preventDefault()
@@ -175,11 +184,11 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
             className="flex w-full gap-3 items-center"
           >
             <Input
-              placeholder="Ask about scores..."
+              placeholder={mode === "creator" ? "Ask about Gurnaam or TalentVisa..." : "Ask about scores..."}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
-              className="rounded-full bg-zinc-800 border-transparent text-white placeholder:text-zinc-500 focus:bg-zinc-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all h-10 sm:h-12 px-5 text-sm sm:text-base"
+              className="rounded-full bg-black border-white/10 text-white placeholder:text-zinc-600 focus:bg-zinc-950 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all h-10 sm:h-12 px-5 text-sm"
             />
             
             <Button 
