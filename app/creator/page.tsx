@@ -202,7 +202,6 @@ export default function ArchitectPage() {
           </div>
           <div className="space-y-4 text-zinc-300 leading-relaxed font-mono text-sm sm:text-base relative">
             
-            {/* First Paragraph: Normal speed */}
             <p className="min-h-[100px] sm:min-h-[80px]">
               <TypewriterText 
                 text="I am passionate about understanding how ideas evolve into products, businesses, and systems that create meaningful impact. While I love the mechanics of building, my ultimate goal is to work at the intersection of technology and strategy, bringing a builder's analytical execution to a larger ecosystem to create some impact." 
@@ -211,7 +210,6 @@ export default function ArchitectPage() {
               />
             </p>
             
-            {/* Second Paragraph: Starts right as the first ends (3.8 seconds), and types FAST (5ms delay) */}
             <p className="min-h-[100px] animate-in fade-in duration-1000 fill-mode-both" style={{ animationDelay: '3.8s' }}>
               <TypewriterText 
                 text="I approach challenges with an analytical mindset, but I know the best solutions often come from genuine conversations. Over time, I have developed a habit of questioning assumptions, connecting with diverse perspectives, and learning through outcomes rather than relying solely on theory. This mindset dictates my approach to projects, decisions, and continuous learning." 
@@ -235,7 +233,6 @@ export default function ArchitectPage() {
           </div>
           
           <div className="grid gap-4 pr-1 sm:pr-2">
-            {/* TalentVisa */}
             <div className="p-4 sm:p-5 rounded-xl border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 transition-colors relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-3xl group-hover:bg-blue-500/20 transition-all" />
               <div className="flex justify-between items-start mb-2 relative z-10">
@@ -247,7 +244,6 @@ export default function ArchitectPage() {
               </p>
             </div>
 
-            {/* PowerrPad */}
             <div className="p-4 sm:p-5 rounded-xl border border-white/5 bg-black/20 hover:bg-white/5 transition-colors">
               <div className="flex justify-between items-start mb-2">
                 <h4 className="text-white font-medium flex items-center gap-2"><Cuboid className="w-4 h-4 text-purple-400"/> PowerrPad</h4>
@@ -258,7 +254,6 @@ export default function ArchitectPage() {
               </p>
             </div>
 
-            {/* Academic Recognition */}
             <div className="p-4 sm:p-5 rounded-xl border border-white/5 bg-black/20 hover:bg-white/5 transition-colors">
               <div className="flex justify-between items-start mb-2">
                 <h4 className="text-white font-medium flex items-center gap-2"><Award className="w-4 h-4 text-amber-400"/> Scholar of the Year</h4>
@@ -329,7 +324,6 @@ export default function ArchitectPage() {
           </div>
           
           <div className="grid gap-4 pr-1 sm:pr-2">
-            {/* Table Tennis */}
             <div className="p-4 sm:p-5 bg-zinc-900/50 rounded-xl border border-white/5 relative overflow-hidden group hover:border-white/10 transition-colors">
               <div className="absolute right-0 bottom-0 opacity-5 text-7xl sm:text-8xl transform translate-x-4 translate-y-4 group-hover:scale-110 transition-transform select-none">🏓</div>
               <h4 className="text-white font-medium mb-2 text-sm relative z-10 flex items-center gap-2">Athletic Agility</h4>
@@ -338,7 +332,6 @@ export default function ArchitectPage() {
               </p>
             </div>
 
-            {/* Strategy & Mechanics (Bowling & Chess) */}
             <div className="p-4 sm:p-5 bg-zinc-900/50 rounded-xl border border-white/5 relative overflow-hidden group hover:border-white/10 transition-colors">
               <div className="absolute right-0 bottom-0 opacity-5 text-7xl sm:text-8xl transform translate-x-4 translate-y-4 group-hover:scale-110 transition-transform select-none">♟️</div>
               <h4 className="text-white font-medium mb-2 text-sm relative z-10 flex items-center gap-2">Strategy & Mechanics</h4>
@@ -347,7 +340,6 @@ export default function ArchitectPage() {
               </p>
             </div>
 
-            {/* Downtime (Valorant & Sitcoms) */}
             <div className="p-4 sm:p-5 bg-zinc-900/50 rounded-xl border border-white/5 relative overflow-hidden group hover:border-white/10 transition-colors">
               <div className="absolute right-0 bottom-0 opacity-5 text-7xl sm:text-8xl transform translate-x-4 translate-y-4 group-hover:scale-110 transition-transform select-none">📺</div>
               <h4 className="text-white font-medium mb-2 text-sm relative z-10 flex items-center gap-2">Downtime</h4>
@@ -362,25 +354,12 @@ export default function ArchitectPage() {
   }
 
   // ==========================================
-  // THE AI KNOWLEDGE BASE (Passed to the API)
+  // COMPRESSED VISITOR CONTEXT
   // ==========================================
-  const gurnaamKnowledgeBase = {
-    identity: "Gurnaam Singh, Business Management student at XIMB (2026-2028, Section E) and BBA graduate from PSIT.",
-    awards: "Scholar of the Year (2025) awarded by the Management Department at PSIT after rigorous assessment and pitching.",
-    core_philosophy: "Passionate about how ideas evolve into products. Ultimate goal is to work at the intersection of technology and strategy, bringing a builder's analytical execution to a larger ecosystem to create meaningful impact.",
-    projects: [
-      {
-        name: "TalentVisa",
-        description: "A skill benchmarking platform built to solve the global resume inflation crisis. Secured a green flag to pilot the MVP at his college."
-      },
-      {
-        name: "PowerrPad",
-        description: "A smart laptop charging case concept. Involved in product development, 3D modelling, and feasibility analysis. Received a grant from the government under the Department of Science and Technology (DST-NIDHI)."
-      }
-    ],
-    skills: "Product Strategy (95%), Execution (85%), Analytics (80%), Development (75%), Agility (88%), Caffeine Tolerance (100%).",
-    hobbies: "National-level Table Tennis player (2018-2019) with district and college golds. Novice at chess. Fascinated by physical mechanics of bowling. Plays Valorant, Elden Ring, watches sitcoms, and hunts for good coffee.",
-    contact: "LinkedIn: https://www.linkedin.com/in/gurnaam/"
+  const visitorContext = {
+    name: "Visitor",
+    greeting: "Hello! I am the TalentVisa AI. I can answer questions about Gurnaam, his projects, or this platform. What would you like to know?",
+    system_context: "You are an AI on Gurnaam Singh's portfolio. Gurnaam is an incoming XIMB BM student, founder of TalentVisa, and recipient of the DST-NIDHI grant for PowerrPad. Be concise."
   };
 
   return (
@@ -549,12 +528,8 @@ export default function ArchitectPage() {
         </div>
       </div>
       
-      {/* INTEGRATED AI ASSISTANT IN CREATOR MODE */}
-      <AiAssistant 
-        mode="creator"
-        customGreeting="Hello! I am the TalentVisa AI. I have been trained on Gurnaam's data and can answer any questions you have about his background, his projects, or the TalentVisa platform itself. What would you like to know?"
-        customContext={gurnaamKnowledgeBase}
-      />
+      {/* INTEGRATED AI ASSISTANT WIDGET */}
+      <AiAssistant talentData={visitorContext} />
     </div>
   )
 }
