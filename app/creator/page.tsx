@@ -7,7 +7,6 @@ import {
   Trophy, 
   Cuboid, 
   Terminal, 
-  Cpu,
   Activity,
   Code,
   Award,
@@ -26,7 +25,7 @@ import {
 } from "recharts"
 
 // ==========================================
-// 1. 3D HOLOGRAPHIC TILT COMPONENT (Option A)
+// 1. 3D HOLOGRAPHIC TILT COMPONENT
 // ==========================================
 const TiltCard = ({ children, className }: { children: React.ReactNode, className?: string }) => {
   const cardRef = useRef<HTMLDivElement>(null)
@@ -41,7 +40,7 @@ const TiltCard = ({ children, className }: { children: React.ReactNode, classNam
     const centerX = rect.width / 2
     const centerY = rect.height / 2
     
-    const rotateX = ((y - centerY) / centerY) * -4 // Max 4 degrees tilt
+    const rotateX = ((y - centerY) / centerY) * -4
     const rotateY = ((x - centerX) / centerX) * 4
 
     setRotation({ x: rotateX, y: rotateY })
@@ -129,16 +128,28 @@ const TypewriterText = ({ text, delay = 15 }: { text: string, delay?: number }) 
 }
 
 // ==========================================
-// 3. RADAR CHART DATA
+// 3. RADAR CHART DATA & CUSTOM TICK
 // ==========================================
 const metricsData = [
   { subject: 'Product Strategy', score: 95 },
   { subject: 'Execution', score: 85 },
-  { subject: 'Caffeine Tolerance', score: 100 }, // The 100% funny cue!
+  { subject: 'Caffeine\nTolerance', score: 100 }, // Text with line break
   { subject: 'Analytics', score: 80 },
   { subject: 'Development', score: 75 },
   { subject: 'Agility', score: 88 },
 ];
+
+// Custom function to allow line breaks in the radar chart labels
+const CustomTick = ({ payload, x, y, textAnchor }: any) => {
+  const lines = payload.value.split('\n');
+  return (
+    <text x={x} y={y} textAnchor={textAnchor} className="text-[10px] fill-zinc-400 font-sans">
+      {lines.map((line: string, index: number) => (
+        <tspan key={index} x={x} dy={index === 0 ? 0 : 12}>{line}</tspan>
+      ))}
+    </text>
+  );
+};
 
 // ==========================================
 // MAIN PAGE
@@ -171,11 +182,21 @@ export default function ArchitectPage() {
             <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20">Init: Philosophy</Badge>
             <span className="text-xs text-zinc-500 font-mono">Status: Active</span>
           </div>
-          <div className="space-y-4 text-zinc-300 leading-relaxed font-mono text-sm">
-            <p><TypewriterText text="I am passionate about understanding how ideas evolve into products, businesses, and systems that create meaningful impact. While I love the mechanics of building, my ultimate goal is to work at the intersection of technology and strategy, bringing a builder's analytical execution to a larger ecosystem to drive massive impact." delay={10} /></p>
-            <p className="animate-in fade-in duration-1000 delay-1000 fill-mode-both">
-              I approach challenges with a heavy analytical mindset. Over time, I have developed a habit of questioning assumptions, testing ideas, and learning through outcomes rather than relying solely on theory. This mindset dictates my approach to projects, decisions, and continuous learning.
+          <div className="space-y-4 text-zinc-300 leading-relaxed font-mono text-sm relative">
+            
+            {/* First Paragraph: Types out over ~5 seconds */}
+            <p className="min-h-[100px]">
+              <TypewriterText 
+                text="I am passionate about understanding how ideas evolve into products, businesses, and systems that create meaningful impact. While I love the mechanics of building, my ultimate goal is to work at the intersection of technology and strategy, bringing a builder's analytical execution to a larger ecosystem to create some impact." 
+                delay={15} 
+              />
             </p>
+            
+            {/* Second Paragraph: Waits 5 seconds before fading in */}
+            <p className="animate-in fade-in duration-1000 fill-mode-both" style={{ animationDelay: '5s' }}>
+              I approach challenges with an analytical mindset. Over time, I have developed a habit of questioning assumptions, testing ideas, and learning through outcomes rather than relying solely on theory. This mindset dictates my approach to projects, decisions, and continuous learning.
+            </p>
+
           </div>
         </div>
       )
@@ -209,11 +230,10 @@ export default function ArchitectPage() {
                 <h4 className="text-white font-medium flex items-center gap-2"><Cuboid className="w-4 h-4 text-purple-400"/> PowerrPad</h4>
               </div>
               <p className="text-zinc-400 text-sm leading-relaxed mb-3">
-                A smart laptop charging case concept. Involved in deep product development, 3D modelling, prototyping, and feasibility analysis. We were fortunate enough to receive a ₹5L DST-NIDHI grant.
+                A smart laptop charging case concept. Involved in product development, 3D modelling, prototyping, and feasibility analysis. We were fortunate enough to receive a grant from the government scheme DST-NIDHI under the Department of Science and Technology.
               </p>
               <div className="flex gap-2 text-xs font-mono text-zinc-500">
                 <span className="px-2 py-1 bg-white/5 rounded border border-white/10">3D Modelling</span>
-                <span className="px-2 py-1 bg-white/5 rounded border border-white/10">Prototyping</span>
               </div>
             </div>
 
@@ -246,7 +266,7 @@ export default function ArchitectPage() {
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart cx="50%" cy="50%" outerRadius="80%" data={metricsData}>
                   <PolarGrid stroke="#3f3f46" />
-                  <PolarAngleAxis dataKey="subject" tick={{ fill: '#a1a1aa', fontSize: 10 }} />
+                  <PolarAngleAxis dataKey="subject" tick={<CustomTick />} />
                   <Tooltip contentStyle={{ backgroundColor: '#18181b', borderColor: '#27272a', color: '#fff', borderRadius: '8px' }} />
                   <Radar name="Performance" dataKey="score" stroke="#3b82f6" fill="url(#colorUv)" fillOpacity={0.5} />
                   <defs>
@@ -266,7 +286,7 @@ export default function ArchitectPage() {
               <div className="space-y-2">
                 {metricsData.slice(0, 4).map((metric, idx) => (
                   <div key={idx} className="flex justify-between items-center border-b border-white/5 pb-2">
-                    <span className="text-xs text-zinc-400">{metric.subject}</span>
+                    <span className="text-xs text-zinc-400 whitespace-pre-line">{metric.subject.replace('\n', ' ')}</span>
                     <span className={`text-xs font-mono ${metric.score === 100 ? "text-amber-400 animate-pulse" : "text-blue-400"}`}>
                       {metric.score}%
                     </span>
