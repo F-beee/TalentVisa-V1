@@ -39,6 +39,7 @@ import {
   Info,
   Building,
 } from "lucide-react"
+import { AiAssistant } from "@/components/ai-assistant"
 
 // Mock data
 const mockTalentData = {
@@ -1542,6 +1543,8 @@ function DashboardContent() {
           </Card>
         </div>
       )}
+
+      <AiAssistant talentData={mockTalentData} />
     </div>
   )
 }
