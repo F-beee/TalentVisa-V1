@@ -105,7 +105,7 @@ const DecryptText = ({ text }: { text: string }) => {
   return <span className="font-mono tracking-widest">{displayText}</span>
 }
 
-const TypewriterText = ({ text, delay = 15 }: { text: string, delay?: number }) => {
+const TypewriterText = ({ text, delay = 12 }: { text: string, delay?: number }) => {
   const [currentText, setCurrentText] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -133,13 +133,12 @@ const TypewriterText = ({ text, delay = 15 }: { text: string, delay?: number }) 
 const metricsData = [
   { subject: 'Product Strategy', score: 95 },
   { subject: 'Execution', score: 85 },
-  { subject: 'Caffeine\nTolerance', score: 100 }, // Text with line break
+  { subject: 'Caffeine\nTolerance', score: 100 }, 
   { subject: 'Analytics', score: 80 },
   { subject: 'Development', score: 75 },
   { subject: 'Agility', score: 88 },
 ];
 
-// Custom function to allow line breaks in the radar chart labels
 const CustomTick = ({ payload, x, y, textAnchor }: any) => {
   const lines = payload.value.split('\n');
   return (
@@ -184,16 +183,16 @@ export default function ArchitectPage() {
           </div>
           <div className="space-y-4 text-zinc-300 leading-relaxed font-mono text-sm relative">
             
-            {/* First Paragraph: Types out over ~5 seconds */}
+            {/* First Paragraph: Types out slightly faster (12ms delay) */}
             <p className="min-h-[100px]">
               <TypewriterText 
                 text="I am passionate about understanding how ideas evolve into products, businesses, and systems that create meaningful impact. While I love the mechanics of building, my ultimate goal is to work at the intersection of technology and strategy, bringing a builder's analytical execution to a larger ecosystem to create some impact." 
-                delay={15} 
+                delay={12} 
               />
             </p>
             
-            {/* Second Paragraph: Waits 5 seconds before fading in */}
-            <p className="animate-in fade-in duration-1000 fill-mode-both" style={{ animationDelay: '5s' }}>
+            {/* Second Paragraph: Fades in slightly slower (5.5s delay) */}
+            <p className="animate-in fade-in duration-1000 fill-mode-both" style={{ animationDelay: '5.5s' }}>
               I approach challenges with an analytical mindset. Over time, I have developed a habit of questioning assumptions, testing ideas, and learning through outcomes rather than relying solely on theory. This mindset dictates my approach to projects, decisions, and continuous learning.
             </p>
 
@@ -228,13 +227,11 @@ export default function ArchitectPage() {
             <div className="p-4 rounded-xl border border-white/5 bg-black/20 hover:bg-white/5 transition-colors">
               <div className="flex justify-between items-start mb-2">
                 <h4 className="text-white font-medium flex items-center gap-2"><Cuboid className="w-4 h-4 text-purple-400"/> PowerrPad</h4>
+                <Badge variant="outline" className="border-purple-500/30 text-purple-300">3D Modelling</Badge>
               </div>
               <p className="text-zinc-400 text-sm leading-relaxed mb-3">
-                A smart laptop charging case concept. Involved in product development, 3D modelling, prototyping, and feasibility analysis. We were fortunate enough to receive a grant from the government scheme DST-NIDHI under the Department of Science and Technology.
+                A smart laptop charging case concept. Involved in product development, 3D modelling, prototyping, and feasibility analysis. We were fortunate enough to receive a grant from the government under the Department of Science and Technology (DST-NIDHI).
               </p>
-              <div className="flex gap-2 text-xs font-mono text-zinc-500">
-                <span className="px-2 py-1 bg-white/5 rounded border border-white/10">3D Modelling</span>
-              </div>
             </div>
 
             {/* Academic Recognition */}
@@ -348,7 +345,7 @@ export default function ArchitectPage() {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16">
         
         {/* Navigation & Connection to TalentVisa */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-8">
           <Button 
             variant="ghost" 
             className="text-zinc-500 hover:text-white hover:bg-white/5 -ml-4 transition-all"
@@ -358,14 +355,23 @@ export default function ArchitectPage() {
             Back to Dashboard
           </Button>
 
-          {/* MASSIVE GLOWING TALENTVISA CTA */}
-          <div className="relative group cursor-pointer" onClick={() => window.location.href = '/'}>
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse" />
-            <button className="relative flex items-center gap-2 px-6 py-2.5 bg-black rounded-full leading-none text-white border border-white/10 font-medium">
-              <Zap className="w-4 h-4 text-amber-400" />
-              <span>Enter TalentVisa Platform</span>
-              <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-1 transition-transform" />
-            </button>
+          {/* MASSIVE GLOWING TALENTVISA CTA WITH SUB-DIRECTORY CUE */}
+          <div className="flex flex-col sm:items-end gap-1.5">
+            <div className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-1">
+               <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+               Sub-Directory: /architect
+            </div>
+            <p className="text-xs text-zinc-400 max-w-[280px] sm:text-right mb-2 leading-relaxed">
+              You are currently viewing the creator&apos;s sub-directory. Experience the full Authenticity Engine in action here:
+            </p>
+            <div className="relative group cursor-pointer" onClick={() => window.location.href = '/'}>
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse" />
+              <button className="relative flex items-center gap-2 px-6 py-2.5 bg-black rounded-full leading-none text-white border border-white/10 font-medium">
+                <Zap className="w-4 h-4 text-amber-400" />
+                <span>Enter TalentVisa Platform</span>
+                <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
           </div>
         </div>
 
