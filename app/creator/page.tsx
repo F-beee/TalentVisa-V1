@@ -354,13 +354,9 @@ export default function ArchitectPage() {
   }
 
   // ==========================================
-  // COMPRESSED VISITOR CONTEXT
+  // COMPRESSED VISITOR CONTEXT FOR THE LLM
   // ==========================================
-  const visitorContext = {
-    name: "Visitor",
-    greeting: "Hello! I am the TalentVisa AI. I can answer questions about Gurnaam, his projects, or this platform. What would you like to know?",
-    system_context: "You are an AI on Gurnaam Singh's portfolio. Gurnaam is an incoming XIMB BM student, founder of TalentVisa, and recipient of the DST-NIDHI grant for PowerrPad. Be concise."
-  };
+  const visitorContext = "You are an AI assistant answering questions about Gurnaam Singh. He is a BBA graduate from PSIT and an incoming MBA student at XIMB (Business Management '26-28, Section E). He founded TalentVisa (a skill benchmarking MVP) and co-developed PowerrPad (a smart charging case that got a DST-NIDHI grant). He played table tennis at the National level. Keep answers short and polite.";
 
   return (
     <div className="min-h-screen bg-[#050505] text-zinc-300 font-sans selection:bg-blue-500/30 relative overflow-hidden pb-24">
@@ -390,7 +386,6 @@ export default function ArchitectPage() {
                 Back
               </Button>
 
-              {/* LinkedIn Button Updated */}
               <Button 
                 variant="outline" 
                 className="rounded-full border-white/10 bg-black/50 hover:bg-white/10 text-zinc-300 hover:text-white transition-all backdrop-blur-md"
@@ -529,7 +524,7 @@ export default function ArchitectPage() {
       </div>
       
       {/* INTEGRATED AI ASSISTANT WIDGET */}
-      <AiAssistant talentData={visitorContext} />
+      <AiAssistant isVisitor={true} talentData={visitorContext} />
     </div>
   )
 }
