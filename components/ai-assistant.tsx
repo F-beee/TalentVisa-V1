@@ -10,21 +10,21 @@ import { Send, Bot, X, MessageCircle, Loader2 } from "lucide-react"
 
 interface AiAssistantProps {
   talentData?: any
-  isVisitor?: boolean // Added this flag to separate the Dashboard Coach from the Creator AI
+  mode?: "coach" | "creator"
+  customContext?: any
+  customGreeting?: string
 }
 
-export function AiAssistant({ talentData, isVisitor = false }: AiAssistantProps) {
+export function AiAssistant({ talentData, mode = "coach", customContext, customGreeting }: AiAssistantProps) {
   const [isOpen, setIsOpen] = useState(false)
   
-  // Completely isolates the greeting so "99%" never shows on the creator page
-  const defaultGreeting = isVisitor 
-    ? "Hello! I am the TalentVisa AI. I can answer questions about Gurnaam, his projects, or this platform. What would you like to know?"
-    : `Hello ${talentData?.name?.split(" ")[0] || "there"}! I see your Coding score is ${talentData?.skills?.coding || 0}%. That's impressive! How can I help you today?`
+  // Dynamically set the greeting based on the mode
+  const initialMessage = customGreeting || `Hello ${talentData?.name?.split(" ")[0] || "there"}! I see your Coding score is ${talentData?.skills?.coding || 0}%. That's impressive! How can I help you today?`
 
   const [messages, setMessages] = useState([
     {
       role: "system",
-      content: defaultGreeting,
+      content: initialMessage,
     },
   ])
   
@@ -52,7 +52,8 @@ export function AiAssistant({ talentData, isVisitor = false }: AiAssistantProps)
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: userMessage,
-          context: talentData // Passes the highly compressed text to your LLM
+          // Send the massive creator context if in creator mode, otherwise send the user's talentData
+          context: mode === "creator" ? customContext : talentData 
         }),
       })
 
@@ -69,6 +70,13 @@ export function AiAssistant({ talentData, isVisitor = false }: AiAssistantProps)
     }
   }
 
+  // Dynamic Text for the Header
+  const titleText = mode === "creator" ? "Gurnaam's AI Agent" : "TalentVisa AI"
+  const descriptionText = mode === "creator" ? "Ask me anything about Gurnaam or his projects" : `Coach for ${talentData?.name?.split(" ")[0] || "User"}`
+
+  // =========================================================
+  // 1. THE FLASHY BUTTON (Closed State)
+  // =========================================================
   if (!isOpen) {
     return (
       <div className="fixed bottom-5 right-5 z-50 group">
@@ -86,12 +94,18 @@ export function AiAssistant({ talentData, isVisitor = false }: AiAssistantProps)
     )
   }
 
+  // =========================================================
+  // 2. THE HUGE NEON WINDOW (Open State)
+  // =========================================================
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-6 sm:bottom-6 z-50 w-[95vw] sm:w-[450px] h-[85vh] sm:h-[650px] animate-in zoom-in-95 fade-in duration-300 origin-bottom">
+       
+       {/* RGB NEON HALO */}
        <div className="absolute -inset-[3px] rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 opacity-75 blur-lg animate-pulse" />
 
        <Card className="relative h-full flex flex-col border-none shadow-2xl bg-zinc-950 text-white rounded-2xl overflow-hidden">
         
+        {/* HEADER */}
         <CardHeader className="bg-zinc-900/80 backdrop-blur-md pb-4 border-b border-white/10 p-4 sm:p-5">
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl shadow-lg shadow-blue-500/20 relative">
@@ -100,10 +114,10 @@ export function AiAssistant({ talentData, isVisitor = false }: AiAssistantProps)
             </div>
             <div className="flex-1">
               <CardTitle className="text-lg sm:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                TalentVisa AI
+                {titleText}
               </CardTitle>
               <CardDescription className="text-xs sm:text-sm text-zinc-400">
-                {isVisitor ? "Ask about Gurnaam or this platform" : `Coach for ${talentData?.name?.split(" ")[0] || "User"}`}
+                {descriptionText}
               </CardDescription>
             </div>
             <Button 
@@ -117,6 +131,7 @@ export function AiAssistant({ talentData, isVisitor = false }: AiAssistantProps)
           </div>
         </CardHeader>
 
+        {/* CHAT AREA */}
         <CardContent className="flex-1 p-0 overflow-hidden bg-[#0a0a0a]">
           <ScrollArea className="h-full px-4 sm:px-5 py-4 sm:py-5">
             <div className="space-y-6 pb-4">
@@ -159,6 +174,7 @@ export function AiAssistant({ talentData, isVisitor = false }: AiAssistantProps)
           </ScrollArea>
         </CardContent>
 
+        {/* FOOTER */}
         <CardFooter className="p-4 bg-zinc-900/80 backdrop-blur-md border-t border-white/10">
           <form
             onSubmit={(e) => {
@@ -168,7 +184,7 @@ export function AiAssistant({ talentData, isVisitor = false }: AiAssistantProps)
             className="flex w-full gap-3 items-center"
           >
             <Input
-              placeholder="Ask a question..."
+              placeholder={mode === "creator" ? "Ask about Gurnaam or TalentVisa..." : "Ask about scores..."}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
