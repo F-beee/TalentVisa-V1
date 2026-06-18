@@ -4,19 +4,22 @@ import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { ScrollArea } from "@/components/ui/scroll-area" 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Send, Bot, X, MessageCircle, Loader2 } from "lucide-react"
 
 interface AiAssistantProps {
-  talentData: any
+  talentData?: any
+  isVisitor?: boolean // Added this flag to separate the Dashboard Coach from the Creator AI
 }
 
-export function AiAssistant({ talentData }: AiAssistantProps) {
+export function AiAssistant({ talentData, isVisitor = false }: AiAssistantProps) {
   const [isOpen, setIsOpen] = useState(false)
-
-  // Uses the custom greeting if provided, otherwise a simple default
-  const defaultGreeting = talentData?.greeting || `Hello! How can I help you today?`
+  
+  // Completely isolates the greeting so "99%" never shows on the creator page
+  const defaultGreeting = isVisitor 
+    ? "Hello! I am the TalentVisa AI. I can answer questions about Gurnaam, his projects, or this platform. What would you like to know?"
+    : `Hello ${talentData?.name?.split(" ")[0] || "there"}! I see your Coding score is ${talentData?.skills?.coding || 0}%. That's impressive! How can I help you today?`
 
   const [messages, setMessages] = useState([
     {
@@ -24,11 +27,11 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
       content: defaultGreeting,
     },
   ])
-
+  
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
-
+  
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: "smooth" })
@@ -49,7 +52,7 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: userMessage,
-          context: talentData // Passes the highly compressed context
+          context: talentData // Passes the highly compressed text to your LLM
         }),
       })
 
@@ -70,8 +73,8 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
     return (
       <div className="fixed bottom-5 right-5 z-50 group">
         <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-red-500 via-green-500 to-blue-500 opacity-70 blur-xl animate-pulse group-hover:opacity-100 transition-all duration-500" />
-
-        <Button
+        
+        <Button 
           onClick={() => setIsOpen(true)}
           className="relative h-14 w-14 sm:h-16 sm:w-16 rounded-full border-none shadow-2xl bg-black hover:bg-zinc-900 transition-transform hover:scale-110 active:scale-95"
         >
@@ -85,10 +88,10 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
 
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-6 sm:bottom-6 z-50 w-[95vw] sm:w-[450px] h-[85vh] sm:h-[650px] animate-in zoom-in-95 fade-in duration-300 origin-bottom">
-      <div className="absolute -inset-[3px] rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 opacity-75 blur-lg animate-pulse" />
+       <div className="absolute -inset-[3px] rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 opacity-75 blur-lg animate-pulse" />
 
-      <Card className="relative h-full flex flex-col border-none shadow-2xl bg-zinc-950 text-white rounded-2xl overflow-hidden">
-
+       <Card className="relative h-full flex flex-col border-none shadow-2xl bg-zinc-950 text-white rounded-2xl overflow-hidden">
+        
         <CardHeader className="bg-zinc-900/80 backdrop-blur-md pb-4 border-b border-white/10 p-4 sm:p-5">
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl shadow-lg shadow-blue-500/20 relative">
@@ -100,12 +103,12 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
                 TalentVisa AI
               </CardTitle>
               <CardDescription className="text-xs sm:text-sm text-zinc-400">
-                Ask about Gurnaam or this platform
+                {isVisitor ? "Ask about Gurnaam or this platform" : `Coach for ${talentData?.name?.split(" ")[0] || "User"}`}
               </CardDescription>
             </div>
-            <Button
-              variant="ghost"
-              size="icon"
+            <Button 
+              variant="ghost" 
+              size="icon" 
               className="h-8 w-8 sm:h-9 sm:w-9 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
               onClick={() => setIsOpen(false)}
             >
@@ -127,27 +130,28 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
                       <AvatarFallback className="bg-gradient-to-br from-blue-600 to-purple-600 text-white text-xs">AI</AvatarFallback>
                     </Avatar>
                   )}
-
+                  
                   <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-md leading-relaxed ${message.role === "user"
+                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-md leading-relaxed ${
+                      message.role === "user"
                         ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-tr-none shadow-blue-500/20"
                         : "bg-zinc-900 text-zinc-300 border border-white/10 rounded-tl-none"
-                      }`}
+                    }`}
                   >
                     {message.content}
                   </div>
                 </div>
               ))}
-
+              
               {isLoading && (
                 <div className="flex gap-4 justify-start">
-                  <Avatar className="h-8 w-8 sm:h-9 sm:w-9 mt-1">
-                    <AvatarFallback className="bg-zinc-800 text-zinc-400 text-xs">AI</AvatarFallback>
-                  </Avatar>
-                  <div className="bg-zinc-900 rounded-2xl rounded-tl-none px-5 py-3.5 flex items-center border border-white/5">
-                    <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
-                    <span className="text-sm text-zinc-400 ml-2 font-medium">Analyzing Data...</span>
-                  </div>
+                   <Avatar className="h-8 w-8 sm:h-9 sm:w-9 mt-1">
+                      <AvatarFallback className="bg-zinc-800 text-zinc-400 text-xs">AI</AvatarFallback>
+                    </Avatar>
+                    <div className="bg-zinc-900 rounded-2xl rounded-tl-none px-5 py-3.5 flex items-center border border-white/5">
+                      <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
+                      <span className="text-sm text-zinc-400 ml-2 font-medium">Analyzing Data...</span>
+                    </div>
                 </div>
               )}
               <div ref={scrollRef} />
@@ -170,10 +174,10 @@ export function AiAssistant({ talentData }: AiAssistantProps) {
               disabled={isLoading}
               className="rounded-full bg-black border-white/10 text-white placeholder:text-zinc-600 focus:bg-zinc-950 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all h-10 sm:h-12 px-5 text-sm"
             />
-
-            <Button
-              type="submit"
-              size="icon"
+            
+            <Button 
+              type="submit" 
+              size="icon" 
               disabled={isLoading || !input.trim()}
               className="rounded-full h-10 w-10 sm:h-12 sm:w-12 shrink-0 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white shadow-lg shadow-blue-500/40 border border-white/10"
             >
