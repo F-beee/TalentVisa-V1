@@ -3,7 +3,8 @@ import { NextResponse } from "next/server"
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { message = "", context } = body || {}
+    // Extract history array passed from the frontend memory logic
+    const { message = "", context, history = [] } = body || {}
 
     if (!message || typeof message !== "string" || !message.trim()) {
       return NextResponse.json({ reply: "Please provide a message." }, { status: 400 })
@@ -32,8 +33,9 @@ export async function POST(req: Request) {
 
         INSTRUCTIONS:
         - If the user asks to calculate protein need, use the standard: 0.83 grams of protein per kilogram of body weight for a healthy Indian adult. Do the math for them.
-        - Emphasize that Saral Shakti Atta provides >=15% protein stealthily, meaning they don't have to change their daily chapati habits.
+        - Emphasize that Saral Protein Plus Atta provides >=15% protein seamlessly, meaning they don't have to change their daily chapati habits.
         - Emphasize the FSSAI 2023 compliance and the 120M household reach if asked about business viability.
+        - The user may refer back to previous messages. Use the conversation history to understand context (e.g., if they say "what is the price?", look at the previous message to see what product they are talking about).
         - Strictly output PLAIN TEXT ONLY. Keep responses concise and formatted cleanly without using markdown asterisks.
         `;
       } else {
@@ -49,6 +51,7 @@ export async function POST(req: Request) {
         INSTRUCTIONS:
         - Strictly output PLAIN TEXT ONLY. Do not use asterisks/markdown for bold.
         - Give short, concise responses like a chat widget.
+        - The user may ask follow-up questions. Use the recent chat history to maintain conversational context.
         - Answer questions naturally based on the knowledge provided.
         `;
       }
@@ -58,7 +61,7 @@ export async function POST(req: Request) {
       // ============================================================================
       const userName = context?.name || "Candidate"
       const scores = context?.skills || { coding: 0, speaking: 0, logical: 0, personality: 0 }
-      
+
       systemPrompt = `
       IDENTITY: You are "TalentVisa AI", the voice of the Authenticity Engine.
       FOUNDER: Gurnaam Singh 
@@ -107,10 +110,11 @@ export async function POST(req: Request) {
         model: "llama-3.3-70b-versatile",
         messages: [
           { role: "system", content: systemPrompt },
+          ...history, // --- THIS IS THE SLIDING WINDOW MEMORY ---
           { role: "user", content: message.trim() },
         ],
         temperature: 0.6,
-        max_tokens: 300,
+        max_tokens: 300, // Keeps responses punchy and cheap
       }),
     })
 
