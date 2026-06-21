@@ -75,16 +75,16 @@ function Badge({ label, className = "" }: { label: string, className?: string })
   )
 }
 
-export default function SaralShaktiPage() {
+export default function SaralProteinPlusPage() {
   const [showJudgesPanel, setShowJudgesPanel] = useState(false)
 
   // Compressed text strictly to save API tokens
   const saralContext = `You are representing Saral Foods Ltd.
   Problem: India's protein gap is a literacy crisis. 74% urban Indians can't identify their daily protein needs. People have supplement fatigue.
-  Solution: Stealth fortification in daily staples. No habit change needed.
+  Solution: Seamless integration in daily staples. No habit change needed.
   Products:
-  1. Shakti Atta: >=15% protein (Soy/Pea blend). ₹270–285 per 5kg pack. (FSSAI 2023 compliant).
-  2. Shakti Dairy+: High-protein lassi (>=8g protein per 200ml, ₹35 ASP) and fortified curd.
+  1. Protein Plus Atta: >=15% protein (Soy/Pea blend). ₹270–285 per 5kg pack. (FSSAI 2023 compliant).
+  2. Protein Plus Dairy: High-protein lassi (>=8g protein per 200ml, ₹35 ASP) and high-protein curd.
   Business Moats: 120M household reach, regulatory first-mover, behavioral stealth, QR lab-tested credibility.
   Unit Economics: 12-15% premium, ₹8-12 incremental ingredient cost, 14-18% steady state EBITDA. Target: 1000 Cr in 5 years.`;
 
@@ -105,7 +105,7 @@ export default function SaralShaktiPage() {
               <Wheat className="w-4 h-4 text-white" />
             </div>
             <span className="text-lg font-bold tracking-tight text-white">
-              Saral <span className="text-emerald-400">Shakti</span>
+              Saral <span className="text-emerald-400">Protein Plus</span>
             </span>
           </div>
           <div className="flex items-center gap-4">
@@ -141,7 +141,7 @@ export default function SaralShaktiPage() {
             <p className="text-lg text-zinc-400 leading-relaxed max-w-xl">
               India’s protein gap isn't just a supply crisis; it's a literacy crisis. 
               Over 70% of households are protein deficient, yet 90% don't know their daily requirements. 
-              <strong className="text-zinc-200 font-semibold"> Saral Shakti solves this without changing daily habits.</strong>
+              <strong className="text-zinc-200 font-semibold"> Saral Protein Plus solves this without changing daily habits.</strong>
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -175,8 +175,8 @@ export default function SaralShaktiPage() {
                   <Wheat className="w-8 h-8 text-amber-500/50" />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-white mb-2 relative z-10">Shakti Atta (5kg)</h3>
-                <p className="text-zinc-400 text-sm mb-6 relative z-10">Stealth fortification. Exact same taste and texture, scientifically powered.</p>
+                <h3 className="text-2xl font-bold text-white mb-2 relative z-10">Protein Plus Atta (5kg)</h3>
+                <p className="text-zinc-400 text-sm mb-6 relative z-10">Seamless protein integration. Exact same taste and texture, scientifically powered.</p>
                 
                 <div className="space-y-3 relative z-10 font-mono text-sm">
                   <div className="flex justify-between items-center p-3 bg-black/40 rounded-xl border border-white/5">
@@ -211,7 +211,7 @@ export default function SaralShaktiPage() {
               </div>
               <h4 className="text-lg font-semibold text-white mb-3">Aware, but Confused</h4>
               <p className="text-zinc-400 text-sm leading-relaxed">
-                She knows protein is important, but nearly 74% of urban Indians are unable to correctly identify their recommended intake.
+                They know protein is important, but nearly 74% of urban Indians are unable to correctly identify their recommended intake.
               </p>
             </div>
             
@@ -258,7 +258,7 @@ export default function SaralShaktiPage() {
                 <div className="w-14 h-14 bg-black border border-white/10 rounded-2xl flex items-center justify-center mb-8">
                   <Wheat className="w-6 h-6 text-amber-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">Shakti Atta</h3>
+                <h3 className="text-2xl font-bold text-white mb-3">Protein Plus Atta</h3>
                 <p className="text-zinc-400 text-sm mb-8 leading-relaxed">
                   The Primary Anchor. Protein-enriched multigrain atta designed for mass rural and semi-urban penetration.
                 </p>
@@ -287,7 +287,7 @@ export default function SaralShaktiPage() {
                 <div className="w-14 h-14 bg-black border border-white/10 rounded-2xl flex items-center justify-center mb-8">
                   <Droplets className="w-6 h-6 text-blue-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">Shakti Dairy+</h3>
+                <h3 className="text-2xl font-bold text-white mb-3">Protein Plus Dairy</h3>
                 <p className="text-zinc-400 text-sm mb-8 leading-relaxed">
                   The Secondary Anchor. High-protein dairy extending Saral's equity into youth snacking and on-the-go refreshment.
                 </p>
@@ -298,7 +298,7 @@ export default function SaralShaktiPage() {
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0" />
-                    <span className="text-sm text-zinc-300">Fortified Curd variants (Family & Single-serve)</span>
+                    <span className="text-sm text-zinc-300">High-Protein Curd variants (Family & Single-serve)</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0" />
@@ -339,12 +339,13 @@ export default function SaralShaktiPage() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-white text-sm">Localized Requirement Calculators</h4>
-                    <p className="text-xs text-zinc-500 mt-1">Free digital tools to help mothers calculate exact dietary needs for their families without nutrition jargon.</p>
+                    <p className="text-xs text-zinc-500 mt-1">Free digital tools to help you calculate exact dietary needs for your family without nutrition jargon.</p>
                   </div>
                 </li>
               </ul>
             </div>
             
+            {/* Mock QR / Report Visual - Tech Dashboard Vibe */}
             <div className="bg-zinc-950 p-8 rounded-3xl shadow-2xl border border-white/10 relative overflow-hidden">
               <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:2rem_2rem]" />
               
@@ -358,7 +359,7 @@ export default function SaralShaktiPage() {
                 </div>
                 <div>
                   <div className="text-xs text-zinc-500 font-mono mb-1">BATCH_ID #SK-9942</div>
-                  <div className="font-bold text-white text-sm">Shakti Atta (5kg) Analytics</div>
+                  <div className="font-bold text-white text-sm">Protein Plus Atta (5kg) Analytics</div>
                 </div>
               </div>
               
@@ -459,7 +460,7 @@ export default function SaralShaktiPage() {
                   <div className="border-l-2 border-zinc-800 pl-4">
                     <div className="text-[10px] uppercase tracking-wider font-bold text-amber-500 mb-1">Phase 2 (Months 6-18)</div>
                     <div className="text-xs text-white font-medium">Regional Scale</div>
-                    <div className="text-[11px] text-zinc-500 mt-1">Expand to 8-10 states, launch Dairy+ in major metros.</div>
+                    <div className="text-[11px] text-zinc-500 mt-1">Expand to 8-10 states, launch Protein Plus Dairy in major metros.</div>
                   </div>
                   <div className="border-l-2 border-zinc-800 pl-4">
                     <div className="text-[10px] uppercase tracking-wider font-bold text-blue-500 mb-1">Phase 3 (Months 18-36)</div>
@@ -473,7 +474,6 @@ export default function SaralShaktiPage() {
         </section>
       )}
 
-      {/* AI ASSISTANT INJECTED WITH SARAL THEME */}
       <AiAssistant 
         isVisitor={true} 
         variant="saral"
