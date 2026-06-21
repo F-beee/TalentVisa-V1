@@ -20,7 +20,7 @@ export function AiAssistant({ talentData, isVisitor = false, variant = "default"
   const [isLoading, setIsLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  // Listen for custom events to open the chat and pre-fill text from external buttons
+  // External open-chat listener
   useEffect(() => {
     const handleOpenChat = (e: any) => {
       setIsOpen(true)
@@ -34,7 +34,7 @@ export function AiAssistant({ talentData, isVisitor = false, variant = "default"
 
   const defaultGreeting = isVisitor 
     ? (variant === "saral" 
-        ? "Namaste! I am the Saral Nutritionist. I can help calculate your family's protein needs or answer questions about Shakti Atta and Dairy+. How can I help?" 
+        ? "Namaste! I am the Saral Nutritionist. I can help calculate your family's protein needs or answer questions about Protein Plus Atta and Dairy. How can I help?" 
         : "Hello! I am the TalentVisa AI. I can answer questions about Gurnaam, his projects, or this platform. What would you like to know?")
     : `Hello ${talentData?.name?.split(" ")[0] || "there"}! I see your Coding score is ${talentData?.skills?.coding || 0}%. That's impressive! How can I help you today?`
 
@@ -51,6 +51,13 @@ export function AiAssistant({ talentData, isVisitor = false, variant = "default"
 
     const userMessage = input
     setInput("")
+    
+    // --- MEMORY OPTIMIZATION LOGIC ---
+    // Grab the last 2 messages for context, but ignore the static default greeting to save tokens
+    const historyToSend = messages
+      .filter((m) => m.content !== defaultGreeting)
+      .slice(-2)
+
     setMessages((prev) => [...prev, { role: "user", content: userMessage }])
     setIsLoading(true)
 
@@ -60,6 +67,7 @@ export function AiAssistant({ talentData, isVisitor = false, variant = "default"
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: userMessage,
+          history: historyToSend, // Pass the short-term memory to the backend
           context: talentData 
         }),
       })
@@ -167,7 +175,7 @@ export function AiAssistant({ talentData, isVisitor = false, variant = "default"
                     </Avatar>
                     <div className="bg-zinc-900 rounded-2xl rounded-tl-none px-5 py-3.5 flex items-center border border-white/5">
                       <Loader2 className={`h-4 w-4 animate-spin ${isSaral ? 'text-emerald-400' : 'text-blue-400'}`} />
-                      <span className="text-sm text-zinc-400 ml-2 font-medium">Analyzing Data...</span>
+                      <span className="text-sm text-zinc-400 ml-2 font-medium">Thinking...</span>
                     </div>
                 </div>
               )}
