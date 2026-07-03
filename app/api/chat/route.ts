@@ -4,8 +4,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json()
     // Extract history array passed from the frontend memory logic
-    const { message = "", context, his
-      tory = [] } = body || {}
+    const { message = "", context, history = [] } = body || {}
 
     if (!message || typeof message !== "string" || !message.trim()) {
       return NextResponse.json({ reply: "Please provide a message." }, { status: 400 })
