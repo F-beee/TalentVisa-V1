@@ -118,7 +118,7 @@ export async function POST(req: Request) {
           ...history, // --- THIS IS THE SLIDING WINDOW MEMORY ---
           { role: "user", content: message.trim() },
         ],
-        temperature: 0.6,
+        temperature: 0.8,
         max_tokens: 300, // Keeps responses punchy and cheap
       }),
     })
